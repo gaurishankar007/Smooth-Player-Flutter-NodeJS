@@ -9,6 +9,9 @@ app.use(express.static(__dirname+"/upload"))
 
 require("./database/connectDB");
 
+const userRoute = require("./router/userRoute");
+app.use(userRoute);
+
 const dotenv = require("dotenv");
 dotenv.config();
 const port = process.env.PORT || 5555;
