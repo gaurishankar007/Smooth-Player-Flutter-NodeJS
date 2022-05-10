@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:smooth_player_app/screen/upload_ambum.dart';
+import 'package:smooth_player_app/screen/upload_song.dart';
 
 import 'screen/home.dart';
 
@@ -15,6 +17,7 @@ class SmoothPlayer extends StatefulWidget {
 
 class _SmoothPlayerState extends State<SmoothPlayer> {
   Widget initialPage = Home();
+  Widget uploadSongPage = UploadSong();
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +25,11 @@ class _SmoothPlayerState extends State<SmoothPlayer> {
       theme: ThemeData(),
       debugShowCheckedModeBanner: false,
       title: 'Smooth Player Music App',
-      home: initialPage,
+      home: uploadSongPage,
       routes: {
         "/home": (context) => Home(),
+        "/uploadSong": (context) => UploadSong(),
+        "/uploadAlbum": (context) => UploadAlbum(), 
       },
     );
   }
