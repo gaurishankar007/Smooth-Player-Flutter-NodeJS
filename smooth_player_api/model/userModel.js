@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema({
         type: Date
     },
     biography: {
-        type: String
+        type: String, trim: true
     },
     verified: {
         type: Boolean, default: false
