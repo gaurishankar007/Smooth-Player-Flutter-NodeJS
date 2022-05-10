@@ -10,7 +10,7 @@ const albumSchema = new mongoose.Schema({
         type:mongoose.Schema.ObjectId,
         ref: "user",
     },
-    image:{
+    album_image:{
         type: String
     }
     

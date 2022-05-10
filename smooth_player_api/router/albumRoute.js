@@ -1,11 +1,20 @@
 const express = require('express');
 const router = new express.Router();
-const auth = require('../auth/auth');
-const album = require('../models/albumModel');
+const auth = require('../authentication/auth');
+const album = require('../model/albumModel');
 
-router.post("/upload/album", function(req, res){
+
+const albumUpload = require("../setting/albumSetting")
+
+router.post("/upload/album", auth.verifyUser, albumUpload.single("album_image"), function(req, res){
+    if(req.file==undefined) {
+        return res.status(400).send({resM: "Invalid image format, only supports png or jpeg image format."});
+    }
+
     const newAlbum = new album({
-        title: req.body.title
+        title: req.body.title,
+        artist: req.userInfo._id,
+        album_image: req.file.filename
     })
 
     newAlbum.save().then(()=> {
@@ -13,15 +22,6 @@ router.post("/upload/album", function(req, res){
     });
 });
 
-router.get("/view/album", auth.verifyUser, async (req, res)=> {
-    const albums = await album.find();
-    res.send(albums);
-});
 
-router.delete("/delete/album", (req, res)=> {
-    album.findByIdAndDelete(req.body.albumId).then(()=> {
-        res.send({resM: "Album has been deleted."});
-    });
-});
 
 module.exports = router;

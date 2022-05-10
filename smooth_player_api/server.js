@@ -12,6 +12,12 @@ require("./database/connectDB");
 const userRoute = require("./router/userRoute");
 app.use(userRoute);
 
+const albumRoute = require("./router/albumRoute");
+app.use(albumRoute);
+
+const songRoute = require("./router/songRoute");
+app.use(songRoute);
+
 const dotenv = require("dotenv");
 dotenv.config();
 const port = process.env.PORT || 5555;
