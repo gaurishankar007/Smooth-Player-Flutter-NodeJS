@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
-import 'screen/home.dart';
+import 'package:smooth_player_app/screen/login.dart';
+import 'package:smooth_player_app/screen/signup.dart';
 
 void main() {
   runApp(const SmoothPlayer());
@@ -14,7 +14,7 @@ class SmoothPlayer extends StatefulWidget {
 }
 
 class _SmoothPlayerState extends State<SmoothPlayer> {
-  Widget initialPage = Home();
+  Widget initialPage = Login();
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +22,10 @@ class _SmoothPlayerState extends State<SmoothPlayer> {
       theme: ThemeData(),
       debugShowCheckedModeBanner: false,
       title: 'Smooth Player Music App',
-      home: initialPage,
+      initialRoute: 'login',
       routes: {
-        "/home": (context) => Home(),
+        "login": (context) => Login(),
+        "signup": (context) => SignupPage(),
       },
     );
   }
