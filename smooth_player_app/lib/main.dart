@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:smooth_player_app/screen/login.dart';
-import 'package:smooth_player_app/screen/signup.dart';
+import 'package:smooth_player_app/screen/authentication/login.dart';
+import 'package:smooth_player_app/screen/authentication/sign_up.dart';
+import 'package:smooth_player_app/screen/home.dart';
 
 void main() {
   runApp(const SmoothPlayer());
@@ -26,6 +27,7 @@ class _SmoothPlayerState extends State<SmoothPlayer> {
       routes: {
         "login": (context) => Login(),
         "signup": (context) => SignupPage(),
+        "home": (context) => Home(),
       },
     );
   }
