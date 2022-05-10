@@ -10,6 +10,10 @@ router.post("/upload/album", auth.verifyUser, albumUpload.single("album_image"),
     if(req.file==undefined) {
         return res.status(400).send({resM: "Invalid image format, only supports png or jpeg image format."});
     }
+    else if(req.body.tittle.trim()==="") {
+        res.status(400).send({resM: "Provide the album tittle."});
+        return;        
+    }
 
     const newAlbum = new album({
         title: req.body.title,

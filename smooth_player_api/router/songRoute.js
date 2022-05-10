@@ -11,6 +11,10 @@ router.post("/upload/albumSong",auth.verifyUser, musicFile.array('song_file', 2)
         res.status(400).send({resM: "Unsupported file format."});
         return;
     }
+    else if(req.body.tittle.trim()==="") {
+        res.status(400).send({resM: "Provide the song tittle."});
+        return;        
+    }
 
     var music_file = "";
     var cover_image = "";
@@ -39,6 +43,10 @@ router.post("/upload/singleSong", auth.verifyUser, musicFile.array('song_file', 
     if(req.files.length==0) {
         res.status(400).send({resM: "Unsupported file format."});
         return;
+    }
+    else if(req.body.tittle.trim()==="") {
+        res.status(400).send({resM: "Provide the song tittle."});
+        return;        
     }
 
     var music_file = "";
