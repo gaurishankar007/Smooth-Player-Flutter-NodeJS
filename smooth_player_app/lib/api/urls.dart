@@ -5,3 +5,4 @@ class ApiUrls {
   static const albumUrl = "http://10.0.2.2:5555/album/";
   static const profileUrl = "http://10.0.2.2:5555/album/profile";
 }
+ 

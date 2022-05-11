@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smooth_player_app/api/res/album_res.dart';
 import 'package:smooth_player_app/screen/authentication/login.dart';
 import 'package:smooth_player_app/screen/authentication/sign_up.dart';
 import 'package:smooth_player_app/screen/home.dart';
