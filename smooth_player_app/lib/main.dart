@@ -17,7 +17,7 @@ class SmoothPlayer extends StatefulWidget {
 
 class _SmoothPlayerState extends State<SmoothPlayer> {
   Widget initialPage = Home();
-  Widget uploadSongPage = UploadSong();
+  Widget uploadSongPage = UploadAlbum();
 
   @override
   Widget build(BuildContext context) {

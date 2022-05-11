@@ -22,6 +22,8 @@ class _UploadSongState extends State<UploadSong> {
   String album = "";
   String image_path = "";
 
+  String dropdownValue = '';
+
   void _pickSongImg() async {
     final image = await FilePicker.platform.pickFiles(
         allowMultiple: false,
@@ -47,17 +49,17 @@ class _UploadSongState extends State<UploadSong> {
     if (song == null) return;
     setState(() {
       _song = null;
-    
     });
     _song = File(song.files.first.name.toString());
   }
 
-
   @override
   Widget build(BuildContext context) {
+    double screenHight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
         appBar: AppBar(
-          title: Text("Upload Song"),
+          title: Text("Upload a Song"),
         ),
         body: SafeArea(
             child: SingleChildScrollView(
@@ -68,13 +70,14 @@ class _UploadSongState extends State<UploadSong> {
               child: Column(
                 children: [
                   SizedBox(
-                      // height: 15,
-                      ),
+                    height: screenHight * .05,
+                  ),
                   Stack(children: [
                     CircleAvatar(
                       radius: 70,
                       backgroundImage: _image == null
-                          ? AssetImage("images/noimages.png") as ImageProvider
+                          ? AssetImage("assets/images/noimage.png")
+                              as ImageProvider
                           : FileImage(_image!),
                       child: InkWell(
                         onTap: () {
@@ -86,11 +89,11 @@ class _UploadSongState extends State<UploadSong> {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Song title is required";
-                        }  
-                      },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Song title is required";
+                          }
+                        },
                         onSaved: ((value) {
                           title = value!;
                         }),
@@ -105,11 +108,11 @@ class _UploadSongState extends State<UploadSong> {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Album name is required";
-                        }
-                      },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Album name is required";
+                          }
+                        },
                         onSaved: ((value) {
                           title = value!;
                         }),
@@ -122,6 +125,23 @@ class _UploadSongState extends State<UploadSong> {
                         )),
                   ),
                   Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: DropdownButton<String>(
+                        value: dropdownValue,
+                        items: <String>['One', 'Two', 'Free', 'Four']
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (String? value) {
+                          setState(() {
+                            dropdownValue = value!;
+                          });
+                        },
+                      )),
+                  Padding(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                     child: Row(
@@ -131,10 +151,9 @@ class _UploadSongState extends State<UploadSong> {
                           width: 10,
                         ),
                         SizedBox(
-                          width: MediaQuery.of(context).size.width * .4,
+                          width:screenWidth * .4,
                           child: Text(
                             _song == null ? "No song selected" : _song!.path,
-                            
                             overflow: TextOverflow.fade,
                             style: TextStyle(
                               color: Colors.grey,

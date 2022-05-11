@@ -14,11 +14,10 @@ class UploadAlbum extends StatefulWidget {
 class _UploadAlbumState extends State<UploadAlbum> {
   final _songForm = GlobalKey<FormState>();
 
-  // final double height = MediaQuery.of(context).size.height
 
   File? _song;
   File? _image;
-  String title = "";
+  String albumTitle = "";
   String album = "";
   String image_path = "";
 
@@ -55,9 +54,11 @@ class _UploadAlbumState extends State<UploadAlbum> {
 
   @override
   Widget build(BuildContext context) {
+  double screenHight = MediaQuery.of(context).size.height ;
+  double screenWidth = MediaQuery.of(context).size.width ;
     return Scaffold(
         appBar: AppBar(
-          title: Text("Upload Song"),
+          title: Text("Upload an Album"),
         ),
         body: SafeArea(
             child: SingleChildScrollView(
@@ -68,13 +69,13 @@ class _UploadAlbumState extends State<UploadAlbum> {
               child: Column(
                 children: [
                   SizedBox(
-                      // height: 15,
+                      height:screenHight*.05,
                       ),
                   Stack(children: [
                     CircleAvatar(
                       radius: 70,
                       backgroundImage: _image == null
-                          ? AssetImage("images/noimages.png") as ImageProvider
+                          ? AssetImage("assets/images/noimage.png") as ImageProvider
                           : FileImage(_image!),
                       child: InkWell(
                         onTap: () {
@@ -83,24 +84,8 @@ class _UploadAlbumState extends State<UploadAlbum> {
                       ),
                     )
                   ]),
-                  Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: TextFormField(
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Song title is required";
-                        }  
-                      },
-                        onSaved: ((value) {
-                          title = value!;
-                        }),
-                        decoration: InputDecoration(
-                          labelText: "Enter Song Title",
-                          hintText: "BATASH, Saami Saami,...",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                        )),
+                  SizedBox(
+                    height: screenHight*.02,
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8),
@@ -108,53 +93,49 @@ class _UploadAlbumState extends State<UploadAlbum> {
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return "Album name is required";
-                        }
+                        }  
                       },
                         onSaved: ((value) {
-                          title = value!;
+                          albumTitle = value!;
                         }),
                         decoration: InputDecoration(
-                          labelText: "Enter Album Name",
-                          hintText: "Weekend, Romantic,...",
+                          labelText: "Album Name",
+                          hintText: "24/7, Best of 2021,...",
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
                           ),
                         )),
                   ),
                   Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                    child: Row(
-                      children: [
-                        Text("Pick song"),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * .4,
-                          child: Text(
-                            _song == null ? "No song selected" : _song!.path,
-                            
-                            overflow: TextOverflow.fade,
-                            style: TextStyle(
-                              color: Colors.grey,
-                            ),
+                    padding: const EdgeInsets.all(8),
+                    child: TextFormField(
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "User Name";
+                        }
+                      },
+                        onSaved: ((value) {
+                          albumTitle = value!;
+                        }),
+                        decoration: InputDecoration(
+                          labelText: "User Name/ID",
+                          hintText: "12121223, Sony,...",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
                           ),
-                        ),
-                        TextButton(
-                            onPressed: () {
-                              _pickSong();
-                            },
-                            child: Text("Pick"))
-                      ],
-                    ),
+                        )),
                   ),
                   SizedBox(height: 10),
-                  ElevatedButton(
-                    onPressed: () {
-                      _songForm.currentState!.validate();
-                    },
-                    child: Text('Upload Song'),
+                  Padding(
+                    padding: EdgeInsets.all(12),
+                    child: ElevatedButton(
+                      
+                      style: ElevatedButton.styleFrom(minimumSize: Size.fromHeight(45),),
+                      onPressed: () {
+                        _songForm.currentState!.validate();
+                      },
+                      child: Text('Upload Album'),
+                    ),
                   )
                 ],
               ),
