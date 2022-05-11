@@ -25,7 +25,7 @@ class _LoginState extends State<Login> {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Container(
+          child: SizedBox(
             height: sHeight,
             width: sWidth,
             child: Center(
@@ -121,16 +121,21 @@ class _LoginState extends State<Login> {
                             if (resData["statusCode"] == 202) {
                               LogStatus().setToken(resData["body"]["token"]);
 
-                              Navigator.pushNamed(context, "/home");
+                              Navigator.pushNamedAndRemoveUntil(
+                                context,
+                                "home",
+                                (route) => false,
+                              );
                             } else {
                               Fluttertoast.showToast(
-                                  msg: resData["body"]["resM"],
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.CENTER,
-                                  timeInSecForIosWeb: 1,
-                                  backgroundColor: Colors.red,
-                                  textColor: Colors.white,
-                                  fontSize: 16.0);
+                                msg: resData["body"]["resM"],
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.TOP,
+                                timeInSecForIosWeb: 3,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0,
+                              );
                             }
                           }
                         },

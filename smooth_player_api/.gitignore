@@ -1,5 +1,5 @@
 /node_modules
-/package-lock.json
+package-lock.json
 /upload/music/
 /upload/image/album/
 /upload/image/song/

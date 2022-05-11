@@ -105,7 +105,6 @@ router.post("/user/login", (req, res)=> {
                         res.status(400).send({resM: "Incorrect password, try again."});
                     }
                     else {  
-
                         const token = jwt.sign({userId: userData1._id}, "loginKey");
                         if(userData1.admin) {
                             res.status(202).send({token: token, resM: "Login success as admin.", userData: userData1});  
