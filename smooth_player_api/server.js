@@ -2,9 +2,9 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 
-app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+app.use(cors());
 app.use(express.static(__dirname+"/upload"))
 
 require("./database/connectDB");
@@ -18,7 +18,4 @@ app.use(albumRoute);
 const songRoute = require("./router/songRoute");
 app.use(songRoute);
 
-const dotenv = require("dotenv");
-dotenv.config();
-const port = process.env.PORT || 5555;
-app.listen(port, ()=> {console.log("Server running on port: "+port+"...")});
+app.listen(8080, ()=> {console.log("Server running on port: 8080...")});
