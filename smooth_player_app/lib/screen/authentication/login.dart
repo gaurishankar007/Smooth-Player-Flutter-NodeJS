@@ -16,6 +16,22 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
   String username_email = "", password = "";
+  bool hidePass = true;
+
+  OutlineInputBorder formBorder = OutlineInputBorder(
+    borderRadius: BorderRadius.circular(5),
+    borderSide: BorderSide(
+      color: AppColors.form,
+      width: 2,
+      style: BorderStyle.solid,
+    ),
+  );
+
+  TextStyle textStyle = TextStyle(
+    fontWeight: FontWeight.bold,
+    fontSize: 18,
+    color: Colors.black87,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -25,139 +41,209 @@ class _LoginState extends State<Login> {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
-          child: SizedBox(
-            height: sHeight,
-            width: sWidth,
-            child: Center(
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: sWidth * .05),
-                height: 300,
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      TextFormField(
-                        onSaved: (value) {
-                          username_email = value!;
-                        },
-                        validator: MultiValidator([
-                          RequiredValidator(
-                              errorText: "Username or Email is required!"),
-                        ]),
-                        decoration: InputDecoration(
-                          labelText: "Username/Email",
-                          hintText: "Enter your username or email.....",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(
-                              width: 2,
-                              style: BorderStyle.solid,
-                            ),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(
-                              width: 2,
-                              style: BorderStyle.solid,
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(
-                              width: 2,
-                              style: BorderStyle.solid,
-                            ),
+          padding: EdgeInsets.only(
+            left: sWidth * .05,
+            right: sWidth * .05,
+            top: sHeight * .03,
+          ),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Container(
+                      height: 120,
+                      width: 120,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: const [
+                            Color(0XFF36D1DC),
+                            Color(0XFF5B86E5),
+                          ],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                        ),
+                        borderRadius: BorderRadius.circular(25),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.black26,
+                            spreadRadius: 1,
+                            blurRadius: 5,
+                            offset: Offset(5, 5),
+                          )
+                        ],
+                      ),
+                    ),
+                    Text(
+                      "S",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontSize: 120,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Username or Email",
+                      style: textStyle,
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    TextFormField(
+                      onSaved: (value) {
+                        username_email = value!;
+                      },
+                      validator: MultiValidator([
+                        RequiredValidator(
+                            errorText: "Username or Email is required!"),
+                      ]),
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: AppColors.form,
+                        hintText: "Enter your username or email.....",
+                        enabledBorder: formBorder,
+                        focusedBorder: formBorder,
+                        errorBorder: formBorder,
+                        focusedErrorBorder: formBorder,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      "Password",
+                      style: textStyle,
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Stack(
+                      alignment: Alignment.centerRight,
+                      children: [
+                        TextFormField(
+                          key: Key("PasswordLogin"),
+                          onSaved: (value) {
+                            password = value!.trim();
+                          },
+                          validator: MultiValidator([
+                            RequiredValidator(
+                                errorText: "Password is required!"),
+                          ]),
+                          obscureText: hidePass,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: AppColors.form,
+                            hintText: "Enter your password.....",
+                            enabledBorder: formBorder,
+                            focusedBorder: formBorder,
+                            errorBorder: formBorder,
+                            focusedErrorBorder: formBorder,
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      TextFormField(
-                        key: Key("PasswordLogin"),
-                        onSaved: (value) {
-                          password = value!.trim();
-                        },
-                        validator: MultiValidator([
-                          RequiredValidator(errorText: "Password is required!"),
-                        ]),
-                        decoration: InputDecoration(
-                          labelText: "Password",
-                          hintText: "Enter your password.....",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(
-                              width: 2,
-                              style: BorderStyle.solid,
-                            ),
+                        IconButton(
+                          onPressed: () {
+                            setState(() {
+                              hidePass = !hidePass;
+                            });
+                          },
+                          icon: Icon(
+                            Icons.remove_red_eye,
+                            color: AppColors.primary,
                           ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(
-                              width: 2,
-                              style: BorderStyle.solid,
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(
-                              width: 2,
-                              style: BorderStyle.solid,
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      ElevatedButton(
-                        key: Key("ButtonLogin"),
-                        onPressed: () async {
-                          if (_formKey.currentState!.validate()) {
-                            _formKey.currentState!.save();
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                ElevatedButton(
+                  key: Key("ButtonLogin"),
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      _formKey.currentState!.save();
 
-                            final resData = await LoginHttp()
-                                .login(username_email, password);
-                            if (resData["statusCode"] == 202) {
-                              LogStatus().setToken(resData["body"]["token"]);
+                      final resData =
+                          await LoginHttp().login(username_email, password);
+                      if (resData["statusCode"] == 202) {
+                        LogStatus().setToken(resData["body"]["token"]);
 
-                              Navigator.pushNamedAndRemoveUntil(
-                                context,
-                                "home",
-                                (route) => false,
-                              );
-                            } else {
-                              Fluttertoast.showToast(
-                                msg: resData["body"]["resM"],
-                                toastLength: Toast.LENGTH_SHORT,
-                                gravity: ToastGravity.TOP,
-                                timeInSecForIosWeb: 3,
-                                backgroundColor: Colors.red,
-                                textColor: Colors.white,
-                                fontSize: 16.0,
-                              );
-                            }
-                          }
-                        },
-                        child: Text(
-                          "Log In",
-                          style: TextStyle(
-                            fontSize: 15,
-                          ),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          primary: AppColors.primary,
-                          elevation: 10,
-                          shadowColor: Colors.black,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                      ),
-                    ],
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          "home",
+                          (route) => false,
+                        );
+                      } else {
+                        Fluttertoast.showToast(
+                          msg: resData["body"]["resM"],
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.TOP,
+                          timeInSecForIosWeb: 3,
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white,
+                          fontSize: 16.0,
+                        );
+                      }
+                    }
+                  },
+                  child: Text(
+                    "Log In",
+                    style: TextStyle(
+                      fontSize: 15,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    primary: AppColors.primary,
+                    elevation: 10,
+                    shadowColor: Colors.black,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                   ),
                 ),
-              ),
+                SizedBox(
+                  height: 25,
+                ),
+                Text(
+                  "Forgot Password",
+                  style: TextStyle(
+                    decoration: TextDecoration.underline,
+                    fontSize: 15,
+                    color: AppColors.primary,
+                  ),
+                ),
+                SizedBox(
+                  height: 25,
+                ),
+                ElevatedButton(
+                  onPressed: () {},
+                  child: Text(
+                    "Create an account",
+                    style: TextStyle(
+                      fontSize: 15,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    primary: AppColors.primary,
+                    elevation: 10,
+                    shadowColor: Colors.black,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),
