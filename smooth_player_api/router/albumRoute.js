@@ -2,6 +2,7 @@ const express = require('express');
 const router = new express.Router();
 const auth = require('../authentication/auth');
 const album = require('../model/albumModel');
+const fs = require("fs");
 
 
 const albumUpload = require("../setting/albumSetting")
@@ -10,8 +11,8 @@ router.post("/upload/album", auth.verifyUser, albumUpload.single("album_image"),
     if(req.file==undefined) {
         return res.status(400).send({resM: "Invalid image format, only supports png or jpeg image format."});
     }
-    else if(req.body.tittle.trim()==="") {
-        res.status(400).send({resM: "Provide the album tittle."});
+    else if(req.body.title.trim()==="") {
+        res.status(400).send({resM: "Provide the album title."});
         return;        
     }
 
@@ -26,6 +27,21 @@ router.post("/upload/album", auth.verifyUser, albumUpload.single("album_image"),
     });
 });
 
+router.get("/view/album", auth.verifyUser, async (req, res)=> {
+    const albums = await album.find();
+    res.send(albums);
+});
+
+router.delete("/delete/album", auth.verifyUser, (req, res)=> {
+    album.findOne({_id: req.body.albumId}).then((albumData)=>{
+        fs.unlinkSync(`../smooth_player_api/upload/image/album/${albumData.album_image}`);
+        album.findByIdAndDelete(albumData._id).then(()=> {
+            res.send({resM: "Album has been deleted."});
+        });
+        
+    })
+    
+});
 
 
 module.exports = router;

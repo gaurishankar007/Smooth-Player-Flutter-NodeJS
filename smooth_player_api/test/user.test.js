@@ -49,8 +49,8 @@ describe('user schema test', ()=> {
         })
     })
 
-    // delete
-    it('report delete testing', async ()=> {
+    delete
+    it('user delete testing', async ()=> {
         const status = await user.deleteMany()
         expect(status.ok)
     })
