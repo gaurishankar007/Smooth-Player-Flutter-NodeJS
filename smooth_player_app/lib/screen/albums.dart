@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smooth_player_app/colors.dart';
+import 'package:smooth_player_app/screen/upload/upload_album_song.dart';
 
 import '../api/http/song_http.dart';
 import '../api/res/song_res.dart';
@@ -115,7 +116,16 @@ class _AlbumViewState extends State<AlbumView> {
                     ),
                   ),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => UploadAlbumSong(
+                            albumId: widget.albumId!,
+                            title: widget.title,
+                            album_image: widget.album_image,
+                            pageIndex: widget.pageIndex,),),);
+                    },
                     child: Icon(
                       Icons.upload_rounded,
                       color: Colors.white,
@@ -148,112 +158,115 @@ class _AlbumViewState extends State<AlbumView> {
                       shrinkWrap: true,
                       itemCount: snapshot.data!.length,
                       itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () async {
-                            Song newSong = Song(
-                              id: snapshot.data![index].id!,
-                              title: snapshot.data![index].title!,
-                              album: snapshot.data![index].album!,
-                              music_file: snapshot.data![index].music_file!,
-                              cover_image: snapshot.data![index].cover_image!,
-                              like: snapshot.data![index].like!,
-                            );
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 15),
+                          child: GestureDetector(
+                            onTap: () async {
+                              Song newSong = Song(
+                                id: snapshot.data![index].id!,
+                                title: snapshot.data![index].title!,
+                                album: snapshot.data![index].album!,
+                                music_file: snapshot.data![index].music_file!,
+                                cover_image: snapshot.data![index].cover_image!,
+                                like: snapshot.data![index].like!,
+                              );
 
-                            Player().playSong(newSong, songs);
+                              Player().playSong(newSong, songs);
 
-                            setState(() {
-                              song = newSong;
-                            });
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Text("${index + 1}"),
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                  Container(
-                                    width: 50,
-                                    height: 50,
-                                    decoration: BoxDecoration(
-                                      boxShadow: const [
-                                        BoxShadow(
-                                          color: Colors.black26,
-                                          spreadRadius: 1,
-                                          blurRadius: 5,
-                                          offset: Offset(2, 2),
-                                        )
-                                      ],
+                              setState(() {
+                                song = newSong;
+                              });
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text("${index + 1}"),
+                                    SizedBox(
+                                      width: 20,
                                     ),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(10),
-                                      child: Image(
-                                        fit: BoxFit.cover,
-                                        image: NetworkImage(
-                                          songUrl +
-                                              snapshot
-                                                  .data![index].cover_image!,
+                                    Container(
+                                      width: 50,
+                                      height: 50,
+                                      decoration: BoxDecoration(
+                                        boxShadow: const [
+                                          BoxShadow(
+                                            color: Colors.black26,
+                                            spreadRadius: 1,
+                                            blurRadius: 5,
+                                            offset: Offset(2, 2),
+                                          )
+                                        ],
+                                      ),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: Image(
+                                          fit: BoxFit.cover,
+                                          image: NetworkImage(
+                                            songUrl +
+                                                snapshot
+                                                    .data![index].cover_image!,
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                  SizedBox(
-                                    width: sWidth * .35,
-                                    child: Text(
-                                      snapshot.data![index].title!,
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    SizedBox(
+                                      width: sWidth * .35,
+                                      child: Text(
+                                        snapshot.data![index].title!,
+                                        overflow: TextOverflow.fade,
+                                        softWrap: false,
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.favorite,
+                                      color: Color.fromARGB(255, 221, 14, 14),
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      snapshot.data![index].like!.toString(),
                                       overflow: TextOverflow.fade,
                                       softWrap: false,
                                       style: TextStyle(
                                         color: Colors.black,
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.favorite,
-                                    color: Color.fromARGB(255, 221, 14, 14),
-                                  ),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  Text(
-                                    snapshot.data![index].like!.toString(),
-                                    overflow: TextOverflow.fade,
-                                    softWrap: false,
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              IconButton(
-                                constraints: BoxConstraints(),
-                                padding: EdgeInsets.zero,
-                                onPressed: () {
-                                  Player.songQueue.add(Song(
-                                    id: snapshot.data![index].id!,
-                                    title: snapshot.data![index].title!,
-                                    album: snapshot.data![index].album!,
-                                    music_file:
-                                        snapshot.data![index].music_file!,
-                                    cover_image:
-                                        snapshot.data![index].cover_image!,
-                                    like: snapshot.data![index].like!,
-                                  ));
-                                },
-                                icon: Icon(
-                                  Icons.more_vert,
+                                  ],
                                 ),
-                              ),
-                            ],
+                                IconButton(
+                                  constraints: BoxConstraints(),
+                                  padding: EdgeInsets.zero,
+                                  onPressed: () {
+                                    Player.songQueue.add(Song(
+                                      id: snapshot.data![index].id!,
+                                      title: snapshot.data![index].title!,
+                                      album: snapshot.data![index].album!,
+                                      music_file:
+                                          snapshot.data![index].music_file!,
+                                      cover_image:
+                                          snapshot.data![index].cover_image!,
+                                      like: snapshot.data![index].like!,
+                                    ));
+                                  },
+                                  icon: Icon(
+                                    Icons.more_vert,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         );
                       },

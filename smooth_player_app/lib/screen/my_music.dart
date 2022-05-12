@@ -4,12 +4,10 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:smooth_player_app/api/urls.dart';
-// import 'package:music_app/api/http/album_http.dart';
-// import 'package:music_app/api/log_status.dart';
-// import 'package:music_app/screens/album.dart';
-// import 'package:music_app/widgets/navigator.dart';
-// import 'package:music_app/widgets/song_bar.dart';
+import 'package:smooth_player_app/colors.dart';
 import 'package:smooth_player_app/screen/albums.dart';
+import 'package:smooth_player_app/screen/upload/upload_album.dart';
+import 'package:smooth_player_app/screen/upload/upload_song.dart';
 
 import '../api/http/album_http.dart';
 import '../api/log_status.dart';
@@ -19,8 +17,7 @@ import '../widget/navigator.dart';
 import '../widget/song_bar.dart';
 
 class MyMusic extends StatefulWidget {
-  final String? albumId;
-  const MyMusic({Key? key, @required this.albumId}) : super(key: key);
+  const MyMusic({Key? key}) : super(key: key);
 
   @override
   State<MyMusic> createState() => _MyMusicState();
@@ -75,8 +72,21 @@ class _MyMusicState extends State<MyMusic> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: AppColors.primary,
+                        elevation: 10,
+                        shadowColor: Colors.black,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
                       // key: Key("ButtonAddAlbum"),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => UploadAlbum()));
+                      },
                       child: Text(
                         "Upload Album",
                         style: TextStyle(
@@ -85,8 +95,21 @@ class _MyMusicState extends State<MyMusic> {
                       ),
                     ),
                     ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: AppColors.primary,
+                        elevation: 10,
+                        shadowColor: Colors.black,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
                       // key: Key("dsklfj"),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => UploadSong()));
+                      },
                       child: Text(
                         "Upload Song",
                         style: TextStyle(
@@ -113,7 +136,6 @@ class _MyMusicState extends State<MyMusic> {
                       ),
                       physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      mainAxisSpacing: 10,
                       crossAxisSpacing: 10,
                       crossAxisCount: 2,
                       children: List.generate(
@@ -130,6 +152,15 @@ class _MyMusicState extends State<MyMusic> {
                                       "You have raised a Alert Dialog Box"),
                                   actions: <Widget>[
                                     ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        primary: AppColors.primary,
+                                        elevation: 10,
+                                        shadowColor: Colors.black,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                      ),
                                       onPressed: () async {
                                         await AlbumHttp().deleteAlbum(
                                             snapshot.data![index].id);
@@ -152,6 +183,15 @@ class _MyMusicState extends State<MyMusic> {
                                       child: Text("Delete"),
                                     ),
                                     ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        primary: AppColors.primary,
+                                        elevation: 10,
+                                        shadowColor: Colors.black,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                      ),
                                       onPressed: () {
                                         Navigator.of(ctx).pop();
                                       },
@@ -179,7 +219,6 @@ class _MyMusicState extends State<MyMusic> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Container(
-                                    width: sWidth * 0.455,
                                     decoration: BoxDecoration(
                                       boxShadow: const [
                                         BoxShadow(
@@ -193,6 +232,9 @@ class _MyMusicState extends State<MyMusic> {
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(10),
                                       child: Image(
+                                        height: sHeight * 0.2,
+                                        width: sWidth * 0.44,
+
                                         fit: BoxFit.cover,
                                         image: NetworkImage(
                                           albumUrl +

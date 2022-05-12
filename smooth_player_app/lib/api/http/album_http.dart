@@ -46,7 +46,7 @@ class AlbumHttp {
       log('$err');
     }
     return {
-      "body": {"resM": "error occured"},
+      "body": {"resM": "error occurred"},
       "statusCode": 400,
     };
   }
