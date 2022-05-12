@@ -44,7 +44,7 @@ class _SmoothPlayerState extends State<SmoothPlayer> {
       home: initialPage,
       routes: {
         "login": (context) => Login(),
-        "signUp": (context) => SignUpPage(),
+        "signup": (context) => Signup(),
         "home": (context) => Home(),
       },
     );

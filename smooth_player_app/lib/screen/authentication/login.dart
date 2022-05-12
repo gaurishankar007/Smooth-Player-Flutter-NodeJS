@@ -1,14 +1,14 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:smooth_player_app/colors.dart';
 import 'package:smooth_player_app/api/http/authentication/login_http.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
 import '../../api/log_status.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
-
   @override
   State<Login> createState() => _LoginState();
 }
@@ -17,7 +17,6 @@ class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
   String username_email = "", password = "";
   bool hidePass = true;
-
   OutlineInputBorder formBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(5),
     borderSide: BorderSide(
@@ -26,18 +25,15 @@ class _LoginState extends State<Login> {
       style: BorderStyle.solid,
     ),
   );
-
   TextStyle textStyle = TextStyle(
     fontWeight: FontWeight.bold,
     fontSize: 18,
     color: Colors.black87,
   );
-
   @override
   Widget build(BuildContext context) {
     final sWidth = MediaQuery.of(context).size.width;
     final sHeight = MediaQuery.of(context).size.height;
-
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -173,12 +169,10 @@ class _LoginState extends State<Login> {
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
-
                       final resData =
                           await LoginHttp().login(username_email, password);
                       if (resData["statusCode"] == 202) {
                         LogStatus().setToken(resData["body"]["token"]);
-
                         Navigator.pushNamedAndRemoveUntil(
                           context,
                           "home",
@@ -227,7 +221,9 @@ class _LoginState extends State<Login> {
                   height: 25,
                 ),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, "signup");
+                  },
                   child: Text(
                     "Create an account",
                     style: TextStyle(
