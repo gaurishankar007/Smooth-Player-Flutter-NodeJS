@@ -5,7 +5,8 @@ const album = require('../model/albumModel');
 const fs = require("fs");
 
 
-const albumUpload = require("../setting/albumSetting")
+const albumUpload = require("../setting/albumSetting");
+const { userInfo } = require('os');
 
 router.post("/upload/album", auth.verifyUser, albumUpload.single("album_image"), function(req, res){
     if(req.file==undefined) {
@@ -28,7 +29,7 @@ router.post("/upload/album", auth.verifyUser, albumUpload.single("album_image"),
 });
 
 router.get("/view/album", auth.verifyUser, async (req, res)=> {
-    const albums = await album.find();
+    const albums = await album.find({artist: req.userInfo._id});
     res.send(albums);
 });
 
