@@ -41,6 +41,7 @@ router.post("/upload/albumSong",auth.verifyUser, musicFile.array('song_file', 2)
 });
 
 router.post("/upload/singleSong", auth.verifyUser, musicFile.array('song_file', 2), async function(req, res)  {
+    console.log(req.files)
     if(req.files.length==0) {
         res.status(400).send({resM: "Unsupported file format."});
         return;
