@@ -1,127 +1,248 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/material.dart';
+import 'package:form_field_validator/form_field_validator.dart';
+import 'package:smooth_player_app/colors.dart';
+import 'package:smooth_player_app/api/http/authentication/login_http.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import '../../api/log_status.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
-
   @override
-  _LoginState createState() => _LoginState();
+  State<Login> createState() => _LoginState();
 }
 
 class _LoginState extends State<Login> {
+  final _formKey = GlobalKey<FormState>();
+  String username_email = "", password = "";
+  bool hidePass = true;
+  OutlineInputBorder formBorder = OutlineInputBorder(
+    borderRadius: BorderRadius.circular(5),
+    borderSide: BorderSide(
+      color: AppColors.form,
+      width: 2,
+      style: BorderStyle.solid,
+    ),
+  );
+  TextStyle textStyle = TextStyle(
+    fontWeight: FontWeight.bold,
+    fontSize: 18,
+    color: Colors.black87,
+  );
   @override
   Widget build(BuildContext context) {
+    final sWidth = MediaQuery.of(context).size.width;
+    final sHeight = MediaQuery.of(context).size.height;
     return Scaffold(
-      body: Stack(
-        children: [
-          Container(
-            padding: EdgeInsets.only(left: 118, top: 130),
-            child: Text(
-              'Welcome',
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 40,
-                  fontWeight: FontWeight.bold),
-            ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: EdgeInsets.only(
+            left: sWidth * .05,
+            right: sWidth * .05,
+            top: sHeight * .03,
           ),
-          SingleChildScrollView(
-            child: Container(
-              padding: EdgeInsets.only(
-                  top: MediaQuery.of(context).size.height * 0.4),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(left: 35, right: 35),
-                    child: Column(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Container(
+                      height: 120,
+                      width: 120,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: const [
+                            Color(0XFF36D1DC),
+                            Color(0XFF5B86E5),
+                          ],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                        ),
+                        borderRadius: BorderRadius.circular(25),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.black26,
+                            spreadRadius: 1,
+                            blurRadius: 5,
+                            offset: Offset(5, 5),
+                          )
+                        ],
+                      ),
+                    ),
+                    Text(
+                      "S",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontSize: 120,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Username or Email",
+                      style: textStyle,
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    TextFormField(
+                      onSaved: (value) {
+                        username_email = value!;
+                      },
+                      validator: MultiValidator([
+                        RequiredValidator(
+                            errorText: "Username or Email is required!"),
+                      ]),
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: AppColors.form,
+                        hintText: "Enter your username or email.....",
+                        enabledBorder: formBorder,
+                        focusedBorder: formBorder,
+                        errorBorder: formBorder,
+                        focusedErrorBorder: formBorder,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      "Password",
+                      style: textStyle,
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Stack(
+                      alignment: Alignment.centerRight,
                       children: [
-                        TextField(
-                          style: TextStyle(color: Colors.black),
+                        TextFormField(
+                          key: Key("PasswordLogin"),
+                          onSaved: (value) {
+                            password = value!.trim();
+                          },
+                          validator: MultiValidator([
+                            RequiredValidator(
+                                errorText: "Password is required!"),
+                          ]),
+                          obscureText: hidePass,
                           decoration: InputDecoration(
-                              fillColor: Colors.grey.shade100,
-                              filled: true,
-                              hintText: "Email",
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              )),
+                            filled: true,
+                            fillColor: AppColors.form,
+                            hintText: "Enter your password.....",
+                            enabledBorder: formBorder,
+                            focusedBorder: formBorder,
+                            errorBorder: formBorder,
+                            focusedErrorBorder: formBorder,
+                          ),
                         ),
-                        SizedBox(
-                          height: 40,
-                        ),
-                        TextField(
-                          style: TextStyle(),
-                          obscureText: true,
-                          decoration: InputDecoration(
-                              fillColor: Colors.grey.shade100,
-                              filled: true,
-                              hintText: "Password",
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              )),
-                        ),
-                        SizedBox(
-                          height: 40,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Log In ..',
-                              style: TextStyle(
-                                  fontSize: 27, fontWeight: FontWeight.w700),
-                            ),
-                            CircleAvatar(
-                              radius: 30,
-                              backgroundColor: Colors.black,
-                              child: IconButton(
-                                  color: Colors.white,
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.arrow_forward,
-                                  )),
-                            )
-                          ],
-                        ),
-                        SizedBox(
-                          height: 40,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.pushNamed(context, 'signup');
-                              },
-                              child: Text(
-                                'Sign Up',
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                  decoration: TextDecoration.underline,
-                                  color: Colors.black,
-                                  fontSize: 18,
-                                ),
-                              ),
-                              style: ButtonStyle(),
-                            ),
-                            TextButton(
-                                onPressed: () {},
-                                child: Text(
-                                  'Forgot Password',
-                                  style: TextStyle(
-                                    decoration: TextDecoration.underline,
-                                    color: Colors.black,
-                                    fontSize: 18,
-                                  ),
-                                )),
-                          ],
+                        IconButton(
+                          onPressed: () {
+                            setState(() {
+                              hidePass = !hidePass;
+                            });
+                          },
+                          icon: Icon(
+                            Icons.remove_red_eye,
+                            color: AppColors.primary,
+                          ),
                         )
                       ],
                     ),
-                  )
-                ],
-              ),
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                ElevatedButton(
+                  key: Key("ButtonLogin"),
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      _formKey.currentState!.save();
+                      final resData =
+                          await LoginHttp().login(username_email, password);
+                      if (resData["statusCode"] == 202) {
+                        LogStatus().setToken(resData["body"]["token"]);
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          "home",
+                          (route) => false,
+                        );
+                      } else {
+                        Fluttertoast.showToast(
+                          msg: resData["body"]["resM"],
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.TOP,
+                          timeInSecForIosWeb: 3,
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white,
+                          fontSize: 16.0,
+                        );
+                      }
+                    }
+                  },
+                  child: Text(
+                    "Log In",
+                    style: TextStyle(
+                      fontSize: 15,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    primary: AppColors.primary,
+                    elevation: 10,
+                    shadowColor: Colors.black,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 25,
+                ),
+                Text(
+                  "Forgot Password",
+                  style: TextStyle(
+                    decoration: TextDecoration.underline,
+                    fontSize: 15,
+                    color: AppColors.primary,
+                  ),
+                ),
+                SizedBox(
+                  height: 25,
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, "signup");
+                  },
+                  child: Text(
+                    "Create an account",
+                    style: TextStyle(
+                      fontSize: 15,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    primary: AppColors.primary,
+                    elevation: 10,
+                    shadowColor: Colors.black,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }

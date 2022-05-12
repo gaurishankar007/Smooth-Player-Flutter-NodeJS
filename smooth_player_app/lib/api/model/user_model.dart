@@ -1,5 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'dart:io';
+
 class User {
   String? id;
   String? username;
@@ -37,5 +39,30 @@ class User {
     this.liked_song_publication,
     this.liked_featured_playlist_publication,
     this.created_playlist_publication,
+  });
+}
+
+class UploadUser {
+  String? username;
+  String? email;
+  String? password;
+  String? confirm_password;
+
+  String? profile_name;
+  File? profile_picture;
+  String? gender;
+  String? birth_date;
+  String? biography;
+
+  UploadUser({
+    this.username,
+    this.email,
+    this.password,
+    this.confirm_password,
+    this.profile_name,
+    this.profile_picture,
+    this.gender,
+    this.birth_date,
+    this.biography,
   });
 }
