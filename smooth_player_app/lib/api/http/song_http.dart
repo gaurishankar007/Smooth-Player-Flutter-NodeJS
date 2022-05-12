@@ -42,9 +42,8 @@ class SongHttp {
         filename: songData.cover_image!.path.split('/').last,
       ));
       request.files.addAll(multipartList);
-      print("entered");
+
       final response = await request.send();
-      print(response);
       var responseString = await response.stream.bytesToString();
       final responseData = jsonDecode(responseString) as Map;
       return {
@@ -55,10 +54,12 @@ class SongHttp {
       log('$err');
     }
     return {
-      "body": {"resM": "error occured"},
+      "body": {"resM": "error occurred"},
       "statusCode": 400,
     };
   }
+
+
   Future<Map> uploadAlbumSong(SongUploadModal songData, String albumId) async {
     try {
       // Making multipart request
@@ -71,7 +72,7 @@ class SongHttp {
       // Adding forms data
       Map<String, String> songDetail = {
         "title": "${songData.title}",
-        "album_id": albumId,
+        "albumId": albumId,
       };
       request.fields.addAll(songDetail);
       // Adding song
@@ -89,6 +90,7 @@ class SongHttp {
         songData.cover_image!.lengthSync(),
         filename: songData.cover_image!.path.split('/').last,
       ));
+
       request.files.addAll(multipartList);
       final response = await request.send();
       var responseString = await response.stream.bytesToString();
@@ -101,7 +103,7 @@ class SongHttp {
       log('$err');
     }
     return {
-      "body": {"resM": "error occured"},
+      "body": {"resM": "error occurred"},
       "statusCode": 400,
     };
   }

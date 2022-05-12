@@ -21,9 +21,9 @@ router.post("/upload/albumSong",auth.verifyUser, musicFile.array('song_file', 2)
     var cover_image = "";
 
     for(i=0; i<req.files.length; i++) {
-        if(req.files[i].mimetype == "image/png" || req.files[i].mimetype == "image/jpeg") {            
+        if(req.files[i].filename.split(".")[1] == "png" || req.files[i].filename.split(".")[1] == "jpeg" || req.files[i].filename.split(".")[1] == "jpg")  {            
             cover_image=req.files[i].filename;
-        } else if(req.files[i].mimetype == "audio/mpeg" || req.files[i].mimetype=="audio/mp4") {
+        } else if(req.files[i].filename.split(".")[1] == "mp3" || req.files[i].filename.split(".")[1] == "mp4") {
             music_file=req.files[i].filename;
         }
     }
@@ -64,7 +64,7 @@ router.post("/upload/singleSong", auth.verifyUser, musicFile.array('song_file', 
     const title = req.body.title;
 
     const newAlbum = await album.create({
-        title: req.title,
+        title: req.body.title,
         artist: req.userInfo._id,
         album_image: cover_image,
     })

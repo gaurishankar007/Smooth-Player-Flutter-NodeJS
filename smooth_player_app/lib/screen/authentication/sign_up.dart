@@ -12,13 +12,13 @@ import 'package:smooth_player_app/api/model/user_model.dart';
 import '../../colors.dart';
 import '../home.dart';
 
-class Signup extends StatefulWidget {
-  const Signup({Key? key}) : super(key: key);
+class SignUp extends StatefulWidget {
+  const SignUp({Key? key}) : super(key: key);
   @override
-  _SignupState createState() => _SignupState();
+  _SignUpState createState() => _SignUpState();
 }
 
-class _SignupState extends State<Signup> {
+class _SignUpState extends State<SignUp> {
   final _formKey = GlobalKey<FormState>();
   String username = "",
       email = "",
