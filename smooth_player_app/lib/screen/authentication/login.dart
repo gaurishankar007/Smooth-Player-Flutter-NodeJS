@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:smooth_player_app/colors.dart';
-import 'package:smooth_player_app/screen/authentication/login_http.dart';
+import 'package:smooth_player_app/api/http/authentication/login_http.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
-import '../api/log_status.dart';
+import '../../api/log_status.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -14,7 +15,7 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
-  String username = "", password = "";
+  String username_email = "", password = "";
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +38,7 @@ class _LoginState extends State<Login> {
                     children: [
                       TextFormField(
                         onSaved: (value) {
-                          username = value!;
+                          username_email = value!;
                         },
                         validator: MultiValidator([
                           RequiredValidator(
@@ -115,19 +116,21 @@ class _LoginState extends State<Login> {
                           if (_formKey.currentState!.validate()) {
                             _formKey.currentState!.save();
 
-                            final resData =
-                                await LoginHttp().login(username, password);
+                            final resData = await LoginHttp()
+                                .login(username_email, password);
                             if (resData["statusCode"] == 202) {
                               LogStatus().setToken(resData["body"]["token"]);
 
                               Navigator.pushNamed(context, "/home");
                             } else {
-                              // MotionToast.error(
-                              //   position: MOTION_TOAST_POSITION.top,
-                              //   animationType: ANIMATION.fromTop,
-                              //   toastDuration: Duration(seconds: 2),
-                              //   description: Text(resData["body"]["resM"]),
-                              // ).show(context);
+                              Fluttertoast.showToast(
+                                  msg: resData["body"]["resM"],
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.CENTER,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: Colors.red,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0);
                             }
                           }
                         },

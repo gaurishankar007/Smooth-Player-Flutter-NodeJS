@@ -1,16 +1,17 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'dart:convert';
 
 import 'package:http/http.dart';
 
-import '../../api/urls.dart';
-
+import '../../urls.dart';
 
 class LoginHttp {
   final routeUrl = ApiUrls.routeUrl;
 
-  Future<Map> login(String username, String password) async {
+  Future<Map> login(String username_email, String password) async {
     Map<String, String> userData = {
-      "username": username,
+      "username_email": username_email,
       "password": password,
     };
 

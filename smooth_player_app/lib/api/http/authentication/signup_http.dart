@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart';
 
-import '../../api/urls.dart';
+import '../../urls.dart';
 
 class LoginHttp {
   final routeUrl = ApiUrls.routeUrl;
