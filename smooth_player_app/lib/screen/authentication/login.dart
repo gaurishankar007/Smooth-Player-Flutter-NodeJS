@@ -3,21 +3,16 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:smooth_player_app/colors.dart';
 import 'package:smooth_player_app/api/http/authentication/login_http.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
 import '../../api/log_status.dart';
-
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
-
   @override
   State<Login> createState() => _LoginState();
 }
-
 class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
   String username_email = "", password = "";
   bool hidePass = true;
-
   OutlineInputBorder formBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(5),
     borderSide: BorderSide(
@@ -26,18 +21,15 @@ class _LoginState extends State<Login> {
       style: BorderStyle.solid,
     ),
   );
-
   TextStyle textStyle = TextStyle(
     fontWeight: FontWeight.bold,
     fontSize: 18,
     color: Colors.black87,
   );
-
   @override
   Widget build(BuildContext context) {
     final sWidth = MediaQuery.of(context).size.width;
     final sHeight = MediaQuery.of(context).size.height;
-
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -173,42 +165,41 @@ class _LoginState extends State<Login> {
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
-
                       final resData =
                           await LoginHttp().login(username_email, password);
                       if (resData["statusCode"] == 202) {
                         LogStatus().setToken(resData["body"]["token"]);
-
-                              Navigator.pushNamed(context, "/home");
-                            } else {
-                              print(resData);
-                              // Fluttertoast.showToast(
-                              //     msg: resData["body"]["resM"],
-                              //     toastLength: Toast.LENGTH_SHORT,
-                              //     gravity: ToastGravity.CENTER,
-                              //     timeInSecForIosWeb: 1,
-                              //     backgroundColor: Colors.red,
-                              //     textColor: Colors.white,
-                              //     fontSize: 16.0);
-                            }
-                          }
-                        },
-                        child: Text(
-                          "Log In",
-                          style: TextStyle(
-                            fontSize: 15,
-                          ),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          primary: AppColors.primary,
-                          elevation: 10,
-                          shadowColor: Colors.black,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                      ),
-                    ],
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          "home",
+                          (route) => false,
+                        );
+                      } else {
+                        Fluttertoast.showToast(
+                          msg: resData["body"]["resM"],
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.TOP,
+                          timeInSecForIosWeb: 3,
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white,
+                          fontSize: 16.0,
+                        );
+                      }
+                    }
+                  },
+                  child: Text(
+                    "Log In",
+                    style: TextStyle(
+                      fontSize: 15,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    primary: AppColors.primary,
+                    elevation: 10,
+                    shadowColor: Colors.black,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                   ),
                 ),
                 SizedBox(

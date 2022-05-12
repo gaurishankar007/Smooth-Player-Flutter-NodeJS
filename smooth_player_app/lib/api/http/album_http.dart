@@ -1,14 +1,53 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
-
+import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
-import 'package:smooth_player_app/api/log_status.dart';
-import 'package:smooth_player_app/api/res/album_res.dart';
-import 'package:smooth_player_app/api/urls.dart';
+import '../log_status.dart';
+import '../model/album_model.dart';
+import '../res/album_res.dart';
+import '../urls.dart';
 
 class AlbumHttp {
   final routeUrl = ApiUrls.routeUrl;
   final token = LogStatus.token;
+
+  Future<Map> createAlbum(AlbumUploadModal albumData) async {
+    try {
+      // Making multipart request
+      var request =
+          http.MultipartRequest('POST', Uri.parse(routeUrl + "post/add"));
+      // Adding headers
+      request.headers.addAll({
+        'Authorization': 'Bearer $token',
+      });
+      // Adding forms data
+      Map<String, String> albumDetail = {
+        "title": "${albumData.title}",
+      };
+      request.fields.addAll(albumDetail);
+      // Adding images
+      List<MultipartFile> multipartList = [];
+      multipartList.add(http.MultipartFile(
+        'images',
+        albumData.cover_image!.readAsBytes().asStream(),
+        albumData.cover_image!.lengthSync(),
+        filename: albumData.cover_image!.path.split('/').last,
+      ));
+      request.files.addAll(multipartList);
+      final response = await request.send();
+      var responseString = await response.stream.bytesToString();
+      final responseData = jsonDecode(responseString) as Map;
+      return responseData;
+    } catch (err) {
+      log('$err');
+    }
+    return {
+      "body": {"resM": "error occured"},
+      "statusCode": 400,
+    };
+  }
+
   Future<List<Album>> getAlbums() async {
     final response = await get(
       Uri.parse(routeUrl + "view/album"),
@@ -24,5 +63,18 @@ class AlbumHttp {
     }
 
     return resAlbum.map((e) => Album.fromJson(e)).toList();
+  }
+
+  Future<Map> deleteAlbum(String? albumId) async {
+    final bearerToken = {
+      HttpHeaders.authorizationHeader: 'Bearer $token',
+    };
+    final response = await delete(Uri.parse(routeUrl + "delete/album"),
+        body: {"albumId": albumId!}, headers: bearerToken);
+    //json serializing inline
+
+    final responseData = jsonDecode(response.body);
+
+    return responseData;
   }
 }
