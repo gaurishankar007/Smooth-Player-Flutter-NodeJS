@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:smooth_player_app/screen/setting.dart';
+import 'package:smooth_player_app/screen/upload/upload_album_song.dart';
+import 'package:smooth_player_app/screen/upload/upload_ambum.dart';
+import 'package:smooth_player_app/screen/upload/upload_song.dart';
 import 'package:smooth_player_app/widget/navigator.dart';
 
 import '../colors.dart';
@@ -73,6 +76,31 @@ class _HomeState extends State<Home> {
                 ],
               ),
               Text("Home Page"),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => UploadSong()));
+                },
+                child: Text("Upload Song"),
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => UploadAlbum()));
+                },
+                child: Text("Upload Album"),
+              ),
+
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => UploadSongAlbum(albumId: 'asa',)));
+                },
+                child: Text("Upload Song from Album"),
+              ),
             ],
           ),
         ),
