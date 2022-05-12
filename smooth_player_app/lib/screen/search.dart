@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../widget/navigator.dart';
+
 class Search extends StatefulWidget {
-  final int? pageIndex;
-  const Search({Key? key, @required this.pageIndex}) : super(key: key);
+  const Search({Key? key}) : super(key: key);
 
   @override
   State<Search> createState() => _SearchState();
@@ -11,6 +12,18 @@ class Search extends StatefulWidget {
 class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
+              Text("Search Page"),
+            ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: PageNavigator(pageIndex: 1),
+    );
   }
 }

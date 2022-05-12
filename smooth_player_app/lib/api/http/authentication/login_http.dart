@@ -15,8 +15,8 @@ class LoginHttp {
       "password": password,
     };
 
-    final response =
-        await post(Uri.parse(routeUrl + "user/login"), body: userData);
+    final response = await post(Uri.parse(routeUrl+"user/login"),
+        body: userData);
     return {
       "statusCode": response.statusCode,
       "body": jsonDecode(response.body) as Map,

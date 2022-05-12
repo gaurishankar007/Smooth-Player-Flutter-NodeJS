@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 import '../widget/navigator.dart';
 
-class Library extends StatefulWidget {
-  const Library({Key? key}) : super(key: key);
+class MyMusic extends StatefulWidget {
+  const MyMusic({Key? key}) : super(key: key);
 
   @override
-  State<Library> createState() => _LibraryState();
+  State<MyMusic> createState() => _MyMusicState();
 }
 
-class _LibraryState extends State<Library> {
+class _MyMusicState extends State<MyMusic> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,12 +18,12 @@ class _LibraryState extends State<Library> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: const [
-              Text("Library Page"),
+              Text("My music Page"),
             ],
           ),
         ),
       ),
-      bottomNavigationBar: PageNavigator(pageIndex: 2),
+      bottomNavigationBar: PageNavigator(pageIndex: 3),
     );
   }
 }
