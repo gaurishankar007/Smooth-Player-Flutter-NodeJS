@@ -68,13 +68,12 @@ class AlbumHttp {
     return resAlbum.map((e) => Album.fromJson(e)).toList();
   }
 
-  Future<Map> deleteAlbum(String? albumId) async {
+  Future<Map> deleteAlbum(String albumId) async {
     final bearerToken = {
       HttpHeaders.authorizationHeader: 'Bearer $token',
     };
     final response = await delete(Uri.parse(routeUrl + "delete/album"),
-        body: {"albumId": albumId!}, headers: bearerToken);
-    //json serializing inline
+        body: {"albumId": albumId}, headers: bearerToken);
 
     final responseData = jsonDecode(response.body);
 

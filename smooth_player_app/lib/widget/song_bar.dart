@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:smooth_player_app/api/urls.dart';
 
 import '../api/res/song_res.dart';
 import '../player.dart';
@@ -17,6 +18,7 @@ class SongBar extends StatefulWidget {
 
 class _SongBarState extends State<SongBar> {
   final AudioPlayer player = Player.player;
+  final coverImage = ApiUrls.coverImageUrl;
 
   late StreamSubscription stateSub, completionSub;
   late Song? songData;
@@ -35,7 +37,7 @@ class _SongBarState extends State<SongBar> {
     });
 
     completionSub = player.onPlayerCompletion.listen((state) {
-      Player().autoNextSong();
+      // Player().autoNextSong();
     });
   }
 
@@ -67,7 +69,14 @@ class _SongBarState extends State<SongBar> {
           padding: EdgeInsets.all(4),
           height: 60,
           decoration: BoxDecoration(
-            color: Color(0XFF5B86E5),
+            gradient: LinearGradient(
+              colors: const [
+                Color(0XFF36D1DC),
+                Color(0XFF5B86E5),
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
             borderRadius: BorderRadius.circular(8),
             boxShadow: const [
               BoxShadow(
@@ -81,47 +90,71 @@ class _SongBarState extends State<SongBar> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                width: 50,
-                decoration: BoxDecoration(
-                  color: Color(0XFF36D1DC),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              SizedBox(
-                width: sWidth * .5,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      songData!.title!,
-                      overflow: TextOverflow.fade,
-                      softWrap: false,
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
+              Row(
+                children: [
+                  Container(
+                    width: 50,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.black26,
+                          spreadRadius: 1,
+                          blurRadius: 5,
+                          offset: Offset(2, 2),
+                        )
+                      ],
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(5),
+                      child: Image(
+                        fit: BoxFit.cover,
+                        image: NetworkImage(
+                          coverImage + Player.playingSong!.cover_image!,
+                        ),
                       ),
                     ),
-                    Text(
-                      songData!.album!.title!,
-                      overflow: TextOverflow.fade,
-                      softWrap: false,
-                      style: TextStyle(
-                        color: Colors.black,
-                      ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  SizedBox(
+                    height: 40,
+                    width: sWidth * .45,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          songData!.title!,
+                          overflow: TextOverflow.fade,
+                          softWrap: false,
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          songData!.album!.artist!.profile_name!,
+                          overflow: TextOverflow.fade,
+                          softWrap: false,
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   TextButton(
                     onPressed: () {
-                      Player().previousSong();
-                      setState(() {
-                        songData = Player.playingSong;
-                      });
+                      // Player().previousSong();
+                      // setState(() {
+                      //   songData = Player.playingSong;
+                      // });
                     },
                     style: TextButton.styleFrom(
                       padding: EdgeInsets.zero,
@@ -167,10 +200,10 @@ class _SongBarState extends State<SongBar> {
                         ),
                   TextButton(
                     onPressed: () {
-                      Player().nextSong();
-                      setState(() {
-                        songData = Player.playingSong;
-                      });
+                      // Player().nextSong();
+                      // setState(() {
+                      //   songData = Player.playingSong;
+                      // });
                     },
                     style: TextButton.styleFrom(
                       padding: EdgeInsets.zero,

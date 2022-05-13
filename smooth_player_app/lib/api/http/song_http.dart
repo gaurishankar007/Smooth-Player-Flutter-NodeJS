@@ -125,4 +125,16 @@ class SongHttp {
 
     return resSongs.map((e) => Song.fromJson(e)).toList();
   }
+
+  Future<Map> deleteSong(String songId) async {
+    final bearerToken = {
+      HttpHeaders.authorizationHeader: 'Bearer $token',
+    };
+    final response = await delete(Uri.parse(routeUrl + "delete/song"),
+        body: {"songId": songId}, headers: bearerToken);
+
+    final responseData = jsonDecode(response.body);
+
+    return responseData;
+  }
 }

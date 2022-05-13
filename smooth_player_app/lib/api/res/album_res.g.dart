@@ -9,13 +9,15 @@ part of 'album_res.dart';
 Album _$AlbumFromJson(Map<String, dynamic> json) => Album(
       id: json['_id'] as String?,
       title: json['title'] as String?,
-      artist: json['artist'] as String?,
+      artist: json['artist'] == null
+          ? null
+          : Artist.fromJson(json['artist'] as Map<String, dynamic>),
       album_image: json['album_image'] as String?,
     );
 
 Map<String, dynamic> _$AlbumToJson(Album instance) => <String, dynamic>{
       '_id': instance.id,
       'title': instance.title,
-      'artist': instance.artist,
+      'artist': instance.artist?.toJson(),
       'album_image': instance.album_image,
     };

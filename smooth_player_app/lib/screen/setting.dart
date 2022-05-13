@@ -32,6 +32,7 @@ class _SettingState extends State<Setting> {
           IconButton(
             onPressed: () {
               LogStatus().removeToken();
+              LogStatus.token = "";
               Navigator.pushNamedAndRemoveUntil(
                 context,
                 "login",

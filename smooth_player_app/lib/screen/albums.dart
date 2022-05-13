@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:smooth_player_app/colors.dart';
 import 'package:smooth_player_app/screen/upload/upload_album_song.dart';
 
@@ -28,8 +29,9 @@ class AlbumView extends StatefulWidget {
 
 class _AlbumViewState extends State<AlbumView> {
   Song? song = Player.playingSong;
-  final songUrl = ApiUrls.songCoverUrl;
-  final albumUrl = ApiUrls.albumUrl;
+  final coverImage = ApiUrls.coverImageUrl;
+
+  late Future<List<Song>> albumSongs;
 
   late List<Song> songs;
 
@@ -47,11 +49,15 @@ class _AlbumViewState extends State<AlbumView> {
         songs = value;
       });
     });
+
+    albumSongs = SongHttp().getSongs(widget.albumId!);
   }
 
   @override
   Widget build(BuildContext context) {
     final sWidth = MediaQuery.of(context).size.width;
+    final sHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -81,12 +87,25 @@ class _AlbumViewState extends State<AlbumView> {
                     ],
                   ),
                 ),
-                ClipRRect(
-                  child: Image(
-                    width: sWidth * .75,
-                    fit: BoxFit.cover,
-                    image: NetworkImage(
-                      albumUrl + widget.album_image!,
+                Container(
+                  decoration: BoxDecoration(
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.black26,
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                      )
+                    ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(5),
+                    child: Image(
+                      width: sWidth * .75,
+                      height: sHeight * .3,
+                      fit: BoxFit.cover,
+                      image: NetworkImage(
+                        coverImage + widget.album_image!,
+                      ),
                     ),
                   ),
                 ),
@@ -103,7 +122,7 @@ class _AlbumViewState extends State<AlbumView> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(
-                    width: sWidth * .35,
+                    width: sWidth * .5,
                     child: Text(
                       widget.title!,
                       overflow: TextOverflow.fade,
@@ -124,7 +143,10 @@ class _AlbumViewState extends State<AlbumView> {
                             albumId: widget.albumId!,
                             title: widget.title,
                             album_image: widget.album_image,
-                            pageIndex: widget.pageIndex,),),);
+                            pageIndex: widget.pageIndex,
+                          ),
+                        ),
+                      );
                     },
                     child: Icon(
                       Icons.upload_rounded,
@@ -132,6 +154,8 @@ class _AlbumViewState extends State<AlbumView> {
                       size: 30,
                     ),
                     style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.all(5),
+                      minimumSize: Size.zero,
                       primary: AppColors.primary,
                       elevation: 10,
                       shadowColor: Colors.black,
@@ -148,9 +172,10 @@ class _AlbumViewState extends State<AlbumView> {
                 top: 20,
                 left: sWidth * 0.05,
                 right: sWidth * 0.05,
+                bottom: 80,
               ),
               child: FutureBuilder<List<Song>>(
-                future: viewSongs(),
+                future: albumSongs,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     return ListView.builder(
@@ -177,93 +202,227 @@ class _AlbumViewState extends State<AlbumView> {
                                 song = newSong;
                               });
                             },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            child: Stack(
+                              alignment: Alignment.centerLeft,
                               children: [
-                                Row(
-                                  children: [
-                                    Text("${index + 1}"),
-                                    SizedBox(
-                                      width: 20,
-                                    ),
-                                    Container(
-                                      width: 50,
-                                      height: 50,
-                                      decoration: BoxDecoration(
-                                        boxShadow: const [
-                                          BoxShadow(
-                                            color: Colors.black26,
-                                            spreadRadius: 1,
-                                            blurRadius: 5,
-                                            offset: Offset(2, 2),
+                                Player.playingSong != null
+                                    ? Player.playingSong!.id ==
+                                            snapshot.data![index].id!
+                                        ? Icon(
+                                            Icons.bar_chart_rounded,
+                                            color: AppColors.primary,
                                           )
-                                        ],
+                                        : Text(
+                                            "${index + 1}",
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                            ),
+                                          )
+                                    : Text(
+                                        "${index + 1}",
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                        ),
                                       ),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(10),
-                                        child: Image(
-                                          fit: BoxFit.cover,
-                                          image: NetworkImage(
-                                            songUrl +
-                                                snapshot
-                                                    .data![index].cover_image!,
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                          width: 40,
+                                        ),
+                                        Container(
+                                          width: 50,
+                                          height: 50,
+                                          decoration: BoxDecoration(
+                                            boxShadow: const [
+                                              BoxShadow(
+                                                color: Colors.black26,
+                                                spreadRadius: 1,
+                                                blurRadius: 5,
+                                                offset: Offset(2, 2),
+                                              )
+                                            ],
+                                          ),
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            child: Image(
+                                              fit: BoxFit.cover,
+                                              image: NetworkImage(
+                                                coverImage +
+                                                    snapshot.data![index]
+                                                        .cover_image!,
+                                              ),
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 20,
-                                    ),
-                                    SizedBox(
-                                      width: sWidth * .35,
-                                      child: Text(
-                                        snapshot.data![index].title!,
-                                        overflow: TextOverflow.fade,
-                                        softWrap: false,
-                                        style: TextStyle(
-                                          color: Colors.black,
+                                        SizedBox(
+                                          width: 20,
                                         ),
+                                        SizedBox(
+                                          width: sWidth * .35,
+                                          child: Text(
+                                            snapshot.data![index].title!,
+                                            overflow: TextOverflow.fade,
+                                            softWrap: false,
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                              color: Player.playingSong != null
+                                                  ? Player.playingSong!.id ==
+                                                          snapshot
+                                                              .data![index].id!
+                                                      ? AppColors.primary
+                                                      : Colors.black
+                                                  : Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.favorite,
+                                          color:
+                                              Color.fromARGB(255, 221, 14, 14),
+                                        ),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        Text(
+                                          snapshot.data![index].like!
+                                              .toString(),
+                                          overflow: TextOverflow.fade,
+                                          softWrap: false,
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    IconButton(
+                                      constraints: BoxConstraints(),
+                                      padding: EdgeInsets.zero,
+                                      onPressed: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (ctx) => SimpleDialog(
+                                            children: [
+                                              SimpleDialogOption(
+                                                padding: EdgeInsets.symmetric(
+                                                  horizontal: 75,
+                                                ),
+                                                child: ElevatedButton(
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    primary: AppColors.primary,
+                                                    elevation: 10,
+                                                    shadowColor: Colors.black,
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              15),
+                                                    ),
+                                                  ),
+                                                  onPressed: () {
+                                                    Navigator.of(ctx).pop();
+
+                                                    // Player.songQueue.add(
+                                                    //   Song(
+                                                    //     id: snapshot
+                                                    //         .data![index].id!,
+                                                    //     title: snapshot
+                                                    //         .data![index]
+                                                    //         .title!,
+                                                    //     album: snapshot
+                                                    //         .data![index]
+                                                    //         .album!,
+                                                    //     music_file: snapshot
+                                                    //         .data![index]
+                                                    //         .music_file!,
+                                                    //     cover_image: snapshot
+                                                    //         .data![index]
+                                                    //         .cover_image!,
+                                                    //     like: snapshot
+                                                    //         .data![index].like!,
+                                                    //   ),
+                                                    // );
+                                                    // Fluttertoast.showToast(
+                                                    //   msg: snapshot.data![index]
+                                                    //           .title! +
+                                                    //       " is added to the queue.",
+                                                    //   toastLength:
+                                                    //       Toast.LENGTH_SHORT,
+                                                    //   gravity:
+                                                    //       ToastGravity.BOTTOM,
+                                                    //   timeInSecForIosWeb: 3,
+                                                    // );
+                                                  },
+                                                  child: Text("Add to queue"),
+                                                ),
+                                              ),
+                                              SimpleDialogOption(
+                                                padding: EdgeInsets.symmetric(
+                                                  horizontal: 75,
+                                                ),
+                                                child: ElevatedButton(
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    primary: Colors.red,
+                                                    elevation: 10,
+                                                    shadowColor: Colors.black,
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              15),
+                                                    ),
+                                                  ),
+                                                  onPressed: () async {
+                                                    await SongHttp().deleteSong(
+                                                        snapshot
+                                                            .data![index].id!);
+
+                                                    Navigator.pop(context);
+
+                                                    setState(() {
+                                                      albumSongs = SongHttp()
+                                                          .getSongs(
+                                                              widget.albumId!);
+                                                    });
+
+                                                    Fluttertoast.showToast(
+                                                      msg: snapshot.data![index]
+                                                              .title! +
+                                                          " song has been deleted",
+                                                      toastLength:
+                                                          Toast.LENGTH_SHORT,
+                                                      gravity:
+                                                          ToastGravity.BOTTOM,
+                                                      timeInSecForIosWeb: 3,
+                                                      backgroundColor:
+                                                          Colors.red,
+                                                      textColor: Colors.white,
+                                                      fontSize: 16.0,
+                                                    );
+                                                  },
+                                                  child: Text("Delete"),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                      icon: Icon(
+                                        Icons.more_vert,
                                       ),
                                     ),
                                   ],
-                                ),
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.favorite,
-                                      color: Color.fromARGB(255, 221, 14, 14),
-                                    ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Text(
-                                      snapshot.data![index].like!.toString(),
-                                      overflow: TextOverflow.fade,
-                                      softWrap: false,
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                IconButton(
-                                  constraints: BoxConstraints(),
-                                  padding: EdgeInsets.zero,
-                                  onPressed: () {
-                                    Player.songQueue.add(Song(
-                                      id: snapshot.data![index].id!,
-                                      title: snapshot.data![index].title!,
-                                      album: snapshot.data![index].album!,
-                                      music_file:
-                                          snapshot.data![index].music_file!,
-                                      cover_image:
-                                          snapshot.data![index].cover_image!,
-                                      like: snapshot.data![index].like!,
-                                    ));
-                                  },
-                                  icon: Icon(
-                                    Icons.more_vert,
-                                  ),
                                 ),
                               ],
                             ),
