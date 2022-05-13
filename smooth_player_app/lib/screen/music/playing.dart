@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:smooth_player_app/colors.dart';
 
+import '../../api/urls.dart';
 import '../../player.dart';
 import 'queue.dart';
 
@@ -15,6 +17,7 @@ class PlayingSong extends StatefulWidget {
 
 class _PlayingSongState extends State<PlayingSong> {
   final AudioPlayer player = Player.player;
+  final coverImage = ApiUrls.coverImageUrl;
 
   late StreamSubscription stateSub, durationSub, positionSub, completionSub;
 
@@ -66,13 +69,27 @@ class _PlayingSongState extends State<PlayingSong> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 IconButton(
-                  icon: Icon(Icons.keyboard_arrow_down),
+                  icon: Icon(
+                    Icons.keyboard_arrow_down,
+                    size: 30,
+                  ),
                   onPressed: () {
                     Navigator.pop(context);
                   },
                 ),
+                Text(
+                  Player.playingSong!.album!.title!,
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 IconButton(
-                  icon: Icon(Icons.queue_music_rounded),
+                  icon: Icon(
+                    Icons.queue_music_rounded,
+                    color: AppColors.primary,
+                    size: 30,
+                  ),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -89,17 +106,7 @@ class _PlayingSongState extends State<PlayingSong> {
                 horizontal: sWidth * .06,
               ),
               child: Container(
-                height: sHeight * .6,
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: const [
-                      Color(0XFF36D1DC),
-                      Color(0XFF5B86E5),
-                    ],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                  ),
-                  borderRadius: BorderRadius.circular(10),
                   boxShadow: const [
                     BoxShadow(
                       color: Colors.black38,
@@ -108,6 +115,17 @@ class _PlayingSongState extends State<PlayingSong> {
                       offset: Offset(2, 2),
                     )
                   ],
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image(
+                    height: sHeight * .6,
+                    width: sWidth * .94,
+                    fit: BoxFit.cover,
+                    image: NetworkImage(
+                      coverImage + Player.playingSong!.cover_image!,
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -137,7 +155,7 @@ class _PlayingSongState extends State<PlayingSong> {
                               ),
                             ),
                             Text(
-                              Player.playingSong!.album!.title!,
+                              Player.playingSong!.album!.artist!.profile_name!,
                               overflow: TextOverflow.fade,
                               softWrap: false,
                               style: TextStyle(
@@ -162,6 +180,9 @@ class _PlayingSongState extends State<PlayingSong> {
                       ),
                     ],
                   ),
+                ),
+                SizedBox(
+                  height: 10,
                 ),
                 SizedBox(
                   height: 20,
@@ -195,6 +216,9 @@ class _PlayingSongState extends State<PlayingSong> {
                           : Player.duration.toString().split(".")[0]),
                     ],
                   ),
+                ),
+                SizedBox(
+                  height: 10,
                 ),
                 Padding(
                   padding: EdgeInsets.only(
@@ -237,7 +261,7 @@ class _PlayingSongState extends State<PlayingSong> {
                         children: [
                           TextButton(
                             onPressed: () {
-                              Player().previousSong();
+                              // Player().previousSong();
                             },
                             style: TextButton.styleFrom(
                               padding: EdgeInsets.zero,
@@ -247,45 +271,91 @@ class _PlayingSongState extends State<PlayingSong> {
                             child: Icon(
                               Icons.skip_previous,
                               size: 40,
-                              color: Colors.black,
+                              color: AppColors.primary,
                             ),
                           ),
                           Player.isPaused
-                              ? TextButton(
-                                  onPressed: () {
+                              ? GestureDetector(
+                                  onTap: () {
                                     Player().resumeSong();
                                   },
-                                  style: TextButton.styleFrom(
-                                    padding: EdgeInsets.zero,
-                                    minimumSize: Size.zero,
-                                    tapTargetSize:
-                                        MaterialTapTargetSize.shrinkWrap,
-                                  ),
-                                  child: Icon(
-                                    Icons.play_circle_fill_sharp,
-                                    size: 60,
-                                    color: Colors.black,
+                                  child: Stack(
+                                    alignment: Alignment.center,
+                                    children: [
+                                      Container(
+                                        height: 50,
+                                        width: 50,
+                                        decoration: BoxDecoration(
+                                          gradient: LinearGradient(
+                                            colors: const [
+                                              Color(0XFF36D1DC),
+                                              Color(0XFF5B86E5),
+                                            ],
+                                            begin: Alignment.topCenter,
+                                            end: Alignment.bottomCenter,
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(25),
+                                          boxShadow: const [
+                                            BoxShadow(
+                                              color: Colors.black38,
+                                              spreadRadius: 1,
+                                              blurRadius: 5,
+                                              offset: Offset(2, 2),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      Icon(
+                                        Icons.play_arrow_rounded,
+                                        size: 40,
+                                        color: Colors.white,
+                                      ),
+                                    ],
                                   ),
                                 )
-                              : TextButton(
-                                  onPressed: () {
+                              : GestureDetector(
+                                  onTap: () {
                                     Player().pauseSong();
                                   },
-                                  style: TextButton.styleFrom(
-                                    padding: EdgeInsets.zero,
-                                    minimumSize: Size.zero,
-                                    tapTargetSize:
-                                        MaterialTapTargetSize.shrinkWrap,
-                                  ),
-                                  child: Icon(
-                                    Icons.pause_circle_filled_rounded,
-                                    size: 60,
-                                    color: Colors.black,
+                                  child: Stack(
+                                    alignment: Alignment.center,
+                                    children: [
+                                      Container(
+                                        height: 50,
+                                        width: 50,
+                                        decoration: BoxDecoration(
+                                          gradient: LinearGradient(
+                                            colors: const [
+                                              Color(0XFF36D1DC),
+                                              Color(0XFF5B86E5),
+                                            ],
+                                            begin: Alignment.topCenter,
+                                            end: Alignment.bottomCenter,
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(25),
+                                          boxShadow: const [
+                                            BoxShadow(
+                                              color: Colors.black38,
+                                              spreadRadius: 1,
+                                              blurRadius: 5,
+                                              offset: Offset(2, 2),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      Icon(
+                                        Icons.pause,
+                                        size: 40,
+                                        color: Colors.white,
+                                      ),
+                                    ],
                                   ),
                                 ),
                           TextButton(
                             onPressed: () {
-                              Player().nextSong();
+                              // Player().nextSong();
                             },
                             style: TextButton.styleFrom(
                               padding: EdgeInsets.zero,
@@ -295,7 +365,7 @@ class _PlayingSongState extends State<PlayingSong> {
                             child: Icon(
                               Icons.skip_next,
                               size: 40,
-                              color: Colors.black,
+                              color: AppColors.primary,
                             ),
                           ),
                         ],

@@ -289,7 +289,19 @@ class Player {
     int result = await player.stop();
     if (result == 1) {
       isPlaying = false;
+      isPaused = false;
+      isShuffle = false;
+      playingFromQueue = false;
+      isLoop = 0;
+      duration = Duration.zero;
+      position = Duration.zero;
       playingSong = null;
+
+      songsList = [];
+      prevSongs.clear();
+      currentSong.clear();
+      nextSongs.clear();
+      songQueue.clear();
     }
   }
 }

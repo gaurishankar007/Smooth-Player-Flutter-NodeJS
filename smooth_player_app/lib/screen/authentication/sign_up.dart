@@ -10,7 +10,6 @@ import 'package:smooth_player_app/api/http/authentication/signup_http.dart';
 import 'package:smooth_player_app/api/model/user_model.dart';
 
 import '../../colors.dart';
-import '../home.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -100,23 +99,43 @@ class _SignUpState extends State<SignUp> {
                 ),
                 Stack(alignment: Alignment.center, children: [
                   _image == null
-                      ? CircleAvatar(
-                          radius: 80,
-                          backgroundColor: AppColors.primary,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              _pickProfileImg();
-                            },
-                            child: Icon(Icons.upload, size: 50),
-                            style: ElevatedButton.styleFrom(
-                              primary: AppColors.primary,
-                              elevation: 10,
-                              shadowColor: Colors.black,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
+                      ? Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Container(
+                              height: 160,
+                              width: 160,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: const [
+                                    Color(0XFF36D1DC),
+                                    Color(0XFF5B86E5),
+                                  ],
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                ),
+                                borderRadius: BorderRadius.circular(80),
+                                boxShadow: const [
+                                  BoxShadow(
+                                    color: Colors.black38,
+                                    spreadRadius: 1,
+                                    blurRadius: 5,
+                                    offset: Offset(2, 2),
+                                  )
+                                ],
+                              ),
+                              child: TextButton(
+                                onPressed: () {
+                                  _pickProfileImg();
+                                },
+                                child: Icon(
+                                  Icons.upload,
+                                  color: Colors.white,
+                                  size: 50,
+                                ),
                               ),
                             ),
-                          ),
+                          ],
                         )
                       : CircleAvatar(
                           radius: 80,

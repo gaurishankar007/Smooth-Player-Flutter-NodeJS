@@ -4,6 +4,8 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 
 import '../../api/res/song_res.dart';
+import '../../api/urls.dart';
+import '../../colors.dart';
 import '../../player.dart';
 
 class SongQueue extends StatefulWidget {
@@ -17,6 +19,7 @@ class SongQueue extends StatefulWidget {
 
 class _SongQueueState extends State<SongQueue> {
   final AudioPlayer player = Player.player;
+  final coverImage = ApiUrls.coverImageUrl;
   Song? song = Player.playingSong;
 
   List<Song> nextSongs = Player.nextSongs.toList();
@@ -36,7 +39,7 @@ class _SongQueueState extends State<SongQueue> {
     });
 
     completionSub = player.onPlayerCompletion.listen((state) {
-      Player().autoNextSong();
+      // Player().autoNextSong();
     });
   }
 
@@ -76,6 +79,7 @@ class _SongQueueState extends State<SongQueue> {
               Text(
                 "Now Playing",
                 style: TextStyle(
+                  fontSize: 17,
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
                 ),
@@ -88,12 +92,34 @@ class _SongQueueState extends State<SongQueue> {
                 children: [
                   Row(
                     children: [
+                      Icon(
+                        Icons.bar_chart_rounded,
+                        color: AppColors.primary,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
                       Container(
                         width: 50,
                         height: 50,
                         decoration: BoxDecoration(
-                          color: Color(0XFF5B86E5),
-                          borderRadius: BorderRadius.circular(8),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.black26,
+                              spreadRadius: 1,
+                              blurRadius: 5,
+                              offset: Offset(2, 2),
+                            )
+                          ],
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(5),
+                          child: Image(
+                            fit: BoxFit.cover,
+                            image: NetworkImage(
+                              coverImage + song!.cover_image!,
+                            ),
+                          ),
                         ),
                       ),
                       SizedBox(
@@ -109,16 +135,20 @@ class _SongQueueState extends State<SongQueue> {
                               overflow: TextOverflow.fade,
                               softWrap: false,
                               style: TextStyle(
-                                color: Colors.black,
+                                fontSize: 15,
+                                color: AppColors.primary,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
+                            SizedBox(
+                              height: 5,
+                            ),
                             Text(
-                              song!.album!.title!,
+                              song!.album!.artist!.profile_name!,
                               overflow: TextOverflow.fade,
                               softWrap: false,
                               style: TextStyle(
-                                color: Colors.black,
+                                color: AppColors.primary,
                               ),
                             ),
                           ],
@@ -150,26 +180,29 @@ class _SongQueueState extends State<SongQueue> {
                             Text(
                               "Next in Queue",
                               style: TextStyle(
+                                fontSize: 17,
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            IconButton(
+                            ElevatedButton(
                               onPressed: () {
                                 setState(() {
                                   Player.songQueue.clear();
                                   songQueue = [];
                                 });
                               },
-                              icon: Icon(
-                                Icons.delete,
-                                color: Colors.red,
+                              child: Text("Clear"),
+                              style: ElevatedButton.styleFrom(
+                                primary: AppColors.primary,
+                                elevation: 10,
+                                shadowColor: Colors.black,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
                               ),
                             ),
                           ],
-                        ),
-                        SizedBox(
-                          height: 10,
                         ),
                         ListView.builder(
                           physics: NeverScrollableScrollPhysics(),
@@ -190,9 +223,25 @@ class _SongQueueState extends State<SongQueue> {
                                         width: 50,
                                         height: 50,
                                         decoration: BoxDecoration(
-                                          color: Color(0XFF5B86E5),
+                                          boxShadow: const [
+                                            BoxShadow(
+                                              color: Colors.black26,
+                                              spreadRadius: 1,
+                                              blurRadius: 5,
+                                              offset: Offset(2, 2),
+                                            )
+                                          ],
+                                        ),
+                                        child: ClipRRect(
                                           borderRadius:
-                                              BorderRadius.circular(8),
+                                              BorderRadius.circular(5),
+                                          child: Image(
+                                            fit: BoxFit.cover,
+                                            image: NetworkImage(
+                                              coverImage +
+                                                  songQueue[index].cover_image!,
+                                            ),
+                                          ),
                                         ),
                                       ),
                                       SizedBox(
@@ -213,8 +262,14 @@ class _SongQueueState extends State<SongQueue> {
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
+                                            SizedBox(
+                                              height: 5,
+                                            ),
                                             Text(
-                                              songQueue[index].album!.title!,
+                                              songQueue[index]
+                                                  .album!
+                                                  .artist!
+                                                  .profile_name!,
                                               overflow: TextOverflow.fade,
                                               softWrap: false,
                                               style: TextStyle(
@@ -254,11 +309,12 @@ class _SongQueueState extends State<SongQueue> {
                       height: 0,
                     ),
               SizedBox(
-                height: 25,
+                height: 30,
               ),
               Text(
                 "Next From: " + song!.album!.title!,
                 style: TextStyle(
+                  fontSize: 17,
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
                 ),
@@ -284,8 +340,23 @@ class _SongQueueState extends State<SongQueue> {
                               width: 50,
                               height: 50,
                               decoration: BoxDecoration(
-                                color: Color(0XFF5B86E5),
-                                borderRadius: BorderRadius.circular(8),
+                                boxShadow: const [
+                                  BoxShadow(
+                                    color: Colors.black26,
+                                    spreadRadius: 1,
+                                    blurRadius: 5,
+                                    offset: Offset(2, 2),
+                                  )
+                                ],
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(5),
+                                child: Image(
+                                  fit: BoxFit.cover,
+                                  image: NetworkImage(
+                                    coverImage + nextSongs[index].cover_image!,
+                                  ),
+                                ),
                               ),
                             ),
                             SizedBox(
@@ -305,8 +376,14 @@ class _SongQueueState extends State<SongQueue> {
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
                                   Text(
-                                    nextSongs[index].album!.title!,
+                                    nextSongs[index]
+                                        .album!
+                                        .artist!
+                                        .profile_name!,
                                     overflow: TextOverflow.fade,
                                     softWrap: false,
                                     style: TextStyle(

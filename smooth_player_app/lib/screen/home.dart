@@ -1,8 +1,13 @@
+import 'dart:async';
+
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_player_app/screen/setting.dart';
 import 'package:smooth_player_app/widget/navigator.dart';
 
 import '../colors.dart';
+import '../player.dart';
+import '../widget/song_bar.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -12,8 +17,13 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final AudioPlayer player = Player.player;
   int curTime = DateTime.now().hour;
   String greeting = "Smooth Player";
+
+  late StreamSubscription stateSub;
+
+  bool songBarVisibility = Player.isPlaying;
 
   @override
   void initState() {
@@ -25,6 +35,18 @@ class _HomeState extends State<Home> {
     } else {
       greeting = "Good Evening";
     }
+
+    stateSub = player.onPlayerStateChanged.listen((state) {
+      setState(() {
+        songBarVisibility = Player.isPlaying;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    stateSub.cancel();
   }
 
   @override
@@ -77,6 +99,13 @@ class _HomeState extends State<Home> {
           ),
         ),
       ),
+      floatingActionButton: songBarVisibility
+          ? SongBar(
+              songData: Player.playingSong,
+            )
+          : null,
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.miniCenterFloat,
       bottomNavigationBar: PageNavigator(pageIndex: 0),
     );
   }

@@ -7,7 +7,7 @@ const song = require('../model/songModel');
 const mongoose = require('mongoose');
 const fs = require("fs");
 
-router.post("/upload/albumSong",auth.verifyUser, musicFile.array('song_file', 2), function(req, res){
+router.post("/upload/albumSong", auth.verifyUser, musicFile.array('song_file', 2), function(req, res){
     if(req.files.length==0) {
         res.status(400).send({resM: "Unsupported file format."});
         return;
@@ -21,9 +21,9 @@ router.post("/upload/albumSong",auth.verifyUser, musicFile.array('song_file', 2)
     var cover_image = "";
 
     for(i=0; i<req.files.length; i++) {
-        if(req.files[i].filename.split(".")[1] == "png" || req.files[i].filename.split(".")[1] == "jpeg" || req.files[i].filename.split(".")[1] == "jpg")  {            
+        if(req.files[i].filename.split(".").pop() === "png" || req.files[i].filename.split(".").pop() === "jpeg" || req.files[i].filename.split(".").pop() === "jpg")  { 
             cover_image=req.files[i].filename;
-        } else if(req.files[i].filename.split(".")[1] == "mp3" || req.files[i].filename.split(".")[1] == "mp4") {
+        } else if(req.files[i].filename.split(".").pop() === "mp3" || req.files[i].filename.split(".").pop() === "mp4") {
             music_file=req.files[i].filename;
         }
     }
@@ -54,14 +54,12 @@ router.post("/upload/singleSong", auth.verifyUser, musicFile.array('song_file', 
     var cover_image = "";
 
     for(i=0; i<req.files.length; i++) {
-        if(req.files[i].mimetype == "image/png" || req.files[i].mimetype == "image/jpeg") {            
+        if(req.files[i].filename.split(".").pop() === "png" || req.files[i].filename.split(".").pop() === "jpeg" || req.files[i].filename.split(".").pop() === "jpg")  { 
             cover_image=req.files[i].filename;
-        } else if(req.files[i].mimetype == "audio/mpeg" || req.files[i].mimetype=="audio/mp4") {
+        } else if(req.files[i].filename.split(".").pop() === "mp3" || req.files[i].filename.split(".").pop() === "mp4") {
             music_file=req.files[i].filename;
         }
     }
-
-    const title = req.body.title;
 
     const newAlbum = await album.create({
         title: req.body.title,
@@ -83,19 +81,25 @@ router.post("/upload/singleSong", auth.verifyUser, musicFile.array('song_file', 
 
 router.post("/view/song", auth.verifyUser, async (req, res)=> {
     const songs = await song.find({album: req.body.albumId}).populate("album");
-    res.send(songs);
+    const songs1 = await song.populate(songs, {
+        path: "album.artist",
+        select: "profile_name"
+    });
+    res.send(songs1);
 });
 
 router.delete("/delete/song", auth.verifyUser, (req, res)=> {
     song.findOne({_id: req.body.songId}).then((songData)=>{
-        fs.unlinkSync(`../smooth_player_api/upload/image/song/${songData.cover_image}`);
-        fs.unlinkSync(`../smooth_player_api/upload/music/${songData.music_file}`);
-        song.findByIdAndDelete(songData._id).then(()=> {
-            res.send({resM: "songs has been deleted."});
-        });
-        
-    })
-    
+        album.findOne({_id: songData.album}).then((albumData)=> {
+            if(songData.cover_image!==albumData.album_image) {
+                fs.unlinkSync(`../smooth_player_api/upload/image/album_song/${songData.cover_image}`);
+            }
+            fs.unlinkSync(`../smooth_player_api/upload/music/${songData.music_file}`);
+            song.findByIdAndDelete(songData._id).then(()=> {
+                res.send({resM: "song deleted."});
+            });   
+        });     
+    });
 });
 
 module.exports = router;

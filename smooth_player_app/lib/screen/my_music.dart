@@ -25,13 +25,13 @@ class MyMusic extends StatefulWidget {
 
 class _MyMusicState extends State<MyMusic> {
   final AudioPlayer player = Player.player;
-  final albumUrl = ApiUrls.albumUrl;
+  final coverImage = ApiUrls.coverImageUrl;
 
   late Future<List<Album>> albums;
 
   late StreamSubscription stateSub;
 
-  bool songBarVisibility = false;
+  bool songBarVisibility = Player.isPlaying;
 
   @override
   void initState() {
@@ -80,7 +80,6 @@ class _MyMusicState extends State<MyMusic> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      // key: Key("ButtonAddAlbum"),
                       onPressed: () {
                         Navigator.push(
                             context,
@@ -103,7 +102,6 @@ class _MyMusicState extends State<MyMusic> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      // key: Key("dsklfj"),
                       onPressed: () {
                         Navigator.push(
                             context,
@@ -132,7 +130,7 @@ class _MyMusicState extends State<MyMusic> {
                         top: sHeight * .01,
                         left: sWidth * .03,
                         right: sWidth * .03,
-                        bottom: 20,
+                        bottom: 80,
                       ),
                       physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
@@ -143,27 +141,26 @@ class _MyMusicState extends State<MyMusic> {
                         (index) {
                           return GestureDetector(
                             onLongPress: () {
-                              // shoswDialog(context: context, builder: (builder)=> );
                               showDialog(
                                 context: context,
                                 builder: (ctx) => AlertDialog(
-                                  title: Text("Alert Dialog Box"),
+                                  title: Text(snapshot.data![index].title!),
                                   content: Text(
-                                      "You have raised a Alert Dialog Box"),
+                                      "Are you sure you want to delete this album?"),
                                   actions: <Widget>[
                                     ElevatedButton(
                                       style: ElevatedButton.styleFrom(
-                                        primary: AppColors.primary,
+                                        primary: Colors.red,
                                         elevation: 10,
                                         shadowColor: Colors.black,
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
-                                              BorderRadius.circular(8),
+                                              BorderRadius.circular(15),
                                         ),
                                       ),
                                       onPressed: () async {
                                         await AlbumHttp().deleteAlbum(
-                                            snapshot.data![index].id);
+                                            snapshot.data![index].id!);
                                         Navigator.pop(context);
                                         setState(() {
                                           albums = AlbumHttp().getAlbums();
@@ -174,8 +171,7 @@ class _MyMusicState extends State<MyMusic> {
                                           toastLength: Toast.LENGTH_SHORT,
                                           gravity: ToastGravity.BOTTOM,
                                           timeInSecForIosWeb: 3,
-                                          backgroundColor:
-                                              Color.fromARGB(255, 54, 244, 54),
+                                          backgroundColor: Colors.red,
                                           textColor: Colors.white,
                                           fontSize: 16.0,
                                         );
@@ -189,13 +185,13 @@ class _MyMusicState extends State<MyMusic> {
                                         shadowColor: Colors.black,
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
-                                              BorderRadius.circular(8),
+                                              BorderRadius.circular(15),
                                         ),
                                       ),
                                       onPressed: () {
                                         Navigator.of(ctx).pop();
                                       },
-                                      child: Text("no"),
+                                      child: Text("Cancel"),
                                     ),
                                   ],
                                 ),
@@ -215,45 +211,60 @@ class _MyMusicState extends State<MyMusic> {
                                 ),
                               );
                             },
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      boxShadow: const [
-                                        BoxShadow(
-                                          color: Colors.black26,
-                                          spreadRadius: 1,
-                                          blurRadius: 5,
-                                          offset: Offset(2, 2),
-                                        )
-                                      ],
-                                    ),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(10),
-                                      child: Image(
-                                        height: sHeight * 0.2,
-                                        width: sWidth * 0.44,
-
-                                        fit: BoxFit.cover,
-                                        image: NetworkImage(
-                                          albumUrl +
-                                              snapshot
-                                                  .data![index].album_image!,
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        boxShadow: const [
+                                          BoxShadow(
+                                            color: Colors.black26,
+                                            spreadRadius: 1,
+                                            blurRadius: 5,
+                                            offset: Offset(2, 2),
+                                          )
+                                        ],
+                                      ),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: Image(
+                                          height: sHeight * 0.2,
+                                          width: sWidth * 0.44,
+                                          fit: BoxFit.cover,
+                                          image: NetworkImage(
+                                            coverImage +
+                                                snapshot
+                                                    .data![index].album_image!,
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text(
-                                    snapshot.data![index].title!,
-                                    style: TextStyle(
-                                      color: Color.fromARGB(255, 27, 11, 11),
+                                    SizedBox(
+                                      height: 10,
                                     ),
-                                  ),
-                                ]),
+                                    Text(
+                                      snapshot.data![index].title!,
+                                      style: TextStyle(
+                                        color: Color.fromARGB(255, 27, 11, 11),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Player.playingSong != null
+                                    ? Player.playingSong!.album!.id ==
+                                            snapshot.data![index].id
+                                        ? Icon(
+                                            Icons.bar_chart_rounded,
+                                            color: AppColors.primary,
+                                            size: 80,
+                                          )
+                                        : SizedBox()
+                                    : SizedBox(),
+                              ],
+                            ),
                           );
                         },
                       ),
