@@ -160,6 +160,7 @@ class _UploadSongState extends State<UploadSong> {
                   height: screenHight * .040,
                 ),
                 TextFormField(
+                  key: ValueKey("song_title"),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return "Song title is required";
