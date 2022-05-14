@@ -139,6 +139,7 @@ class _UploadAlbumState extends State<UploadAlbum> {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(
+                      key: ValueKey("album_title"),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return "Album name is required";
