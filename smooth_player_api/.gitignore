@@ -1,7 +1,3 @@
 /node_modules
 package-lock.json
-/upload/music/
-/upload/image/album/
-/upload/image/song/
-/upload/image/user/
-/upload/image/album_song/
+/upload/
