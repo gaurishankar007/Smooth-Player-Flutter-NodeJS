@@ -12,7 +12,7 @@ void main() {
     final confirmPwTxt = find.byKey(ValueKey("confirm_password"));
 
     // Executing the actual test
-    await tester.pumpWidget(MaterialApp(home: Signup()));
+    await tester.pumpWidget(MaterialApp(home: SignUp()));
     await tester.enterText(emailTxt, "nishan@gmail.com");
     await tester.enterText(usernameTxt, "nishan");
     await tester.enterText(profileNameTxt, "nrb");
