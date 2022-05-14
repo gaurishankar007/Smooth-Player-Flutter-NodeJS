@@ -132,6 +132,7 @@ class _SignupState extends State<Signup> {
                   height: 20,
                 ),
                 TextFormField(
+                  key: Key("username"),
                   onSaved: (value) {
                     username = value!.trim();
                   },
@@ -155,6 +156,7 @@ class _SignupState extends State<Signup> {
                   height: 20,
                 ),
                 TextFormField(
+                  key: Key("email"),
                   onSaved: (value) {
                     email = value!;
                   },
@@ -178,6 +180,7 @@ class _SignupState extends State<Signup> {
                   height: 20,
                 ),
                 TextFormField(
+                  key: Key("profile_name"),
                   onSaved: (value) {
                     profile_name = value!;
                   },
@@ -204,6 +207,7 @@ class _SignupState extends State<Signup> {
                   alignment: Alignment.centerRight,
                   children: [
                     TextFormField(
+                      key: Key("password"),
                       onSaved: (value) {
                         password = value!;
                       },
@@ -244,6 +248,7 @@ class _SignupState extends State<Signup> {
                   alignment: Alignment.centerRight,
                   children: [
                     TextFormField(
+                      key: Key("confirm_password"),
                       onSaved: (value) {
                         confirm_password = value!;
                       },
