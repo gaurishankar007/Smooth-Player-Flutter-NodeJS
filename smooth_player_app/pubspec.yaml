@@ -44,6 +44,7 @@ dependencies:
   build_runner: ^2.1.10
   audioplayers: ^0.20.1
   flutter_holo_date_picker: ^1.0.3
+  flutter_riverpod: ^1.0.3
   
 
 dev_dependencies:

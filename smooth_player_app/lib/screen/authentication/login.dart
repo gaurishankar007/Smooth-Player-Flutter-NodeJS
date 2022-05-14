@@ -96,6 +96,7 @@ class _LoginState extends State<Login> {
                       height: 5,
                     ),
                     TextFormField(
+                      key: Key("username_email"),
                       onSaved: (value) {
                         username_email = value!;
                       },
@@ -127,7 +128,7 @@ class _LoginState extends State<Login> {
                       alignment: Alignment.centerRight,
                       children: [
                         TextFormField(
-                          key: Key("PasswordLogin"),
+                          key: Key("password"),
                           onSaved: (value) {
                             password = value!.trim();
                           },
@@ -165,7 +166,6 @@ class _LoginState extends State<Login> {
                   height: 10,
                 ),
                 ElevatedButton(
-                  key: Key("ButtonLogin"),
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
@@ -222,6 +222,7 @@ class _LoginState extends State<Login> {
                   height: 25,
                 ),
                 ElevatedButton(
+                  key: Key("button"),
                   onPressed: () {
                     Navigator.pushNamed(context, "signUp");
                   },
