@@ -399,8 +399,8 @@ class _SignUpState extends State<SignUp> {
                 ),
                 TextFormField(
                   maxLines: 5,
-                  onSaved: (value) {
-                    biography = value!.trim();
+                  onChanged: (value) {
+                    biography = value.trim();
                   },
                   keyboardType: TextInputType.multiline,
                   textCapitalization: TextCapitalization.sentences,
@@ -409,6 +409,8 @@ class _SignUpState extends State<SignUp> {
                     filled: true,
                     fillColor: AppColors.form,
                     hintText: "Write about you.....",
+                    helperText: "Optional",
+                    helperStyle: TextStyle(color: Colors.black87),
                     enabledBorder: formBorder,
                     focusedBorder: formBorder,
                     errorBorder: formBorder,
@@ -438,7 +440,7 @@ class _SignUpState extends State<SignUp> {
                           timeInSecForIosWeb: 3,
                           backgroundColor: Colors.red,
                           textColor: Colors.white,
-                          msg: "Provide gender and birthdate also.",
+                          msg: "Provide gender and birth date also.",
                         );
                         return;
                       }
