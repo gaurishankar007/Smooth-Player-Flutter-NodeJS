@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import '../authentication/sign_up.dart';
+import 'package:smooth_player_app/screen/authentication/sign_up.dart';
 
 void main() {
-  testWidgets("signup form", (WidgetTester tester) async {
+  testWidgets("Sign Up form", (WidgetTester tester) async {
     // Finding the required widgets
     final emailTxt = find.byKey(ValueKey("email"));
     final usernameTxt = find.byKey(ValueKey("username"));
