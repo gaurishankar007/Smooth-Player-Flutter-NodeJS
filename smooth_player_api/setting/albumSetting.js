@@ -2,7 +2,7 @@ const multer = require("multer");
 
 const storageNavigation = multer.diskStorage({
     destination: function(req, file, cb) {
-        cb(null, "../smooth_player_api/upload/image/album");
+        cb(null, "../smooth_player_api/upload/image/album_song");
     },
     filename: function(req, file, cb) {
         cb(null, Date.now()+"_"+file.originalname);

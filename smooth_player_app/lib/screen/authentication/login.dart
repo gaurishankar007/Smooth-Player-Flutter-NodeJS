@@ -173,6 +173,7 @@ class _LoginState extends State<Login> {
                           await LoginHttp().login(username_email, password);
                       if (resData["statusCode"] == 202) {
                         LogStatus().setToken(resData["body"]["token"]);
+                        LogStatus.token = resData["body"]["token"];
                         Navigator.pushNamedAndRemoveUntil(
                           context,
                           "home",
@@ -223,7 +224,7 @@ class _LoginState extends State<Login> {
                 ElevatedButton(
                   key: Key("button"),
                   onPressed: () {
-                    Navigator.pushNamed(context, "signup");
+                    Navigator.pushNamed(context, "signUp");
                   },
                   child: Text(
                     "Create an account",

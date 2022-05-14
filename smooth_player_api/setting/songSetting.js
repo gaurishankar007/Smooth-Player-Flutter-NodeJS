@@ -2,9 +2,9 @@ const multer = require("multer");
 
 const storageNavigation = multer.diskStorage({
     destination: function(req, file, cb) {
-        if(file.mimetype == "image/png" || file.mimetype == "image/jpeg" || file.mimetype=="application/octet-stream" ) {            
-            cb(null, "../smooth_player_api/upload/image/song");
-        } else if(file.mimetype == "audio/mpeg" || file.mimetype=="audio/mp4") {
+        if(file.originalname.split(".").pop() == "png" || file.originalname.split(".").pop() == "jpeg" || file.originalname.split(".").pop() == "jpg")  { 
+            cb(null, "../smooth_player_api/upload/image/album_song");
+        } else if(file.originalname.split(".").pop() == "mp3" || file.originalname.split(".").pop() == "mp4") {
             cb(null, "../smooth_player_api/upload/music");
         }
     },
@@ -15,7 +15,7 @@ const storageNavigation = multer.diskStorage({
 
 
 const filter = function(req, file, cb) {
-    if(file.mimetype == "image/png" || file.mimetype=="image/jpeg" || file.mimetype == "audio/mpeg" || file.mimetype=="audio/mp4") {
+    if(file.mimetype == "image/png" || file.mimetype=="image/jpeg" || file.mimetype == "audio/mpeg" || file.mimetype=="audio/mp4" || file.mimetype=="application/octet-stream") {
         cb(null, true);
     }
     else {
