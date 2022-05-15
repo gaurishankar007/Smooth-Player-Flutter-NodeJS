@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smooth_player_app/screen/admin/featured_playlist.dart';
 import 'package:smooth_player_app/screen/authentication/login.dart';
 import 'package:smooth_player_app/screen/authentication/sign_up.dart';
 import 'package:smooth_player_app/screen/home.dart';
@@ -25,11 +26,17 @@ class _SmoothPlayerState extends State<SmoothPlayer> {
 
     LogStatus().getToken().then(
       (value) {
-        if (value.isNotEmpty) {
-          LogStatus.token = value;
-          setState(() {
-            initialPage = Home();
-          });
+        if (value["token"].isNotEmpty) {
+          LogStatus.token = value["token"];
+          if (value["admin"]) {
+            setState(() {
+              initialPage = FeaturedPlaylist();
+            });
+          } else {
+            setState(() {
+              initialPage = Home();
+            });
+          }
         }
       },
     );
