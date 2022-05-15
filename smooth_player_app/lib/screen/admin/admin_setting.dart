@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:smooth_player_app/player.dart';
 
-import '../api/log_status.dart';
-import '../colors.dart';
+import '../../api/log_status.dart';
+import '../../colors.dart';
+import '../../player.dart';
 
-class Setting extends StatefulWidget {
-  const Setting({Key? key}) : super(key: key);
+class AdminSetting extends StatefulWidget {
+  const AdminSetting({Key? key}) : super(key: key);
 
   @override
-  State<Setting> createState() => _SettingState();
+  State<AdminSetting> createState() => _AdminSettingState();
 }
 
-class _SettingState extends State<Setting> {
+class _AdminSettingState extends State<AdminSetting> {
   @override
   Widget build(BuildContext context) {
     final sWidth = MediaQuery.of(context).size.width;

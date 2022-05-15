@@ -6,6 +6,7 @@ import 'package:smooth_player_app/colors.dart';
 import 'package:smooth_player_app/api/http/authentication/login_http.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../../api/log_status.dart';
+import '../admin/featured_playlist.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -172,13 +173,27 @@ class _LoginState extends State<Login> {
                       final resData =
                           await LoginHttp().login(username_email, password);
                       if (resData["statusCode"] == 202) {
-                        LogStatus().setToken(resData["body"]["token"]);
-                        LogStatus.token = resData["body"]["token"];
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          "home",
-                          (route) => false,
-                        );
+                        if (resData["body"]["userData"]["admin"]) {
+                          LogStatus().setToken(resData["body"]["token"],
+                              resData["body"]["userData"]["admin"]);
+                          LogStatus.token = resData["body"]["token"];
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (builder) => FeaturedPlaylist(),
+                            ),
+                            (route) => false,
+                          );
+                        } else {
+                          LogStatus().setToken(resData["body"]["token"],
+                              resData["body"]["userData"]["admin"]);
+                          LogStatus.token = resData["body"]["token"];
+                          Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            "home",
+                            (route) => false,
+                          );
+                        }
                       } else {
                         Fluttertoast.showToast(
                           msg: resData["body"]["resM"],
