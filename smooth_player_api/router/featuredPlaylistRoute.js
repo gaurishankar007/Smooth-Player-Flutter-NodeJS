@@ -2,7 +2,7 @@ const express = require('express');
 const router = new express.Router();
 const auth = require('../authentication/auth');
 const featuredPlaylist = require('../model/featurePlaylistModel');
-// const featuredSong = require('../model/featureSongModel');
+const featuredSong = require('../model/featureSongModel');
 const fs = require("fs");
 const featuredPlaylistUpload = require("../setting/featuredPlaylistSetting");
 
@@ -28,5 +28,18 @@ router.post("/upload/featuredPlaylist", auth.verifyAdmin, featuredPlaylistUpload
     
 });
 
+router.delete("/delete/featuredPlaylist", auth.verifyAdmin, async (req, res)=> {
+    const featuredSongs = await featuredSong.find({album: req.body.featuredPlaylistId});
+    const featuredPlaylistData = await featuredPlaylist.findOne({_id: req.body.featuredPlaylistId});
+
+    for(i=0; i<featuredSongs.length; i++) {
+        featuredSong.findByIdAndDelete(featuredSongs[i]["_id"]).then();   
+    }
+      
+    fs.unlinkSync(`../smooth_player_api/upload/image/featuredPlaylist/${featuredPlaylistData["featured_playlist_image"]}`);        
+    featuredPlaylist.findByIdAndDelete(featuredPlaylistData["_id"]).then(()=> {
+        res.send({resM: "Featured Playlist has been deleted."});
+    });   
+});
 
 module.exports = router;
