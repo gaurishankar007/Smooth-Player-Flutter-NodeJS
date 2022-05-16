@@ -3,16 +3,19 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:smooth_player_app/api/http/featured_playlist_http.dart';
+import 'package:smooth_player_app/api/model/playlist.dart';
 import 'package:smooth_player_app/colors.dart';
+import 'package:smooth_player_app/screen/admin/featured_playlist.dart';
 
-class UploadPlaylist extends StatefulWidget {
-  const UploadPlaylist({Key? key}) : super(key: key);
+class CreateFeaturedPlaylist extends StatefulWidget {
+  const CreateFeaturedPlaylist({Key? key}) : super(key: key);
 
   @override
-  State<UploadPlaylist> createState() => _UploadPlaylistState();
+  State<CreateFeaturedPlaylist> createState() => _CreateFeaturedPlaylistState();
 }
 
-class _UploadPlaylistState extends State<UploadPlaylist> {
+class _CreateFeaturedPlaylistState extends State<CreateFeaturedPlaylist> {
   final _fromPlaylist = GlobalKey<FormState>();
 
   File? _image;
@@ -123,6 +126,7 @@ class _UploadPlaylistState extends State<UploadPlaylist> {
                           width: screenWidth * .75,
                           fit: BoxFit.cover,
                           image: FileImage(_image!),
+                          
                         ),
                       ),
                       onTap: () {
@@ -138,7 +142,7 @@ class _UploadPlaylistState extends State<UploadPlaylist> {
                     key: ValueKey("album_title"),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return "Album name is required";
+                        return "Playlist name is required";
                       }
                     },
                     onSaved: ((value) {
@@ -147,7 +151,7 @@ class _UploadPlaylistState extends State<UploadPlaylist> {
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: AppColors.form,
-                      hintText: "Enter Album Name",
+                      hintText: "Enter Playlist Name",
                       enabledBorder: formBorder,
                       focusedBorder: formBorder,
                       errorBorder: formBorder,
@@ -177,38 +181,38 @@ class _UploadPlaylistState extends State<UploadPlaylist> {
                         msg: "Please select an image",
                       );
                     } else if (_fromPlaylist.currentState!.validate()) {
-                      // _fromPlaylist.currentState!.save();
-                      // final res_data = await AlbumHttp().createAlbum(
-                      //   AlbumUploadModal(
-                      //     title: playlistTitle,
-                      //     cover_image: _image,
-                      //   ),
-                      // );
+                      _fromPlaylist.currentState!.save();
+                      final res_data = await FeaturedPlaylistHttp().createFeaturedPlaylist(
+                        PlaylistModel(
+                          playlistTitle: playlistTitle,
+                          cover_image: _image,
+                        ),
+                      );
 
-                      // if (res_data["statusCode"] == 201) {
-                      //   Navigator.pop(context);
-                      //   Navigator.pop(context);
-                      //   Navigator.push(context,
-                      //       MaterialPageRoute(builder: (context) => MyMusic()));
-                      //   Fluttertoast.showToast(
-                      //     toastLength: Toast.LENGTH_SHORT,
-                      //     gravity: ToastGravity.BOTTOM,
-                      //     timeInSecForIosWeb: 3,
-                      //     backgroundColor: Colors.green,
-                      //     textColor: Colors.white,
-                      //     msg: res_data["body"]["resM"],
-                      //   );
-                      // } else {
-                      //   // print(res_data);
-                      //   Fluttertoast.showToast(
-                      //     toastLength: Toast.LENGTH_SHORT,
-                      //     gravity: ToastGravity.BOTTOM,
-                      //     timeInSecForIosWeb: 3,
-                      //     backgroundColor: Colors.red,
-                      //     textColor: Colors.white,
-                      //     msg: res_data["body"]["resM"],
-                      //   );
-                      // }
+                      if (res_data["statusCode"] == 201) {
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => FeaturedPlaylistView()));
+                        Fluttertoast.showToast(
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 3,
+                          backgroundColor: Colors.green,
+                          textColor: Colors.white,
+                          msg: res_data["body"]["resM"],
+                        );
+                      } else {
+                        // print(res_data);
+                        Fluttertoast.showToast(
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 3,
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white,
+                          msg: res_data["body"]["resM"],
+                        );
+                      }
                     } else {
                       Fluttertoast.showToast(
                         toastLength: Toast.LENGTH_SHORT,
@@ -220,7 +224,7 @@ class _UploadPlaylistState extends State<UploadPlaylist> {
                       );
                     }
                   },
-                  child: Text('Upload Album'),
+                  child: Text('Upload Playlist'),
                 ),
               )
             ],

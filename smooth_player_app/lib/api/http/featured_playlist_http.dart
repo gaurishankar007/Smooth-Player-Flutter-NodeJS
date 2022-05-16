@@ -3,9 +3,8 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
-import 'package:smooth_player_app/api/model/album_model.dart';
+import 'package:smooth_player_app/api/model/playlist.dart';
 import 'package:smooth_player_app/api/res/featured_playlist_res.dart';
-import 'package:smooth_player_app/screen/admin/featured_playlist.dart';
 import '../log_status.dart';
 
 import '../urls.dart';
@@ -16,7 +15,7 @@ class FeaturedPlaylistHttp {
 
   Future<List<FeaturedPlaylist>> getFeaturedPlaylist() async {
     final response = await get(
-      Uri.parse(routeUrl + "view/featurePlaylist"),
+      Uri.parse(routeUrl + "view/featuredPlaylist"),
       headers: {
         HttpHeaders.authorizationHeader: "Bearer $token",
       },
@@ -28,7 +27,48 @@ class FeaturedPlaylistHttp {
       return List.empty();
     }
 
-    return resFeaturedPlaylist.map((e) => FeaturedPlaylist.fromJson(e)).toList();
+    return resFeaturedPlaylist
+        .map((e) => FeaturedPlaylist.fromJson(e))
+        .toList();
+  }
+
+  Future<Map> createFeaturedPlaylist(PlaylistModel playlistData) async {
+    try {
+      var request = http.MultipartRequest(
+          'POST', Uri.parse(routeUrl + "upload/featuredPlaylist"));
+
+      request.headers.addAll({
+        'Authorization': 'Bearer $token',
+      });
+
+      Map<String, String> playlistDetail = {
+        "title": "${playlistData.playlistTitle}",
+      };
+      request.fields.addAll(playlistDetail);
+
+      List<MultipartFile> multipartList = [];
+      multipartList.add(http.MultipartFile(
+        'featured_playlist_image',
+        playlistData.cover_image!.readAsBytes().asStream(),
+        playlistData.cover_image!.lengthSync(),
+        filename: playlistData.cover_image!.path.split('/').last,
+      ));
+
+      request.files.addAll(multipartList);
+      final response = await request.send();
+      var responseString = await response.stream.bytesToString();
+      final responseData = jsonDecode(responseString) as Map;
+      return {
+        "statusCode": response.statusCode,
+        "body": responseData,
+      };
+    } catch (err) {
+      log('$err');
+    }
+    return {
+      "body": {"resM": "error occurred"},
+      "statusCode": 400,
+    };
   }
 
   // Future<Map> deleteAlbum(String albumId) async {
@@ -42,4 +82,16 @@ class FeaturedPlaylistHttp {
 
   //   return responseData;
   // }
+
+    Future<List<FeaturedPlaylist>> searchPlaylist(String title) async {
+    final response = await post(
+      Uri.parse(routeUrl + "search/featuredPlaylist"),
+      body: {"title": title},
+      headers: {
+        HttpHeaders.authorizationHeader: "Bearer $token",
+      },
+    );
+    List resSearchPlaylist = jsonDecode(response.body);
+    return resSearchPlaylist.map((e) => FeaturedPlaylist.fromJson(e)).toList();
+  }
 }
