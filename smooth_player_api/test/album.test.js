@@ -24,9 +24,9 @@ describe('album schema test', ()=> {
             "album_image": "album.jpg",
             
         } 
-        return album.create(newAlbum).then((userData)=>{
-            expect(userData.title).toEqual("test")
-            expect(userData.album_image).toEqual("album.jpg")
+        return album.create(newAlbum).then((albumData)=>{
+            expect(albumData.title).toEqual("test")
+            expect(albumData.album_image).toEqual("album.jpg")
             
         })
     })
