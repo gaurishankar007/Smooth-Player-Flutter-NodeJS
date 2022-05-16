@@ -28,6 +28,17 @@ router.post("/upload/featuredPlaylist", auth.verifyAdmin, featuredPlaylistUpload
     
 });
 
+router.get("/view/featuredPlaylist", auth.verifyAdmin, async (req, res)=> {
+    const featuredPlaylists = await featuredPlaylist.find();
+    res.send(featuredPlaylists);
+});
+
+router.post("/search/featuredPlaylist", auth.verifyAdmin, async (req, res)=> {
+    const playlistTitle =   {title: { $regex: req.body.title, $options: "i" }}; 
+    const playlists = await featuredPlaylist.find(playlistTitle)     
+    res.send(playlists); 
+});
+
 router.delete("/delete/featuredPlaylist", auth.verifyAdmin, async (req, res)=> {
     const featuredSongs = await featuredSong.find({album: req.body.featuredPlaylistId});
     const featuredPlaylistData = await featuredPlaylist.findOne({_id: req.body.featuredPlaylistId});
