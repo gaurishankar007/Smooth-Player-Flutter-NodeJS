@@ -25,10 +25,10 @@ describe('song schema test', ()=> {
             "cover_image": "cover.jpg",
             
         } 
-        return song.create(newSong).then((userData)=>{
-            expect(userData.title).toEqual("test")
-            expect(userData.music_file).toEqual("song.mp3")
-            expect(userData.cover_image).toEqual("cover.jpg")
+        return song.create(newSong).then((songData)=>{
+            expect(songData.title).toEqual("test")
+            expect(songData.music_file).toEqual("song.mp3")
+            expect(songData.cover_image).toEqual("cover.jpg")
             
         })
     })
