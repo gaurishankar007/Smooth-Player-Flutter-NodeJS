@@ -18,4 +18,7 @@ app.use(albumRoute);
 const songRoute = require("./router/songRoute");
 app.use(songRoute);
 
+const featuredPlaylistRoute = require("./router/featuredPlaylistRoute");
+app.use(featuredPlaylistRoute);
+
 app.listen(8080, ()=> {console.log("Server running on port: 8080...")});
