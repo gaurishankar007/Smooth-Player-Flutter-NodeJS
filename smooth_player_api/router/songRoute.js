@@ -100,6 +100,30 @@ router.delete("/delete/song", auth.verifyUser, (req, res)=> {
             });   
         });     
     });
+} );
+
+
+router.put("/edit/song/title", auth.verifyUser, (req, res)=> {
+    if(req.body.title.trim()==="") {
+        res.status(400).send({resM: "Provide the song title."});
+        return;        
+    }
+   song.updateOne({_id: songData.album}, {title: req.body.title}).then(()=> {
+        res.send({resM: "Song Edited."});
+    });  
+} );
+
+router.put("/edit/song/image", auth.verifyUser, musicFile.single('song_file'), (req, res)=> {
+    if(req.file==undefined) {
+        return res.status(400).send({resM: "Invalid image format, only supports png or jpeg image format."});
+    }
+    song.findOne( { _id: req.body.songId } ).then( ( songData ) =>{
+        fs.unlinkSync( `../smooth_player_api/upload/image/album_song/${ songData.cover_image }` );   
+        song.updateOne( { _id: songData.album }, { cover_image: req.file.filename } ).then( () =>{
+            res.send({resM: "Song Edited."});
+        });
+    });
+   
 });
 
 module.exports = router;
