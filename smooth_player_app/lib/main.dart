@@ -3,6 +3,7 @@ import 'package:smooth_player_app/screen/admin/featured_playlist.dart';
 import 'package:smooth_player_app/screen/authentication/login.dart';
 import 'package:smooth_player_app/screen/authentication/sign_up.dart';
 import 'package:smooth_player_app/screen/home.dart';
+import 'package:smooth_player_app/screen/upload/edit_song.dart';
 
 import 'api/log_status.dart';
 
@@ -19,6 +20,7 @@ class SmoothPlayer extends StatefulWidget {
 
 class _SmoothPlayerState extends State<SmoothPlayer> {
   Widget initialPage = Login();
+  Widget editsong = EditSong();
 
   @override
   void initState() {
@@ -48,7 +50,7 @@ class _SmoothPlayerState extends State<SmoothPlayer> {
       theme: ThemeData(),
       debugShowCheckedModeBanner: false,
       title: 'Smooth Player Music App',
-      home: initialPage,
+      home: editsong,
       routes: {
         "login": (context) => Login(),
         "signUp": (context) => SignUp(),
