@@ -7,7 +7,7 @@ const featuredsongSchema = new mongoose.Schema(
       ref: "featuredPlaylist",
     },
 
-    music_file: {
+    song: {
       type: mongoose.Schema.ObjectId,
       ref: "song",
     },
