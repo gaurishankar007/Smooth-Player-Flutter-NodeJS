@@ -9,14 +9,14 @@ import '../../player.dart';
 import '../../widget/song_bar.dart';
 import '../setting.dart';
 
-class FeaturedPlaylist extends StatefulWidget {
-  const FeaturedPlaylist({Key? key}) : super(key: key);
+class FeaturedPlaylistView extends StatefulWidget {
+  const FeaturedPlaylistView({Key? key}) : super(key: key);
 
   @override
-  State<FeaturedPlaylist> createState() => _FeaturedPlaylistState();
+  State<FeaturedPlaylistView> createState() => _FeaturedPlaylistViewState();
 }
 
-class _FeaturedPlaylistState extends State<FeaturedPlaylist> {
+class _FeaturedPlaylistViewState extends State<FeaturedPlaylistView> {
   final AudioPlayer player = Player.player;
   int curTime = DateTime.now().hour;
   String greeting = "Smooth Player";

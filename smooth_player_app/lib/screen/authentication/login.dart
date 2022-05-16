@@ -180,7 +180,7 @@ class _LoginState extends State<Login> {
                           Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
-                              builder: (builder) => FeaturedPlaylist(),
+                              builder: (builder) => FeaturedPlaylistView(),
                             ),
                             (route) => false,
                           );
