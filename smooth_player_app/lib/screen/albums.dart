@@ -186,7 +186,7 @@ class _AlbumViewState extends State<AlbumView> {
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 15),
                           child: GestureDetector(
-                            onTap: () async {
+                            onDoubleTap: () async {
                               Song newSong = Song(
                                 id: snapshot.data![index].id!,
                                 title: snapshot.data![index].title!,

@@ -17,12 +17,12 @@ router.post("/upload/featuredPlaylist", auth.verifyAdmin, featuredPlaylistUpload
         return;        
     }
 
-    const newfeaturedPlaylist = new featuredPlaylist({
+    const newFeaturedPlaylist = new featuredPlaylist({
         title: req.body.title,
         featured_playlist_image: req.file.filename
     })
 
-    newfeaturedPlaylist.save().then(()=> {
+    newFeaturedPlaylist.save().then(()=> {
         res.status(201).send({resM: "'" + req.body.title + "'" + " featured playlist created."});
     });
     

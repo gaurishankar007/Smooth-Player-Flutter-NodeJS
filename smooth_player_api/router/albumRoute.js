@@ -55,7 +55,7 @@ router.put("/edit/album/image", auth.verifyUser, albumUpload.single("album_image
         return res.status(400).send({resM: "Invalid image format, only supports png or jpeg image format."});
     }
     
-    album.findone( { _id: req.body.albumId } ).then( ( albumData ) =>{ 
+    album.findOne( { _id: req.body.albumId } ).then( ( albumData ) =>{ 
         fs.unlinkSync( `../smooth_player_api/upload/image/album_song/${ albumData[ "album_image" ] }` );   
         album.updateOne( { _id: albumData._id }, {
             album_image: req.file.filename

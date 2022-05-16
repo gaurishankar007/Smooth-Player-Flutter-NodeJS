@@ -12,10 +12,10 @@ class SongHttp {
   final routeUrl = ApiUrls.routeUrl;
   final token = LogStatus.token;
   
-  Future<List<FeaturedSong>> getfeaturedSongs(String featuredplaylistid) async {
+  Future<List<FeaturedSong>> getFeaturedSongs(String featuredPlaylistId) async {
     final response = await post(
       Uri.parse(routeUrl + "view/featuredSong"),
-      body: {"featuredplaylistid": featuredplaylistid},
+      body: {"featuredPlaylistId": featuredPlaylistId},
       headers: {
         HttpHeaders.authorizationHeader: "Bearer $token",
       },

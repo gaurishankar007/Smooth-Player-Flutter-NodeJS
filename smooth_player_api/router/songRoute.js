@@ -108,7 +108,7 @@ router.put("/edit/song/title", auth.verifyUser, (req, res)=> {
         res.status(400).send({resM: "Provide the song title."});
         return;        
     }
-   song.updateOne({_id: songData.album}, {title: req.body.title}).then(()=> {
+   song.updateOne({_id: req.body.songId}, {title: req.body.title}).then(()=> {
         res.send({resM: "Song Edited."});
     });  
 } );
@@ -119,11 +119,17 @@ router.put("/edit/song/image", auth.verifyUser, musicFile.single('song_file'), (
     }
     song.findOne( { _id: req.body.songId } ).then( ( songData ) =>{
         fs.unlinkSync( `../smooth_player_api/upload/image/album_song/${ songData.cover_image }` );   
-        song.updateOne( { _id: songData.album }, { cover_image: req.file.filename } ).then( () =>{
+        song.updateOne( { _id: songData._id }, { cover_image: req.file.filename } ).then( () =>{
             res.send({resM: "Song Edited."});
         });
     });
-   
+});
+
+router.post("/search/song", auth.verifyUser, async (req, res)=> {
+    const songTitle =  {title: { $regex: req.body.title, $options: "i" }}; 
+
+    const songs = await song.find(songTitle)     
+    res.send(songs); 
 });
 
 module.exports = router;
