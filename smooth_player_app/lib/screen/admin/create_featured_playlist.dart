@@ -126,7 +126,6 @@ class _CreateFeaturedPlaylistState extends State<CreateFeaturedPlaylist> {
                           width: screenWidth * .75,
                           fit: BoxFit.cover,
                           image: FileImage(_image!),
-                          
                         ),
                       ),
                       onTap: () {
@@ -139,7 +138,7 @@ class _CreateFeaturedPlaylistState extends State<CreateFeaturedPlaylist> {
               Padding(
                 padding: const EdgeInsets.all(8),
                 child: TextFormField(
-                    key: ValueKey("album_title"),
+                    key: ValueKey("featured_playlist_title"),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return "Playlist name is required";
@@ -151,7 +150,7 @@ class _CreateFeaturedPlaylistState extends State<CreateFeaturedPlaylist> {
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: AppColors.form,
-                      hintText: "Enter Playlist Name",
+                      hintText: "Enter Playlist title",
                       enabledBorder: formBorder,
                       focusedBorder: formBorder,
                       errorBorder: formBorder,
@@ -182,7 +181,8 @@ class _CreateFeaturedPlaylistState extends State<CreateFeaturedPlaylist> {
                       );
                     } else if (_fromPlaylist.currentState!.validate()) {
                       _fromPlaylist.currentState!.save();
-                      final res_data = await FeaturedPlaylistHttp().createFeaturedPlaylist(
+                      final res_data =
+                          await FeaturedPlaylistHttp().createFeaturedPlaylist(
                         PlaylistModel(
                           playlistTitle: playlistTitle,
                           cover_image: _image,
@@ -192,8 +192,10 @@ class _CreateFeaturedPlaylistState extends State<CreateFeaturedPlaylist> {
                       if (res_data["statusCode"] == 201) {
                         Navigator.pop(context);
                         Navigator.pop(context);
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => FeaturedPlaylistView()));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => FeaturedPlaylistView()));
                         Fluttertoast.showToast(
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.BOTTOM,

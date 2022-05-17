@@ -194,4 +194,16 @@ class SongHttp {
       "statusCode": 400,
     };
   }
+
+   Future<List<Song>> searchSongByTitle(String title) async {
+    final response = await post(
+      Uri.parse(routeUrl + "search/songByTitle"),
+      body: {"title": title},
+      headers: {
+        HttpHeaders.authorizationHeader: "Bearer $token",
+      },
+    );
+    List resSearch = jsonDecode(response.body);
+    return resSearch.map((e) => Song.fromJson(e)).toList();
+  }
 }

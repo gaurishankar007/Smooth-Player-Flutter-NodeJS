@@ -72,7 +72,11 @@ class _UploadAlbumState extends State<UploadAlbum> {
         body: SafeArea(
             child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.all(30),
+            padding: EdgeInsets.only(
+              top: 30,
+              left: screenWidth * .05,
+              right: screenWidth * .05,
+            ),
             child: Form(
               key: _albumForm,
               child: Column(

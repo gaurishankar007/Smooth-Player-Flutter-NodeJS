@@ -83,7 +83,7 @@ class FeaturedPlaylistHttp {
   //   return responseData;
   // }
 
-    Future<List<FeaturedPlaylist>> searchPlaylist(String title) async {
+  Future<List<FeaturedPlaylist>> searchPlaylist(String title) async {
     final response = await post(
       Uri.parse(routeUrl + "search/featuredPlaylist"),
       body: {"title": title},
