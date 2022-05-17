@@ -11,7 +11,7 @@ import '../urls.dart';
 class SongHttp {
   final routeUrl = ApiUrls.routeUrl;
   final token = LogStatus.token;
-  
+
   Future<Map> uploadSingleSong(SongUploadModal songData) async {
     try {
       // Making multipart request
@@ -58,7 +58,6 @@ class SongHttp {
       "statusCode": 400,
     };
   }
-
 
   Future<Map> uploadAlbumSong(SongUploadModal songData, String albumId) async {
     try {
@@ -136,5 +135,63 @@ class SongHttp {
     final responseData = jsonDecode(response.body);
 
     return responseData;
+  }
+
+  Future<Map> editSongTitle(String title, String songId) async {
+    final response = await put(
+      Uri.parse(routeUrl + "edit/song/title"),
+      body: {"title": title, "songId":songId},
+      headers: {
+        HttpHeaders.authorizationHeader: "Bearer $token",
+      },
+    );
+
+    final responseData = jsonDecode(response.body);
+    return {
+      "statusCode": response.statusCode,
+      "body": responseData,
+    };
+  }
+
+  Future<Map> editSongImage(File image, String songId) async {
+    try {
+      // Making multipart request
+      var request =
+          http.MultipartRequest('PUT', Uri.parse(routeUrl + "edit/song/image"));
+      // Adding headers
+      request.headers.addAll({
+        'Authorization': 'Bearer $token',
+      });
+
+      // Adding song
+      List<MultipartFile> multipartList = [];
+      // Adding forms data
+      Map<String, String> songDetail = {
+        "songId": songId,
+      };
+      request.fields.addAll(songDetail);
+      // Adding images
+      multipartList.add(http.MultipartFile(
+        'song_file',
+        image.readAsBytes().asStream(),
+        image.lengthSync(),
+        filename: image.path.split('/').last,
+      ));
+      request.files.addAll(multipartList);
+
+      final response = await request.send();
+      var responseString = await response.stream.bytesToString();
+      final responseData = jsonDecode(responseString) as Map;
+      return {
+        "statusCode": response.statusCode,
+        "body": responseData,
+      };
+    } catch (err) {
+      log('$err');
+    }
+    return {
+      "body": {"resM": "error occurred"},
+      "statusCode": 400,
+    };
   }
 }

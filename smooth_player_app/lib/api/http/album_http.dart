@@ -79,4 +79,59 @@ class AlbumHttp {
 
     return responseData;
   }
+
+  Future<Map> editAlbumTitle(String title, String albumId) async {
+    final response = await put(
+      Uri.parse(routeUrl + "edit/album/title"),
+      body: {"title": title, "albumId": albumId},
+      headers: {
+        HttpHeaders.authorizationHeader: "Bearer $token",
+      },
+    );
+
+    final responseData = jsonDecode(response.body);
+    return {
+      "statusCode": response.statusCode,
+      "body": responseData,
+    };
+  }
+  Future<Map> editAlbumImage(File image, String albumId) async {
+   try {
+      // Making multipart request
+      var request =
+          http.MultipartRequest('PUT', Uri.parse(routeUrl + "edit/album/image"));
+      // Adding headers
+      request.headers.addAll({
+        'Authorization': 'Bearer $token',
+      });
+     
+      // Adding images
+      List<MultipartFile> multipartList = [];
+      // Adding forms data
+      Map<String, String> albumDetail = {
+        "albumId": albumId,
+      };
+      request.fields.addAll(albumDetail);
+      multipartList.add(http.MultipartFile(
+        'album_image',
+        image.readAsBytes().asStream(),
+        image.lengthSync(),
+        filename: image.path.split('/').last,
+      ));
+      request.files.addAll(multipartList);
+      final response = await request.send();
+      var responseString = await response.stream.bytesToString();
+      final responseData = jsonDecode(responseString) as Map;
+      return {
+        "statusCode": response.statusCode,
+        "body": responseData,
+      };
+    } catch (err) {
+      log('$err');
+    }
+    return {
+      "body": {"resM": "error occurred"},
+      "statusCode": 400,
+    };
+  }
 }
