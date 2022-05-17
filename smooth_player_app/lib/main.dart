@@ -32,7 +32,7 @@ class _SmoothPlayerState extends State<SmoothPlayer> {
           LogStatus.token = value["token"];
           if (value["admin"]) {
             setState(() {
-              initialPage = FeaturedPlaylist();
+              initialPage = FeaturedPlaylistView();
             });
           } else {
             setState(() {

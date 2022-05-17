@@ -42,7 +42,7 @@ class AdminPageNavigator extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (builder) => FeaturedPlaylist(),
+              builder: (builder) => FeaturedPlaylistView(),
             ),
           );
         } else if (index == 1) {

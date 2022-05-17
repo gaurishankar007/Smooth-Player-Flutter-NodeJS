@@ -24,7 +24,7 @@ router.post("/upload/album", auth.verifyUser, albumUpload.single("album_image"),
     newAlbum.save().then(()=> {
         res.status(201).send({resM: "'" + req.body.title + "'" + " album created."});
     });
-});
+} );
 
 router.get("/view/album", auth.verifyUser, async (req, res)=> {
     const albums = await album.find({artist: req.userInfo._id}).populate("artist", "profile_name");
@@ -50,5 +50,31 @@ router.delete("/delete/album", auth.verifyUser, async (req, res)=> {
     });   
 });
 
+router.put("/edit/album/image", auth.verifyUser, albumUpload.single("album_image"), function(req, res){
+    if(req.file==undefined) {
+        return res.status(400).send({resM: "Invalid image format, only supports png or jpeg image format."});
+    }
+    
+    album.findOne( { _id: req.body.albumId } ).then( ( albumData ) =>{ 
+        fs.unlinkSync( `../smooth_player_api/upload/image/album_song/${ albumData[ "album_image" ] }` );   
+        album.updateOne( { _id: albumData._id }, {
+            album_image: req.file.filename
+        }).then( () =>{
+            res.send({resM:"Album Edited"});
+         });
+    });
+} );
+
+router.put("/edit/album/title", auth.verifyUser, function(req, res){
+    if(req.body.title.trim()==="") {
+        res.status(400).send({resM: "Provide the album title."});
+        return;        
+    }
+     album.updateOne( { _id: req.body.albumId}, {
+            title: req.body.title,
+        }).then( () =>{
+            res.send({resM:"Album Edited"});
+         });
+});
 
 module.exports = router;
