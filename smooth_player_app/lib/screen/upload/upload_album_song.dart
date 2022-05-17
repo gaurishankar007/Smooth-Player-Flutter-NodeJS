@@ -29,8 +29,6 @@ class UploadAlbumSong extends StatefulWidget {
 class _UploadAlbumSongState extends State<UploadAlbumSong> {
   final _songForm = GlobalKey<FormState>();
 
-  // final double height = MediaQuery.of(context).size.height
-
   File? _song;
   File? _image;
   String title = "";

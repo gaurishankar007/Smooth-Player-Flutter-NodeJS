@@ -125,11 +125,18 @@ router.put("/edit/song/image", auth.verifyUser, musicFile.single('song_file'), (
     });
 });
 
-router.post("/search/song", auth.verifyUser, async (req, res)=> {
+router.post("/search/songByTitle", auth.verifyAdmin, async (req, res)=> {
+    if(req.body.title==="") {
+        return res.send([]);
+    }
     const songTitle =  {title: { $regex: req.body.title, $options: "i" }}; 
 
-    const songs = await song.find(songTitle)     
-    res.send(songs); 
+    const songs = await song.find(songTitle).populate("album")  
+    const songs1 = await song.populate(songs, {
+        path: "album.artist",
+        select: "profile_name"
+    });
+    res.send(songs1); 
 });
 
 module.exports = router;

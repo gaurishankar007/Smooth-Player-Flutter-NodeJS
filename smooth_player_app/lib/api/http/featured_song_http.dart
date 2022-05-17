@@ -3,12 +3,10 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:http/http.dart';
 import 'package:smooth_player_app/api/log_status.dart';
-import 'package:smooth_player_app/api/model/album_model.dart';
-import 'package:http/http.dart' as http;
 import 'package:smooth_player_app/api/res/featured_song_res.dart';
 import '../urls.dart';
 
-class SongHttp {
+class FeaturedSongHttp {
   final routeUrl = ApiUrls.routeUrl;
   final token = LogStatus.token;
   
@@ -28,11 +26,5 @@ class SongHttp {
     }
 
     return resFeaturedSongs.map((e) => FeaturedSong.fromJson(e)).toList();
-  }
-
-
-
-  
-
-  
+  }  
 }

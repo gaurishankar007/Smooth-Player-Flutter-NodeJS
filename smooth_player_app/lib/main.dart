@@ -3,7 +3,6 @@ import 'package:smooth_player_app/screen/admin/featured_playlist.dart';
 import 'package:smooth_player_app/screen/authentication/login.dart';
 import 'package:smooth_player_app/screen/authentication/sign_up.dart';
 import 'package:smooth_player_app/screen/home.dart';
-import 'package:smooth_player_app/screen/upload/edit_song.dart';
 
 import 'api/log_status.dart';
 
