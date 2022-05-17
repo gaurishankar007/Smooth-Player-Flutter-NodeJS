@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:smooth_player_app/colors.dart';
+import 'package:smooth_player_app/screen/upload/edit_song.dart';
 import 'package:smooth_player_app/screen/upload/upload_album_song.dart';
 
 import '../api/http/song_http.dart';
@@ -13,13 +14,13 @@ import '../widget/song_bar.dart';
 class AlbumView extends StatefulWidget {
   final String? albumId;
   final String? title;
-  final String? album_image;
+  final String? albumImage;
   final int? pageIndex;
   const AlbumView(
       {Key? key,
       @required this.albumId,
       @required this.title,
-      @required this.album_image,
+      @required this.albumImage,
       @required this.pageIndex})
       : super(key: key);
 
@@ -57,7 +58,7 @@ class _AlbumViewState extends State<AlbumView> {
   Widget build(BuildContext context) {
     final sWidth = MediaQuery.of(context).size.width;
     final sHeight = MediaQuery.of(context).size.height;
-
+    
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -104,7 +105,7 @@ class _AlbumViewState extends State<AlbumView> {
                       height: sHeight * .3,
                       fit: BoxFit.cover,
                       image: NetworkImage(
-                        coverImage + widget.album_image!,
+                        coverImage + widget.albumImage!,
                       ),
                     ),
                   ),
@@ -142,7 +143,7 @@ class _AlbumViewState extends State<AlbumView> {
                           builder: (context) => UploadAlbumSong(
                             albumId: widget.albumId!,
                             title: widget.title,
-                            album_image: widget.album_image,
+                            albumImage: widget.albumImage,
                             pageIndex: widget.pageIndex,
                           ),
                         ),
@@ -364,6 +365,43 @@ class _AlbumViewState extends State<AlbumView> {
                                                     // );
                                                   },
                                                   child: Text("Add to queue"),
+                                                ),
+                                              ),
+                                              SimpleDialogOption(
+                                                padding: EdgeInsets.symmetric(
+                                                  horizontal: 75,
+                                                ),
+                                                child: ElevatedButton(
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    primary: AppColors.primary,
+                                                    elevation: 10,
+                                                    shadowColor: Colors.black,
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              15),
+                                                    ),
+                                                  ),
+                                                  onPressed: () {
+                                                    Navigator.of(ctx).pop();
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (builder) =>
+                                                            EditSong(
+                                                          songId: snapshot
+                                                              .data![index].id,
+                                                              albumId: widget.albumId,
+                                                              title: widget.title,
+                                                              albumImage: widget.albumImage,
+                                                              pageIndex: widget.pageIndex,
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                  child: Text("Edit Song"),
                                                 ),
                                               ),
                                               SimpleDialogOption(

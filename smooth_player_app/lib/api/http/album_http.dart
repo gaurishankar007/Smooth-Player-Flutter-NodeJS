@@ -80,10 +80,10 @@ class AlbumHttp {
     return responseData;
   }
 
-  Future<Map> editAlbumTitle(AlbumUploadModal albumData) async {
+  Future<Map> editAlbumTitle(String title, String albumId) async {
     final response = await put(
       Uri.parse(routeUrl + "edit/album/title"),
-      body: {"title": albumData.title},
+      body: {"title": title, "albumId": albumId},
       headers: {
         HttpHeaders.authorizationHeader: "Bearer $token",
       },
@@ -95,7 +95,7 @@ class AlbumHttp {
       "body": responseData,
     };
   }
-  Future<Map> editAlbumImage(AlbumUploadModal albumData) async {
+  Future<Map> editAlbumImage(File image, String albumId) async {
    try {
       // Making multipart request
       var request =
@@ -107,11 +107,16 @@ class AlbumHttp {
      
       // Adding images
       List<MultipartFile> multipartList = [];
+      // Adding forms data
+      Map<String, String> albumDetail = {
+        "albumId": albumId,
+      };
+      request.fields.addAll(albumDetail);
       multipartList.add(http.MultipartFile(
         'album_image',
-        albumData.cover_image!.readAsBytes().asStream(),
-        albumData.cover_image!.lengthSync(),
-        filename: albumData.cover_image!.path.split('/').last,
+        image.readAsBytes().asStream(),
+        image.lengthSync(),
+        filename: image.path.split('/').last,
       ));
       request.files.addAll(multipartList);
       final response = await request.send();

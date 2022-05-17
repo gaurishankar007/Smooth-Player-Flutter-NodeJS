@@ -20,7 +20,6 @@ class SmoothPlayer extends StatefulWidget {
 
 class _SmoothPlayerState extends State<SmoothPlayer> {
   Widget initialPage = Login();
-  Widget editsong = EditSong();
 
   @override
   void initState() {
@@ -50,7 +49,7 @@ class _SmoothPlayerState extends State<SmoothPlayer> {
       theme: ThemeData(),
       debugShowCheckedModeBanner: false,
       title: 'Smooth Player Music App',
-      home: editsong,
+      home: initialPage,
       routes: {
         "login": (context) => Login(),
         "signUp": (context) => SignUp(),

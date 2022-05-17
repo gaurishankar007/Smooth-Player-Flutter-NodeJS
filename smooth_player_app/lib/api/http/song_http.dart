@@ -137,10 +137,10 @@ class SongHttp {
     return responseData;
   }
 
-  Future<Map> editSongTitle(SongUploadModal songData) async {
+  Future<Map> editSongTitle(String title, String songId) async {
     final response = await put(
       Uri.parse(routeUrl + "edit/song/title"),
-      body: {"title": songData.title},
+      body: {"title": title, "songId":songId},
       headers: {
         HttpHeaders.authorizationHeader: "Bearer $token",
       },
@@ -153,11 +153,11 @@ class SongHttp {
     };
   }
 
-  Future<Map> editSongImage(SongUploadModal songData) async {
+  Future<Map> editSongImage(File image, String songId) async {
     try {
       // Making multipart request
       var request =
-          http.MultipartRequest('PUT', Uri.parse(routeUrl + "edit/song"));
+          http.MultipartRequest('PUT', Uri.parse(routeUrl + "edit/song/image"));
       // Adding headers
       request.headers.addAll({
         'Authorization': 'Bearer $token',
@@ -165,12 +165,17 @@ class SongHttp {
 
       // Adding song
       List<MultipartFile> multipartList = [];
+      // Adding forms data
+      Map<String, String> songDetail = {
+        "songId": songId,
+      };
+      request.fields.addAll(songDetail);
       // Adding images
       multipartList.add(http.MultipartFile(
         'song_file',
-        songData.cover_image!.readAsBytes().asStream(),
-        songData.cover_image!.lengthSync(),
-        filename: songData.cover_image!.path.split('/').last,
+        image.readAsBytes().asStream(),
+        image.lengthSync(),
+        filename: image.path.split('/').last,
       ));
       request.files.addAll(multipartList);
 

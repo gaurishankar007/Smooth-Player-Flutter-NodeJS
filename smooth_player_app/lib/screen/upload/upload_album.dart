@@ -139,7 +139,7 @@ class _UploadAlbumState extends State<UploadAlbum> {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(
-                      key: ValueKey("album_title"),
+                        key: ValueKey("album_title"),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return "Album name is required";
@@ -158,63 +158,50 @@ class _UploadAlbumState extends State<UploadAlbum> {
                           focusedErrorBorder: formBorder,
                         )),
                   ),
-                  SizedBox(height: 10),
-                  Padding(
-                    padding: EdgeInsets.all(12),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        primary: AppColors.primary,
-                        elevation: 10,
-                        shadowColor: Colors.black,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: AppColors.primary,
+                      elevation: 10,
+                      shadowColor: Colors.black,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
                       ),
-                      onPressed: () async {
-                        if (_image == null) {
+                    ),
+                    onPressed: () async {
+                      if (_image == null) {
+                        Fluttertoast.showToast(
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 3,
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white,
+                          msg: "Please select an image",
+                        );
+                      } else if (_albumForm.currentState!.validate()) {
+                        _albumForm.currentState!.save();
+                        final resData = await AlbumHttp().createAlbum(
+                          AlbumUploadModal(
+                            title: albumTitle,
+                            cover_image: _image,
+                          ),
+                        );
+
+                        if (resData["statusCode"] == 201) {
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MyMusic()));
                           Fluttertoast.showToast(
                             toastLength: Toast.LENGTH_SHORT,
                             gravity: ToastGravity.BOTTOM,
                             timeInSecForIosWeb: 3,
-                            backgroundColor: Colors.red,
+                            backgroundColor: Colors.green,
                             textColor: Colors.white,
-                            msg: "Please select an image",
+                            msg: resData["body"]["resM"],
                           );
-                        } else if (_albumForm.currentState!.validate()) {
-                          _albumForm.currentState!.save();
-                          final res_data = await AlbumHttp().createAlbum(
-                            AlbumUploadModal(
-                              title: albumTitle,
-                              cover_image: _image,
-                            ),
-                          );
-
-                          if (res_data["statusCode"] == 201) {
-                            Navigator.pop(context);
-                            Navigator.pop(context);
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => MyMusic()));
-                            Fluttertoast.showToast(
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.BOTTOM,
-                              timeInSecForIosWeb: 3,
-                              backgroundColor: Colors.green,
-                              textColor: Colors.white,
-                              msg: res_data["body"]["resM"],
-                            );
-                          } else {
-                            // print(res_data);
-                            Fluttertoast.showToast(
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.BOTTOM,
-                              timeInSecForIosWeb: 3,
-                              backgroundColor: Colors.red,
-                              textColor: Colors.white,
-                              msg: res_data["body"]["resM"],
-                            );
-                          }
                         } else {
                           Fluttertoast.showToast(
                             toastLength: Toast.LENGTH_SHORT,
@@ -222,12 +209,21 @@ class _UploadAlbumState extends State<UploadAlbum> {
                             timeInSecForIosWeb: 3,
                             backgroundColor: Colors.red,
                             textColor: Colors.white,
-                            msg: "Please fill the required form",
+                            msg: resData["body"]["resM"],
                           );
                         }
-                      },
-                      child: Text('Upload Album'),
-                    ),
+                      } else {
+                        Fluttertoast.showToast(
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 3,
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white,
+                          msg: "Please fill the required form",
+                        );
+                      }
+                    },
+                    child: Text('Upload Album'),
                   )
                 ],
               ),

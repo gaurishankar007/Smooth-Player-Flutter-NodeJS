@@ -11,14 +11,14 @@ import 'package:smooth_player_app/screen/albums.dart';
 class UploadAlbumSong extends StatefulWidget {
   final String? albumId;
   final String? title;
-  final String? album_image;
+  final String? albumImage;
   final int? pageIndex;
 
   const UploadAlbumSong(
       {Key? key,
       @required this.albumId,
       @required this.title,
-      @required this.album_image,
+      @required this.albumImage,
       @required this.pageIndex})
       : super(key: key);
 
@@ -103,7 +103,7 @@ class _UploadAlbumSongState extends State<UploadAlbumSong> {
         body: SafeArea(
             child: SingleChildScrollView(
           padding: EdgeInsets.only(
-            top: screenHight * .1,
+            top: 30,
             left: screenWidth * .05,
             right: screenWidth * .05,
           ),
@@ -266,7 +266,7 @@ class _UploadAlbumSongState extends State<UploadAlbumSong> {
                       );
                     } else if (_songForm.currentState!.validate()) {
                       _songForm.currentState!.save();
-                      final res_data = await SongHttp().uploadAlbumSong(
+                      final resData = await SongHttp().uploadAlbumSong(
                         SongUploadModal(
                           title: title,
                           cover_image: _image,
@@ -275,7 +275,7 @@ class _UploadAlbumSongState extends State<UploadAlbumSong> {
                         widget.albumId!,
                       );
 
-                      if (res_data["statusCode"] == 201) {
+                      if (resData["statusCode"] == 201) {
                         Navigator.pop(context);
                         Navigator.pop(context);
                         Navigator.push(
@@ -284,7 +284,7 @@ class _UploadAlbumSongState extends State<UploadAlbumSong> {
                                 builder: (context) => AlbumView(
                                       albumId: widget.albumId,
                                       title: widget.title,
-                                      album_image: widget.album_image,
+                                      albumImage: widget.albumImage,
                                       pageIndex: widget.pageIndex,
                                     )));
 
@@ -294,7 +294,7 @@ class _UploadAlbumSongState extends State<UploadAlbumSong> {
                           timeInSecForIosWeb: 3,
                           backgroundColor: Colors.green,
                           textColor: Colors.white,
-                          msg: res_data["body"]["resM"],
+                          msg: resData["body"]["resM"],
                         );
                       } else {
                         Fluttertoast.showToast(
@@ -303,7 +303,7 @@ class _UploadAlbumSongState extends State<UploadAlbumSong> {
                           timeInSecForIosWeb: 3,
                           backgroundColor: Colors.red,
                           textColor: Colors.white,
-                          msg: res_data["body"]["resM"],
+                          msg: resData["body"]["resM"],
                         );
                       }
                     }

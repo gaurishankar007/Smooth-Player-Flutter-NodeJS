@@ -4,15 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:smooth_player_app/colors.dart';
+import 'package:smooth_player_app/screen/my_music.dart';
 
-class EditSong extends StatefulWidget {
-  const EditSong({Key? key}) : super(key: key);
+import '../../api/http/album_http.dart';
+import '../../api/model/album_model.dart';
+
+class EditAlbum extends StatefulWidget {
+  final String? albumId;
+  const EditAlbum({Key? key, @required this.albumId}) : super(key: key);
 
   @override
-  State<EditSong> createState() => _EditSongState();
+  State<EditAlbum> createState() => _EditAlbumState();
 }
 
-class _EditSongState extends State<EditSong> {
+class _EditAlbumState extends State<EditAlbum> {
   final _songForm = GlobalKey<FormState>();
 
   // final double height = MediaQuery.of(context).size.height
@@ -43,7 +48,6 @@ class _EditSongState extends State<EditSong> {
       _image = File(file.path.toString());
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -140,24 +144,27 @@ class _EditSongState extends State<EditSong> {
                 ),
                 TextFormField(
                   key: ValueKey("album_title"),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Album title is required";
-                      }
-                    },
-                    onSaved: ((value) {
-                      title = value!;
-                    }),
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: AppColors.form,
-                      hintText: "Enter New Album Title",
-                      enabledBorder: formBorder,
-                      focusedBorder: formBorder,
-                      errorBorder: formBorder,
-                      focusedErrorBorder: formBorder,
-                    )),
-                
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Album title is required";
+                    }
+                  },
+                  onSaved: ((value) {
+                    title = value!;
+                  }),
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: AppColors.form,
+                    hintText: "Enter New Album Title",
+                    enabledBorder: formBorder,
+                    focusedBorder: formBorder,
+                    errorBorder: formBorder,
+                    focusedErrorBorder: formBorder,
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -173,35 +180,30 @@ class _EditSongState extends State<EditSong> {
                       onPressed: () async {
                         if (_songForm.currentState!.validate()) {
                           _songForm.currentState!.save();
-                          // final res_data =
-                          //     await SongHttp().uploadSingleSong(SongUploadModal(
-                          //   title: title,
-                          // ));
+                          final resData = await AlbumHttp()
+                              .editAlbumTitle(title, widget.albumId!);
 
-                          // if (res_data["statusCode"] == 201) {
-                          //   Navigator.pop(context);
-                          //   Navigator.pop(context);
-                          //   Fluttertoast.showToast(
-                          //     toastLength: Toast.LENGTH_SHORT,
-                          //     gravity: ToastGravity.BOTTOM,
-                          //     timeInSecForIosWeb: 3,
-                          //     backgroundColor: Colors.green,
-                          //     textColor: Colors.white,
-                          //     msg: res_data["body"]["resM"],
-                          //   );
-                            
-                          // } else {
-                          //   Fluttertoast.showToast(
-                          //     toastLength: Toast.LENGTH_SHORT,
-                          //     gravity: ToastGravity.BOTTOM,
-                          //     timeInSecForIosWeb: 3,
-                          //     backgroundColor: Colors.red,
-                          //     textColor: Colors.white,
-                          //     msg: res_data["body"]["resM"],
-                          //   );
-                          // }
+                          if (resData["statusCode"] == 200) {
+                            Navigator.pop(context);
+                            Fluttertoast.showToast(
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 3,
+                              backgroundColor: Colors.green,
+                              textColor: Colors.white,
+                              msg: resData["body"]["resM"],
+                            );
+                          } else {
+                            Fluttertoast.showToast(
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 3,
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white,
+                              msg: resData["body"]["resM"],
+                            );
+                          }
                         }
-                        // _songForm.currentContext!.save();
                       },
                       child: Text('Edit Album Title'),
                     ),
@@ -224,37 +226,36 @@ class _EditSongState extends State<EditSong> {
                             textColor: Colors.white,
                             msg: "Please select an image",
                           );
-                        
                         } else {
-                          // final res_data =
-                          //     await SongHttp().uploadSingleSong(SongUploadModal(
-                          //   cover_image: _image,
-                          // ));
+                          final resData = await AlbumHttp()
+                              .editAlbumImage(_image!, widget.albumId!);
 
-                          // if (res_data["statusCode"] == 201) {
-                          //   Navigator.pop(context);
-                          //   Navigator.pop(context);
-                          //   Fluttertoast.showToast(
-                          //     toastLength: Toast.LENGTH_SHORT,
-                          //     gravity: ToastGravity.BOTTOM,
-                          //     timeInSecForIosWeb: 3,
-                          //     backgroundColor: Colors.green,
-                          //     textColor: Colors.white,
-                          //     msg: res_data["body"]["resM"],
-                          //   );
-                            
-                          // } else {
-                          //   Fluttertoast.showToast(
-                          //     toastLength: Toast.LENGTH_SHORT,
-                          //     gravity: ToastGravity.BOTTOM,
-                          //     timeInSecForIosWeb: 3,
-                          //     backgroundColor: Colors.red,
-                          //     textColor: Colors.white,
-                          //     msg: res_data["body"]["resM"],
-                          //   );
-                          // }
+                          if (resData["statusCode"] == 200) {
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (builder) => MyMusic()));
+                            Fluttertoast.showToast(
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 3,
+                              backgroundColor: Colors.green,
+                              textColor: Colors.white,
+                              msg: resData["body"]["resM"],
+                            );
+                          } else {
+                            Fluttertoast.showToast(
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 3,
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white,
+                              msg: resData["body"]["resM"],
+                            );
+                          }
                         }
-                        // _songForm.currentContext!.save();
                       },
                       child: Text('Edit Album Image'),
                     ),
