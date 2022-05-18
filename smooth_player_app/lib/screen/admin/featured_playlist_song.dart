@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_player_app/api/http/featured_song_http.dart';
 import 'package:smooth_player_app/api/res/featured_song_res.dart';
@@ -5,40 +8,42 @@ import 'package:smooth_player_app/api/res/song_res.dart';
 import 'package:smooth_player_app/api/urls.dart';
 import 'package:smooth_player_app/colors.dart';
 import 'package:smooth_player_app/player.dart';
-import 'package:smooth_player_app/screen/upload/upload_album_song.dart';
+import 'package:smooth_player_app/screen/admin/create_featured_song.dart';
 import 'package:smooth_player_app/widget/admin_navigator.dart';
 import 'package:smooth_player_app/widget/song_bar.dart';
-
 
 class FeaturedPlaylistSong extends StatefulWidget {
   final String? featuredPlaylistId;
   final String? title;
   final String? featuredPlaylistImage;
   final int? pageIndex;
-  const FeaturedPlaylistSong(
-      {Key? key,
-      @required this.featuredPlaylistId,
-      @required this.title,
-      @required this.featuredPlaylistImage,
-      @required this.pageIndex})
-      : super(key: key);
+  const FeaturedPlaylistSong({
+    Key? key,
+    @required this.featuredPlaylistId,
+    @required this.title,
+    @required this.featuredPlaylistImage,
+    @required this.pageIndex,
+  }) : super(key: key);
 
   @override
   State<FeaturedPlaylistSong> createState() => _FeaturedPlaylistSongState();
 }
 
 class _FeaturedPlaylistSongState extends State<FeaturedPlaylistSong> {
+  final AudioPlayer player = Player.player;
   Song? song = Player.playingSong;
   final coverImage = ApiUrls.coverImageUrl;
-  final featuredplaylistImage = ApiUrls.featuredPlaylistUrl;
-
+  final featuredPlaylistUrl = ApiUrls.featuredPlaylistUrl;
 
   late Future<List<FeaturedSong>> featuredPlaylistSongs;
 
-  late List<Song> songs;
+  List<Song> songs = [];
+
+  late StreamSubscription stateSub;
 
   Future<List<FeaturedSong>> viewSongs() async {
-    List<FeaturedSong> resData = await FeaturedSongHttp().getFeaturedSongs(widget.featuredPlaylistId!);
+    List<FeaturedSong> resData =
+        await FeaturedSongHttp().getFeaturedSongs(widget.featuredPlaylistId!);
     return resData;
   }
 
@@ -52,14 +57,27 @@ class _FeaturedPlaylistSongState extends State<FeaturedPlaylistSong> {
       }
     });
 
-    featuredPlaylistSongs = FeaturedSongHttp().getFeaturedSongs(widget.featuredPlaylistId!);
+    featuredPlaylistSongs =
+        FeaturedSongHttp().getFeaturedSongs(widget.featuredPlaylistId!);
+
+    stateSub = player.onPlayerStateChanged.listen((state) {
+      setState(() {
+        song = Player.playingSong;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    stateSub.cancel();
   }
 
   @override
   Widget build(BuildContext context) {
     final sWidth = MediaQuery.of(context).size.width;
     final sHeight = MediaQuery.of(context).size.height;
-    
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -106,7 +124,7 @@ class _FeaturedPlaylistSongState extends State<FeaturedPlaylistSong> {
                       height: sHeight * .3,
                       fit: BoxFit.cover,
                       image: NetworkImage(
-                        featuredplaylistImage + widget.featuredPlaylistImage!,
+                        featuredPlaylistUrl + widget.featuredPlaylistImage!,
                       ),
                     ),
                   ),
@@ -138,14 +156,25 @@ class _FeaturedPlaylistSongState extends State<FeaturedPlaylistSong> {
                   ),
                   ElevatedButton(
                     onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (builder) => CreateFeaturedSong(
+                            featuredPlaylistId: widget.featuredPlaylistId,
+                            title: widget.title,
+                            featuredPlaylistImage: widget.featuredPlaylistImage,
+                            pageIndex: widget.pageIndex,
+                          ),
+                        ),
+                      );
                     },
                     child: Icon(
-                      Icons.upload_rounded,
+                      Icons.add,
                       color: Colors.white,
                       size: 30,
                     ),
                     style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.all(5),
+                      padding: EdgeInsets.all(2),
                       minimumSize: Size.zero,
                       primary: AppColors.primary,
                       elevation: 10,
@@ -182,8 +211,10 @@ class _FeaturedPlaylistSongState extends State<FeaturedPlaylistSong> {
                                 id: snapshot.data![index].song!.id!,
                                 title: snapshot.data![index].song!.title!,
                                 album: snapshot.data![index].song!.album!,
-                                music_file: snapshot.data![index].song!.music_file!,
-                                cover_image: snapshot.data![index].song!.cover_image!,
+                                music_file:
+                                    snapshot.data![index].song!.music_file!,
+                                cover_image:
+                                    snapshot.data![index].song!.cover_image!,
                                 like: snapshot.data![index].song!.like!,
                               );
 
@@ -244,8 +275,8 @@ class _FeaturedPlaylistSongState extends State<FeaturedPlaylistSong> {
                                               fit: BoxFit.cover,
                                               image: NetworkImage(
                                                 coverImage +
-                                                    snapshot.data![index].
-                                                        song!.cover_image!,
+                                                    snapshot.data![index].song!
+                                                        .cover_image!,
                                               ),
                                             ),
                                           ),
@@ -255,21 +286,58 @@ class _FeaturedPlaylistSongState extends State<FeaturedPlaylistSong> {
                                         ),
                                         SizedBox(
                                           width: sWidth * .35,
-                                          child: Text(
-                                            snapshot.data![index].song!.title!,
-                                            overflow: TextOverflow.fade,
-                                            softWrap: false,
-                                            style: TextStyle(
-                                              fontSize: 15,
-                                              color: Player.playingSong != null
-                                                  ? Player.playingSong!.id ==
-                                                          snapshot
-                                                              .data![index].song!.id!
-                                                      ? AppColors.primary
-                                                      : Colors.black
-                                                  : Colors.black,
-                                              fontWeight: FontWeight.bold,
-                                            ),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                snapshot
+                                                    .data![index].song!.title!,
+                                                overflow: TextOverflow.fade,
+                                                softWrap: false,
+                                                style: TextStyle(
+                                                  fontSize: 15,
+                                                  color: Player.playingSong !=
+                                                          null
+                                                      ? Player.playingSong!
+                                                                  .id ==
+                                                              snapshot
+                                                                  .data![index]
+                                                                  .song!
+                                                                  .id!
+                                                          ? AppColors.primary
+                                                          : Colors.black
+                                                      : Colors.black,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 5,
+                                              ),
+                                              Text(
+                                                snapshot
+                                                    .data![index]
+                                                    .song!
+                                                    .album!
+                                                    .artist!
+                                                    .profile_name!,
+                                                overflow: TextOverflow.fade,
+                                                softWrap: false,
+                                                style: TextStyle(
+                                                  color: Player.playingSong !=
+                                                          null
+                                                      ? Player.playingSong!
+                                                                  .id ==
+                                                              snapshot
+                                                                  .data![index]
+                                                                  .song!
+                                                                  .id!
+                                                          ? AppColors.primary
+                                                          : Colors.black
+                                                      : Colors.black,
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ],
@@ -279,7 +347,8 @@ class _FeaturedPlaylistSongState extends State<FeaturedPlaylistSong> {
                                         Icon(
                                           Icons.favorite,
                                           color:
-                                              Color.fromARGB(255, 221, 14, 14),
+                                              AppColors.primary,
+                                          size: 18,
                                         ),
                                         SizedBox(
                                           width: 5,
@@ -298,10 +367,10 @@ class _FeaturedPlaylistSongState extends State<FeaturedPlaylistSong> {
                                     IconButton(
                                       constraints: BoxConstraints(),
                                       padding: EdgeInsets.zero,
-                                      onPressed: () {
-                                      },
+                                      onPressed: () {},
                                       icon: Icon(
-                                        Icons.delete_rounded,
+                                        Icons.remove_circle,
+                                        color: Colors.red,
                                       ),
                                     ),
                                   ],

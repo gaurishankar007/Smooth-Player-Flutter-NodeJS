@@ -69,21 +69,14 @@ class _SongBarState extends State<SongBar> {
           padding: EdgeInsets.all(4),
           height: 60,
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: const [
-                Color(0XFF36D1DC),
-                Color(0XFF5B86E5),
-              ],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
+            color: Color(0XFF5B86E5),
             borderRadius: BorderRadius.circular(8),
             boxShadow: const [
               BoxShadow(
                 color: Colors.black12,
-                spreadRadius: 1,
+                spreadRadius: 2,
                 blurRadius: 5,
-                offset: Offset(0, -2),
+                offset: Offset(0, -5),
               )
             ],
           ),

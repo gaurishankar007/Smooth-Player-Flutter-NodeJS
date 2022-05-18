@@ -7,7 +7,6 @@ import 'package:smooth_player_app/colors.dart';
 import 'package:smooth_player_app/screen/my_music.dart';
 
 import '../../api/http/album_http.dart';
-import '../../api/model/album_model.dart';
 
 class EditAlbum extends StatefulWidget {
   final String? albumId;
