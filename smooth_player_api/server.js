@@ -3,9 +3,9 @@ const app = express();
 const cors = require("cors");
 
 app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 app.use(cors());
-app.use(express.static(__dirname+"/upload"))
+app.use(express.static(__dirname + "/upload"));
 
 require("./database/connectDB");
 
@@ -21,4 +21,9 @@ app.use(songRoute);
 const featuredPlaylistRoute = require("./router/featuredPlaylistRoute");
 app.use(featuredPlaylistRoute);
 
-app.listen(8080, ()=> {console.log("Server running on port: 8080...")});
+const featuredSongRoute = require("./router/featuredSongRoute");
+app.use(featuredSongRoute);
+
+app.listen(8080, () => {
+  console.log("Server running on port: 8080...");
+});

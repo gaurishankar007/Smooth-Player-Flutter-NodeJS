@@ -1,18 +1,16 @@
 import 'dart:async';
-import 'dart:ffi';
-
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_player_app/api/http/featured_playlist_http.dart';
 import 'package:smooth_player_app/api/res/featured_playlist_res.dart';
 import 'package:smooth_player_app/screen/admin/create_featured_playlist.dart';
+import 'package:smooth_player_app/screen/admin/featured_playlist_song.dart';
 import 'package:smooth_player_app/widget/admin_navigator.dart';
 
 import '../../api/urls.dart';
 import '../../colors.dart';
 import '../../player.dart';
 import '../../widget/song_bar.dart';
-import '../setting.dart';
 
 class FeaturedPlaylistView extends StatefulWidget {
   const FeaturedPlaylistView({Key? key}) : super(key: key);
@@ -23,7 +21,7 @@ class FeaturedPlaylistView extends StatefulWidget {
 
 class _FeaturedPlaylistViewState extends State<FeaturedPlaylistView> {
   final AudioPlayer player = Player.player;
-  final featuredplaylist_image = ApiUrls.featuredPlaylistUrl;
+  final featuredplaylistImage = ApiUrls.featuredPlaylistUrl;
   int curTime = DateTime.now().hour;
   String greeting = "Smooth Player";
 
@@ -169,7 +167,7 @@ class _FeaturedPlaylistViewState extends State<FeaturedPlaylistView> {
                                 builder: (ctx) => AlertDialog(
                                   title: Text(snapshot.data![index].title!),
                                   content: Text(
-                                      "Are you sure you want to delete this album?"),
+                                      "Are you sure you want to delete this Featured Playlist ?"),
                                   actions: <Widget>[
                                     ElevatedButton(
                                       style: ElevatedButton.styleFrom(
@@ -221,18 +219,18 @@ class _FeaturedPlaylistViewState extends State<FeaturedPlaylistView> {
                               );
                             },
                             onTap: () {
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //     builder: (builder) => AlbumView(
-                              //       albumId: snapshot.data![index].id,
-                              //       title: snapshot.data![index].title!,
-                              //       album_image:
-                              //           snapshot.data![index].album_image,
-                              //       pageIndex: 3,
-                              //     ),
-                              //   ),
-                              // );
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (builder) => FeaturedPlaylistSong(
+                                    featuredPlaylistId: snapshot.data![index].id,
+                                    title: snapshot.data![index].title!,
+                                    featuredPlaylistImage:
+                                        snapshot.data![index].featured_playlist_image,
+                                    pageIndex: 0,
+                                  ),
+                                ),
+                              );
                             },
                             child: Stack(
                               alignment: Alignment.center,
@@ -258,7 +256,7 @@ class _FeaturedPlaylistViewState extends State<FeaturedPlaylistView> {
                                           width: sWidth * 0.44,
                                           fit: BoxFit.cover,
                                           image: NetworkImage(
-                                            featuredplaylist_image +
+                                            featuredplaylistImage +
                                                 snapshot.data![index]
                                                     .featured_playlist_image!,
                                           ),
