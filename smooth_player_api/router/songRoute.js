@@ -80,7 +80,7 @@ router.post("/upload/singleSong", auth.verifyUser, musicFile.array('song_file', 
 });
 
 router.post("/view/song", auth.verifyUser, async (req, res)=> {
-    const songs = await song.find({album: req.body.albumId}).populate("album");
+    const songs = await song.find({album: req.body.albumId}).populate("album").sort({created_at: -1});
     const songs1 = await song.populate(songs, {
         path: "album.artist",
         select: "profile_name"

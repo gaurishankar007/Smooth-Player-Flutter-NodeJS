@@ -29,7 +29,7 @@ router.post("/upload/featuredPlaylist", auth.verifyAdmin, featuredPlaylistUpload
 });
 
 router.get("/view/featuredPlaylist", auth.verifyAdmin, async (req, res)=> {
-    const featuredPlaylists = await featuredPlaylist.find();
+    const featuredPlaylists = await featuredPlaylist.find().sort({created_at: -1});
     res.send(featuredPlaylists);
 });
 

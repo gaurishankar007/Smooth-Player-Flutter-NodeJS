@@ -9,7 +9,17 @@ import '../../player.dart';
 import '../../widget/song_bar.dart';
 
 class CreateFeaturedSong extends StatefulWidget {
-  const CreateFeaturedSong({Key? key}) : super(key: key);
+    final String? featuredPlaylistId;
+  final String? title;
+  final String? featuredPlaylistImage;
+  final int? pageIndex;
+  const CreateFeaturedSong(
+      {Key? key,
+      @required this.featuredPlaylistId,
+      @required this.title,
+      @required this.featuredPlaylistImage,
+      @required this.pageIndex})
+      : super(key: key);
 
   @override
   State<CreateFeaturedSong> createState() => _CreateFeaturedSongState();
