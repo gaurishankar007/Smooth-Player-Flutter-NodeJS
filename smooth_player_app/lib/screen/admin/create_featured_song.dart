@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:smooth_player_app/api/http/featured_song_http.dart';
+import 'package:smooth_player_app/screen/admin/featured_playlist_song.dart';
 
 import '../../api/http/song_http.dart';
 import '../../api/res/song_res.dart';
@@ -9,17 +11,17 @@ import '../../player.dart';
 import '../../widget/song_bar.dart';
 
 class CreateFeaturedSong extends StatefulWidget {
-    final String? featuredPlaylistId;
+  final String? featuredPlaylistId;
   final String? title;
   final String? featuredPlaylistImage;
   final int? pageIndex;
-  const CreateFeaturedSong(
-      {Key? key,
-      @required this.featuredPlaylistId,
-      @required this.title,
-      @required this.featuredPlaylistImage,
-      @required this.pageIndex})
-      : super(key: key);
+  const CreateFeaturedSong({
+    Key? key,
+    @required this.featuredPlaylistId,
+    @required this.title,
+    @required this.featuredPlaylistImage,
+    @required this.pageIndex,
+  }) : super(key: key);
 
   @override
   State<CreateFeaturedSong> createState() => _CreateFeaturedSongState();
@@ -455,7 +457,36 @@ class _CreateFeaturedSongState extends State<CreateFeaturedSong> {
                     ? Column(
                         children: [
                           ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () async {
+                              final resData = await FeaturedSongHttp()
+                                  .addFeaturedSongs(widget.featuredPlaylistId!,
+                                      selectedSongsId);
+                              if (resData["statusCode"] == 201) {
+                                Navigator.pop(context);
+                                Navigator.pop(context);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (builder) => FeaturedPlaylistSong(
+                                      featuredPlaylistId:
+                                          widget.featuredPlaylistId,
+                                      title: widget.title,
+                                      featuredPlaylistImage:
+                                          widget.featuredPlaylistImage,
+                                      pageIndex: widget.pageIndex,
+                                    ),
+                                  ),
+                                );
+                                Fluttertoast.showToast(
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                  timeInSecForIosWeb: 3,
+                                  backgroundColor: Colors.green,
+                                  textColor: Colors.white,
+                                  msg: resData["body"]["resM"],
+                                );
+                              }
+                            },
                             child: Text("Upload Selected Songs"),
                             style: ElevatedButton.styleFrom(
                               primary: AppColors.primary,

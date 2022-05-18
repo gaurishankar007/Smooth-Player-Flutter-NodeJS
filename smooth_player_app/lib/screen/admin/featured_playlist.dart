@@ -11,6 +11,7 @@ import '../../api/urls.dart';
 import '../../colors.dart';
 import '../../player.dart';
 import '../../widget/song_bar.dart';
+import '../setting.dart';
 
 class FeaturedPlaylistView extends StatefulWidget {
   const FeaturedPlaylistView({Key? key}) : super(key: key);
@@ -21,11 +22,11 @@ class FeaturedPlaylistView extends StatefulWidget {
 
 class _FeaturedPlaylistViewState extends State<FeaturedPlaylistView> {
   final AudioPlayer player = Player.player;
-  final featuredplaylistImage = ApiUrls.featuredPlaylistUrl;
+  final featuredPlaylistImage = ApiUrls.featuredPlaylistUrl;
   int curTime = DateTime.now().hour;
   String greeting = "Smooth Player";
 
-  late Future<List<FeaturedPlaylist>> featuredplaylist;
+  late Future<List<FeaturedPlaylist>> featuredPlaylist;
 
   late StreamSubscription stateSub;
 
@@ -42,7 +43,7 @@ class _FeaturedPlaylistViewState extends State<FeaturedPlaylistView> {
       greeting = "Good Evening";
     }
 
-    featuredplaylist = FeaturedPlaylistHttp().getFeaturedPlaylist();
+    featuredPlaylist = FeaturedPlaylistHttp().getFeaturedPlaylist();
 
     stateSub = player.onAudioPositionChanged.listen((state) {
       setState(() {
@@ -57,7 +58,6 @@ class _FeaturedPlaylistViewState extends State<FeaturedPlaylistView> {
     stateSub.cancel();
   }
 
-
   OutlineInputBorder formBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(5),
     borderSide: BorderSide(
@@ -66,6 +66,7 @@ class _FeaturedPlaylistViewState extends State<FeaturedPlaylistView> {
       style: BorderStyle.solid,
     ),
   );
+  
   @override
   Widget build(BuildContext context) {
     final sWidth = MediaQuery.of(context).size.width;
@@ -76,74 +77,105 @@ class _FeaturedPlaylistViewState extends State<FeaturedPlaylistView> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(
-                height: sHeight * .01,
-              ),
               Padding(
                 padding: EdgeInsets.symmetric(
-                    horizontal: sWidth * 0.03, vertical: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  horizontal: sWidth * 0.03,
+                  vertical: 10,
+                ),
+                child: Column(
                   children: [
-                    SizedBox(
-                      width: sWidth * .75,
-                      height: 50,
-                      child: TextFormField(
-                          key: ValueKey("album_title"),
-                          onChanged: ((value) {
-                            if (value.isEmpty) {
-                              setState(() {
-                                featuredplaylist = FeaturedPlaylistHttp()
-                                    .getFeaturedPlaylist();
-                              });
-                            }
-                            else{
-                              setState(() {
-                                featuredplaylist = FeaturedPlaylistHttp()
-                                    .searchPlaylist(value);
-
-                              });
-                            }
-
-                          }),
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: AppColors.form,
-                            hintText: "Search Playlist",
-                            enabledBorder: formBorder,
-                            focusedBorder: formBorder,
-                            errorBorder: formBorder,
-                            focusedErrorBorder: formBorder,
-                          )),
-                    ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: Size.zero,
-                        padding: EdgeInsets.all(4.0),
-                        primary: AppColors.primary,
-                        elevation: 10,
-                        shadowColor: Colors.black,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          greeting,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    CreateFeaturedPlaylist()));
-                      },
-                      child: Icon(Icons.add, size: 25, )
+                        IconButton(
+                          constraints: BoxConstraints(),
+                          padding: EdgeInsets.zero,
+                          icon: Icon(
+                            Icons.settings,
+                            color: AppColors.primary,
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (builder) => Setting(),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                          width: sWidth * .75,
+                          height: 50,
+                          child: TextFormField(
+                              key: ValueKey("album_title"),
+                              onChanged: ((value) {
+                                if (value.isEmpty) {
+                                  setState(() {
+                                    featuredPlaylist = FeaturedPlaylistHttp()
+                                        .getFeaturedPlaylist();
+                                  });
+                                } else {
+                                  setState(() {
+                                    featuredPlaylist = FeaturedPlaylistHttp()
+                                        .searchPlaylist(value);
+                                  });
+                                }
+                              }),
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: AppColors.form,
+                                hintText: "Search Playlist",
+                                enabledBorder: formBorder,
+                                focusedBorder: formBorder,
+                                errorBorder: formBorder,
+                                focusedErrorBorder: formBorder,
+                              )),
+                        ),
+                        ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: Size.zero,
+                              padding: EdgeInsets.all(4.0),
+                              primary: AppColors.primary,
+                              elevation: 10,
+                              shadowColor: Colors.black,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          CreateFeaturedPlaylist()));
+                            },
+                            child: Icon(
+                              Icons.add,
+                              size: 25,
+                            )),
+                      ],
                     ),
                   ],
                 ),
               ),
-              SizedBox(
-                height: sHeight * .01,
-              ),
               FutureBuilder<List<FeaturedPlaylist>>(
-                future: featuredplaylist,
+                future: featuredPlaylist,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     return GridView.count(
@@ -223,10 +255,11 @@ class _FeaturedPlaylistViewState extends State<FeaturedPlaylistView> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (builder) => FeaturedPlaylistSong(
-                                    featuredPlaylistId: snapshot.data![index].id,
+                                    featuredPlaylistId:
+                                        snapshot.data![index].id,
                                     title: snapshot.data![index].title!,
-                                    featuredPlaylistImage:
-                                        snapshot.data![index].featured_playlist_image,
+                                    featuredPlaylistImage: snapshot
+                                        .data![index].featured_playlist_image,
                                     pageIndex: 0,
                                   ),
                                 ),
@@ -256,7 +289,7 @@ class _FeaturedPlaylistViewState extends State<FeaturedPlaylistView> {
                                           width: sWidth * 0.44,
                                           fit: BoxFit.cover,
                                           image: NetworkImage(
-                                            featuredplaylistImage +
+                                            featuredPlaylistImage +
                                                 snapshot.data![index]
                                                     .featured_playlist_image!,
                                           ),

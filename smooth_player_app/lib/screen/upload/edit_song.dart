@@ -29,8 +29,6 @@ class EditSong extends StatefulWidget {
 class _EditSongState extends State<EditSong> {
   final _songForm = GlobalKey<FormState>();
 
-  // final double height = MediaQuery.of(context).size.height
-
   File? _image;
   String title = "";
 

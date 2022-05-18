@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:smooth_player_app/colors.dart';
@@ -29,12 +32,15 @@ class AlbumView extends StatefulWidget {
 }
 
 class _AlbumViewState extends State<AlbumView> {
+  final AudioPlayer player = Player.player;
   Song? song = Player.playingSong;
   final coverImage = ApiUrls.coverImageUrl;
 
   late Future<List<Song>> albumSongs;
 
-  late List<Song> songs;
+  List<Song> songs = [];
+
+  late StreamSubscription stateSub;
 
   Future<List<Song>> viewSongs() async {
     List<Song> resData = await SongHttp().getSongs(widget.albumId!);
@@ -46,19 +52,29 @@ class _AlbumViewState extends State<AlbumView> {
     super.initState();
 
     viewSongs().then((value) {
-      setState(() {
-        songs = value;
-      });
+      songs = value;
     });
 
     albumSongs = SongHttp().getSongs(widget.albumId!);
+
+    stateSub = player.onPlayerStateChanged.listen((state) {
+      setState(() {
+        song = Player.playingSong;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    stateSub.cancel();
   }
 
   @override
   Widget build(BuildContext context) {
     final sWidth = MediaQuery.of(context).size.width;
     final sHeight = MediaQuery.of(context).size.height;
-    
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -288,8 +304,8 @@ class _AlbumViewState extends State<AlbumView> {
                                       children: [
                                         Icon(
                                           Icons.favorite,
-                                          color:
-                                              Color.fromARGB(255, 221, 14, 14),
+                                          color: AppColors.primary,
+                                          size: 18,
                                         ),
                                         SizedBox(
                                           width: 5,
@@ -393,10 +409,13 @@ class _AlbumViewState extends State<AlbumView> {
                                                             EditSong(
                                                           songId: snapshot
                                                               .data![index].id,
-                                                              albumId: widget.albumId,
-                                                              title: widget.title,
-                                                              albumImage: widget.albumImage,
-                                                              pageIndex: widget.pageIndex,
+                                                          albumId:
+                                                              widget.albumId,
+                                                          title: widget.title,
+                                                          albumImage:
+                                                              widget.albumImage,
+                                                          pageIndex:
+                                                              widget.pageIndex,
                                                         ),
                                                       ),
                                                     );

@@ -32,7 +32,6 @@ class _SettingState extends State<Setting> {
         actions: [
           IconButton(
             onPressed: () {
-              Player().stopSong();
               LogStatus().removeToken();
               LogStatus.token = "";
               Navigator.pushNamedAndRemoveUntil(
@@ -40,6 +39,7 @@ class _SettingState extends State<Setting> {
                 "login",
                 (route) => false,
               );
+              Player().stopSong();
             },
             icon: Icon(
               Icons.logout_outlined,
