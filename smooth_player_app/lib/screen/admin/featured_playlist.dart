@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:smooth_player_app/api/http/featured_playlist_http.dart';
 import 'package:smooth_player_app/api/res/featured_playlist_res.dart';
 import 'package:smooth_player_app/screen/admin/create_featured_playlist.dart';
@@ -199,7 +200,7 @@ class _FeaturedPlaylistViewState extends State<FeaturedPlaylistView> {
                                 builder: (ctx) => AlertDialog(
                                   title: Text(snapshot.data![index].title!),
                                   content: Text(
-                                      "Are you sure you want to delete this Featured Playlist ?"),
+                                      "Are you sure you want to delete this featured playlist ?"),
                                   actions: <Widget>[
                                     ElevatedButton(
                                       style: ElevatedButton.styleFrom(
@@ -212,22 +213,22 @@ class _FeaturedPlaylistViewState extends State<FeaturedPlaylistView> {
                                         ),
                                       ),
                                       onPressed: () async {
-                                        // await Feature().deleteAlbum(
-                                        //     snapshot.data![index].id!);
-                                        // Navigator.pop(context);
-                                        // setState(() {
-                                        //   albums = AlbumHttp().getAlbums();
-                                        // });
-                                        // Fluttertoast.showToast(
-                                        //   msg: snapshot.data![index].title! +
-                                        //       " album has been deleted",
-                                        //   toastLength: Toast.LENGTH_SHORT,
-                                        //   gravity: ToastGravity.BOTTOM,
-                                        //   timeInSecForIosWeb: 3,
-                                        //   backgroundColor: Colors.red,
-                                        //   textColor: Colors.white,
-                                        //   fontSize: 16.0,
-                                        // );
+                                        await FeaturedPlaylistHttp().deleteFeaturedPlaylist(
+                                            snapshot.data![index].id!);
+                                        Navigator.pop(context);
+                                        setState(() {
+                                          featuredPlaylist = FeaturedPlaylistHttp().getFeaturedPlaylist();
+                                        });
+                                        Fluttertoast.showToast(
+                                          msg: snapshot.data![index].title! +
+                                              " featured playlist has been deleted",
+                                          toastLength: Toast.LENGTH_SHORT,
+                                          gravity: ToastGravity.BOTTOM,
+                                          timeInSecForIosWeb: 3,
+                                          backgroundColor: Colors.red,
+                                          textColor: Colors.white,
+                                          fontSize: 16.0,
+                                        );
                                       },
                                       child: Text("Delete"),
                                     ),

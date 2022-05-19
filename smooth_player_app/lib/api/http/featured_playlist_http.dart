@@ -71,17 +71,17 @@ class FeaturedPlaylistHttp {
     };
   }
 
-  // Future<Map> deleteAlbum(String albumId) async {
-  //   final bearerToken = {
-  //     HttpHeaders.authorizationHeader: 'Bearer $token',
-  //   };
-  //   final response = await delete(Uri.parse(routeUrl + "delete/album"),
-  //       body: {"albumId": albumId}, headers: bearerToken);
+Future<Map> deleteFeaturedPlaylist(String featuredPlaylistId) async {
+    final bearerToken = {
+      HttpHeaders.authorizationHeader: 'Bearer $token',
+    };
+    
+    final response = await delete(Uri.parse(routeUrl + "delete/featuredPlaylist"),
+        body: {"featuredPlaylistId": featuredPlaylistId}, headers: bearerToken);
 
-  //   final responseData = jsonDecode(response.body);
-
-  //   return responseData;
-  // }
+    final responseData = jsonDecode(response.body);
+    return responseData;
+  }
 
   Future<List<FeaturedPlaylist>> searchPlaylist(String title) async {
     final response = await post(
