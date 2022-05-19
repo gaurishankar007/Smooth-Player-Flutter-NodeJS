@@ -1,7 +1,7 @@
 import 'dart:async';
-
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:smooth_player_app/api/http/featured_song_http.dart';
 import 'package:smooth_player_app/api/res/featured_song_res.dart';
 import 'package:smooth_player_app/api/res/song_res.dart';
@@ -346,8 +346,7 @@ class _FeaturedPlaylistSongState extends State<FeaturedPlaylistSong> {
                                       children: [
                                         Icon(
                                           Icons.favorite,
-                                          color:
-                                              AppColors.primary,
+                                          color: AppColors.primary,
                                           size: 18,
                                         ),
                                         SizedBox(
@@ -367,7 +366,75 @@ class _FeaturedPlaylistSongState extends State<FeaturedPlaylistSong> {
                                     IconButton(
                                       constraints: BoxConstraints(),
                                       padding: EdgeInsets.zero,
-                                      onPressed: () {},
+                                      onPressed: () async {
+                                        showDialog(
+                                          context: context,
+                                          builder: (ctx) => AlertDialog(
+                                            title: Text("Delete " +
+                                                snapshot
+                                                    .data![index].song!.title!),
+                                            content: Text(
+                                                "Are you sure you want to delete this featured song? "),
+                                            actions: <Widget>[
+                                              ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  primary: Colors.red,
+                                                  elevation: 10,
+                                                  shadowColor: Colors.black,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15),
+                                                  ),
+                                                ),
+                                                onPressed: () async {
+                                                  await FeaturedSongHttp()
+                                                      .deleteFeaturedSong(
+                                                          snapshot.data![index]
+                                                              .id!);
+                                                  Navigator.pop(context);
+                                                  setState(() {
+                                                    featuredPlaylistSongs =
+                                                        FeaturedSongHttp()
+                                                            .getFeaturedSongs(widget
+                                                                .featuredPlaylistId!);
+                                                  });
+                                                  Fluttertoast.showToast(
+                                                    msg: snapshot.data![index]
+                                                            .song!.title! +
+                                                        " featured song has been removed from the featured playlist",
+                                                    toastLength:
+                                                        Toast.LENGTH_SHORT,
+                                                    gravity:
+                                                        ToastGravity.BOTTOM,
+                                                    timeInSecForIosWeb: 3,
+                                                    backgroundColor: Colors.red,
+                                                    textColor: Colors.white,
+                                                    fontSize: 16.0,
+                                                  );
+                                                },
+                                                child: Text("Delete"),
+                                              ),
+                                              ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  primary: AppColors.primary,
+                                                  elevation: 10,
+                                                  shadowColor: Colors.black,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15),
+                                                  ),
+                                                ),
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text("Cancel"),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      },
                                       icon: Icon(
                                         Icons.remove_circle,
                                         color: Colors.red,

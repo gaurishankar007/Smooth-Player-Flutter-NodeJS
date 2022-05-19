@@ -48,4 +48,16 @@ class FeaturedSongHttp {
       "body": jsonDecode(response.body) as Map,
     };
   }
+
+  Future<Map> deleteFeaturedSong(String featuredSongId) async {
+    final bearerToken = {
+      HttpHeaders.authorizationHeader: 'Bearer $token',
+    };
+    
+    final response = await delete(Uri.parse(routeUrl + "delete/featuredPlaylistSong"),
+        body: {"featuredSongId": featuredSongId}, headers: bearerToken);
+
+    final responseData = jsonDecode(response.body);
+    return responseData;
+  }
 }
