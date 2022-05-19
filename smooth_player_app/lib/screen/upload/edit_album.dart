@@ -142,7 +142,7 @@ class _EditAlbumState extends State<EditAlbum> {
                   height: screenHight * .040,
                 ),
                 TextFormField(
-                  key: ValueKey("album_title"),
+                  key: ValueKey("albumTitle"),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return "Album title is required";
