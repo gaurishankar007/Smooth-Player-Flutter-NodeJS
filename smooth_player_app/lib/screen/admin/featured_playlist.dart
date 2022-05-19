@@ -124,7 +124,6 @@ class _FeaturedPlaylistViewState extends State<FeaturedPlaylistView> {
                           width: sWidth * .75,
                           height: 50,
                           child: TextFormField(
-                              key: ValueKey("album_title"),
                               onChanged: ((value) {
                                 if (value.isEmpty) {
                                   setState(() {
