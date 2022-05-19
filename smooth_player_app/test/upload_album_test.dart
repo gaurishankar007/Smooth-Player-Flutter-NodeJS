@@ -5,11 +5,11 @@ import 'package:smooth_player_app/screen/upload/upload_album.dart';
 void main() {
   testWidgets("Album Form", (WidgetTester tester) async {
     // Finding the required widgets
-    final album_title = find.byKey(ValueKey("album_title"));
+    final albumTitle = find.byKey(ValueKey("album_title"));
 
     // Executing the actual test
     await tester.pumpWidget(MaterialApp(home: UploadAlbum()));
-    await tester.enterText(album_title, "Boy");
+    await tester.enterText(albumTitle, "Boy");
     await tester.pump();
 
     // Checking outputs

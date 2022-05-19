@@ -5,11 +5,11 @@ import 'package:smooth_player_app/screen/upload/upload_song.dart';
 void main() {
   testWidgets("Song Form", (WidgetTester tester) async {
     // Finding the required widgets
-    final song_title = find.byKey(ValueKey("song_title"));
+    final songTitle = find.byKey(ValueKey("song_title"));
 
     // Executing the actual test
     await tester.pumpWidget(MaterialApp(home: UploadSong()));
-    await tester.enterText(song_title, "mero desh");
+    await tester.enterText(songTitle, "mero desh");
     final eleBtn = find.byType(ElevatedButton);  
     await tester.pump();
 
