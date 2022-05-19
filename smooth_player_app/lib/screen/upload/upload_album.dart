@@ -54,7 +54,7 @@ class _UploadAlbumState extends State<UploadAlbum> {
         appBar: AppBar(
           title: Text(
             "Upload an Album",
-            style: TextStyle(color: Colors.black),
+            style: TextStyle(color: AppColors.text),
           ),
           centerTitle: true,
           leading: IconButton(

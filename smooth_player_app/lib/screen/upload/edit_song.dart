@@ -64,7 +64,7 @@ class _EditSongState extends State<EditSong> {
       appBar: AppBar(
         title: Text(
           "Edit a Song",
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: AppColors.text),
         ),
         centerTitle: true,
         leading: IconButton(

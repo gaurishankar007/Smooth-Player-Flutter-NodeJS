@@ -139,15 +139,16 @@ class _AlbumViewState extends State<AlbumView> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(
-                    width: sWidth * .5,
-                    child: Text(
-                      widget.title!,
-                      overflow: TextOverflow.fade,
-                      softWrap: false,
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 25,
+                    width: sWidth * .7,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Text(
+                        widget.title!,
+                        style: TextStyle(
+                          color: AppColors.text,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
                       ),
                     ),
                   ),
@@ -281,20 +282,25 @@ class _AlbumViewState extends State<AlbumView> {
                                         ),
                                         SizedBox(
                                           width: sWidth * .35,
-                                          child: Text(
-                                            snapshot.data![index].title!,
-                                            overflow: TextOverflow.fade,
-                                            softWrap: false,
-                                            style: TextStyle(
-                                              fontSize: 15,
-                                              color: Player.playingSong != null
-                                                  ? Player.playingSong!.id ==
-                                                          snapshot
-                                                              .data![index].id!
-                                                      ? AppColors.primary
-                                                      : Colors.black
-                                                  : Colors.black,
-                                              fontWeight: FontWeight.bold,
+                                          child: SingleChildScrollView(
+                                            scrollDirection: Axis.horizontal,
+                                            child: Text(
+                                              snapshot.data![index].title!,
+                                              overflow: TextOverflow.fade,
+                                              softWrap: false,
+                                              style: TextStyle(
+                                                fontSize: 15,
+                                                color: Player.playingSong !=
+                                                        null
+                                                    ? Player.playingSong!.id ==
+                                                            snapshot
+                                                                .data![index]
+                                                                .id!
+                                                        ? AppColors.primary
+                                                        : AppColors.text
+                                                    : AppColors.text,
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -316,7 +322,7 @@ class _AlbumViewState extends State<AlbumView> {
                                           overflow: TextOverflow.fade,
                                           softWrap: false,
                                           style: TextStyle(
-                                            color: Colors.black,
+                                            color: AppColors.text,
                                           ),
                                         ),
                                       ],

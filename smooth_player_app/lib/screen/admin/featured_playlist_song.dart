@@ -142,15 +142,16 @@ class _FeaturedPlaylistSongState extends State<FeaturedPlaylistSong> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(
-                    width: sWidth * .5,
-                    child: Text(
-                      widget.title!,
-                      overflow: TextOverflow.fade,
-                      softWrap: false,
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 25,
+                    width: sWidth * .7,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Text(
+                        widget.title!,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
                       ),
                     ),
                   ),
@@ -290,51 +291,61 @@ class _FeaturedPlaylistSongState extends State<FeaturedPlaylistSong> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Text(
-                                                snapshot
-                                                    .data![index].song!.title!,
-                                                overflow: TextOverflow.fade,
-                                                softWrap: false,
-                                                style: TextStyle(
-                                                  fontSize: 15,
-                                                  color: Player.playingSong !=
-                                                          null
-                                                      ? Player.playingSong!
-                                                                  .id ==
-                                                              snapshot
-                                                                  .data![index]
-                                                                  .song!
-                                                                  .id!
-                                                          ? AppColors.primary
-                                                          : Colors.black
-                                                      : Colors.black,
-                                                  fontWeight: FontWeight.bold,
+                                              SingleChildScrollView(
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                child: Text(
+                                                  snapshot.data![index].song!
+                                                      .title!,
+                                                  overflow: TextOverflow.fade,
+                                                  softWrap: false,
+                                                  style: TextStyle(
+                                                    fontSize: 15,
+                                                    color: Player.playingSong !=
+                                                            null
+                                                        ? Player.playingSong!
+                                                                    .id ==
+                                                                snapshot
+                                                                    .data![
+                                                                        index]
+                                                                    .song!
+                                                                    .id!
+                                                            ? AppColors.primary
+                                                            : AppColors.text
+                                                        : AppColors.text,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
                                                 ),
                                               ),
                                               SizedBox(
                                                 height: 5,
                                               ),
-                                              Text(
-                                                snapshot
-                                                    .data![index]
-                                                    .song!
-                                                    .album!
-                                                    .artist!
-                                                    .profile_name!,
-                                                overflow: TextOverflow.fade,
-                                                softWrap: false,
-                                                style: TextStyle(
-                                                  color: Player.playingSong !=
-                                                          null
-                                                      ? Player.playingSong!
-                                                                  .id ==
-                                                              snapshot
-                                                                  .data![index]
-                                                                  .song!
-                                                                  .id!
-                                                          ? AppColors.primary
-                                                          : Colors.black
-                                                      : Colors.black,
+                                              SingleChildScrollView(
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                child: Text(
+                                                  snapshot
+                                                      .data![index]
+                                                      .song!
+                                                      .album!
+                                                      .artist!
+                                                      .profile_name!,
+                                                  overflow: TextOverflow.fade,
+                                                  softWrap: false,
+                                                  style: TextStyle(
+                                                    color: Player.playingSong !=
+                                                            null
+                                                        ? Player.playingSong!
+                                                                    .id ==
+                                                                snapshot
+                                                                    .data![
+                                                                        index]
+                                                                    .song!
+                                                                    .id!
+                                                            ? AppColors.primary
+                                                            : AppColors.text
+                                                        : AppColors.text,
+                                                  ),
                                                 ),
                                               ),
                                             ],
@@ -358,7 +369,7 @@ class _FeaturedPlaylistSongState extends State<FeaturedPlaylistSong> {
                                           overflow: TextOverflow.fade,
                                           softWrap: false,
                                           style: TextStyle(
-                                            color: Colors.black,
+                                            color: AppColors.text,
                                           ),
                                         ),
                                       ],

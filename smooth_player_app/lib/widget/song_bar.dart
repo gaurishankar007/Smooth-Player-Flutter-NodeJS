@@ -117,22 +117,24 @@ class _SongBarState extends State<SongBar> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          songData!.title!,
-                          overflow: TextOverflow.fade,
-                          softWrap: false,
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Text(
+                            songData!.title!,
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                         SizedBox(
                           height: 5,
                         ),
-                        Text(
-                          songData!.album!.artist!.profile_name!,
-                          overflow: TextOverflow.fade,
-                          softWrap: false,
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Text(
+                            songData!.album!.artist!.profile_name!,
+                          ),
                         ),
                       ],
                     ),

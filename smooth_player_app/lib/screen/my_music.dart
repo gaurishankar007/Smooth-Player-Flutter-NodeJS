@@ -11,7 +11,6 @@ import 'package:smooth_player_app/screen/upload/upload_album.dart';
 import 'package:smooth_player_app/screen/upload/upload_song.dart';
 
 import '../api/http/album_http.dart';
-import '../api/log_status.dart';
 import '../api/res/album_res.dart';
 import '../player.dart';
 import '../widget/navigator.dart';
@@ -317,8 +316,11 @@ class _MyMusicState extends State<MyMusic> {
                                     ),
                                     Text(
                                       snapshot.data![index].title!,
+                                      overflow: TextOverflow.fade,
+                                      softWrap: false,
                                       style: TextStyle(
-                                        color: Color.fromARGB(255, 27, 11, 11),
+                                        color: AppColors.text,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                   ],

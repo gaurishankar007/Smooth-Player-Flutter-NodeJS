@@ -67,7 +67,7 @@ class _FeaturedPlaylistViewState extends State<FeaturedPlaylistView> {
       style: BorderStyle.solid,
     ),
   );
-  
+
   @override
   Widget build(BuildContext context) {
     final sWidth = MediaQuery.of(context).size.width;
@@ -212,11 +212,14 @@ class _FeaturedPlaylistViewState extends State<FeaturedPlaylistView> {
                                         ),
                                       ),
                                       onPressed: () async {
-                                        await FeaturedPlaylistHttp().deleteFeaturedPlaylist(
-                                            snapshot.data![index].id!);
+                                        await FeaturedPlaylistHttp()
+                                            .deleteFeaturedPlaylist(
+                                                snapshot.data![index].id!);
                                         Navigator.pop(context);
                                         setState(() {
-                                          featuredPlaylist = FeaturedPlaylistHttp().getFeaturedPlaylist();
+                                          featuredPlaylist =
+                                              FeaturedPlaylistHttp()
+                                                  .getFeaturedPlaylist();
                                         });
                                         Fluttertoast.showToast(
                                           msg: snapshot.data![index].title! +
@@ -301,8 +304,11 @@ class _FeaturedPlaylistViewState extends State<FeaturedPlaylistView> {
                                     ),
                                     Text(
                                       snapshot.data![index].title!,
+                                      overflow: TextOverflow.fade,
+                                      softWrap: false,
                                       style: TextStyle(
-                                        color: Color.fromARGB(255, 27, 11, 11),
+                                        color: Colors.black87,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                   ],

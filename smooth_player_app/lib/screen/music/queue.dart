@@ -62,7 +62,7 @@ class _SongQueueState extends State<SongQueue> {
           },
           icon: Icon(
             Icons.arrow_back,
-            color: Colors.black,
+            color: AppColors.text,
           ),
         ),
         elevation: 0,
@@ -80,7 +80,7 @@ class _SongQueueState extends State<SongQueue> {
                 "Now Playing",
                 style: TextStyle(
                   fontSize: 17,
-                  color: Colors.black,
+                  color: AppColors.text,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -130,25 +130,27 @@ class _SongQueueState extends State<SongQueue> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              song!.title!,
-                              overflow: TextOverflow.fade,
-                              softWrap: false,
-                              style: TextStyle(
-                                fontSize: 15,
-                                color: AppColors.primary,
-                                fontWeight: FontWeight.bold,
+                            SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Text(
+                                song!.title!,
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: AppColors.primary,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                             SizedBox(
                               height: 5,
                             ),
-                            Text(
-                              song!.album!.artist!.profile_name!,
-                              overflow: TextOverflow.fade,
-                              softWrap: false,
-                              style: TextStyle(
-                                color: AppColors.primary,
+                            SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Text(
+                                song!.album!.artist!.profile_name!,
+                                style: TextStyle(
+                                  color: AppColors.primary,
+                                ),
                               ),
                             ),
                           ],
@@ -181,7 +183,7 @@ class _SongQueueState extends State<SongQueue> {
                               "Next in Queue",
                               style: TextStyle(
                                 fontSize: 17,
-                                color: Colors.black,
+                                color: AppColors.text,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -253,27 +255,29 @@ class _SongQueueState extends State<SongQueue> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            Text(
-                                              songQueue[index].title!,
-                                              overflow: TextOverflow.fade,
-                                              softWrap: false,
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.bold,
+                                            SingleChildScrollView(
+                                              scrollDirection: Axis.horizontal,
+                                              child: Text(
+                                                songQueue[index].title!,
+                                                style: TextStyle(
+                                                  color: AppColors.text,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
                                               ),
                                             ),
                                             SizedBox(
                                               height: 5,
                                             ),
-                                            Text(
-                                              songQueue[index]
-                                                  .album!
-                                                  .artist!
-                                                  .profile_name!,
-                                              overflow: TextOverflow.fade,
-                                              softWrap: false,
-                                              style: TextStyle(
-                                                color: Colors.black,
+                                            SingleChildScrollView(
+                                              scrollDirection: Axis.horizontal,
+                                              child: Text(
+                                                songQueue[index]
+                                                    .album!
+                                                    .artist!
+                                                    .profile_name!,
+                                                style: TextStyle(
+                                                  color: AppColors.text,
+                                                ),
                                               ),
                                             ),
                                           ],
@@ -315,7 +319,7 @@ class _SongQueueState extends State<SongQueue> {
                 "Next From: " + song!.album!.title!,
                 style: TextStyle(
                   fontSize: 17,
-                  color: Colors.black,
+                  color: AppColors.text,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -367,27 +371,29 @@ class _SongQueueState extends State<SongQueue> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    nextSongs[index].title!,
-                                    overflow: TextOverflow.fade,
-                                    softWrap: false,
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
+                                  SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Text(
+                                      nextSongs[index].title!,
+                                      style: TextStyle(
+                                        color: AppColors.text,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
                                   SizedBox(
                                     height: 5,
                                   ),
-                                  Text(
-                                    nextSongs[index]
-                                        .album!
-                                        .artist!
-                                        .profile_name!,
-                                    overflow: TextOverflow.fade,
-                                    softWrap: false,
-                                    style: TextStyle(
-                                      color: Colors.black,
+                                  SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Text(
+                                      nextSongs[index]
+                                          .album!
+                                          .artist!
+                                          .profile_name!,
+                                      style: TextStyle(
+                                        color: AppColors.text,
+                                      ),
                                     ),
                                   ),
                                 ],

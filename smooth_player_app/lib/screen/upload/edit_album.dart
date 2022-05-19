@@ -56,7 +56,7 @@ class _EditAlbumState extends State<EditAlbum> {
         appBar: AppBar(
           title: Text(
             "Edit a Album",
-            style: TextStyle(color: Colors.black),
+            style: TextStyle(color: AppColors.text),
           ),
           centerTitle: true,
           leading: IconButton(

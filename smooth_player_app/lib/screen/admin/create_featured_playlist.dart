@@ -53,7 +53,7 @@ class _CreateFeaturedPlaylistState extends State<CreateFeaturedPlaylist> {
       appBar: AppBar(
         title: Text(
           "Create Feature playlist",
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: AppColors.text),
         ),
         centerTitle: true,
         leading: IconButton(

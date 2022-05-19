@@ -83,7 +83,7 @@ class _UploadAlbumSongState extends State<UploadAlbumSong> {
         appBar: AppBar(
           title: Text(
             "Upload a Song",
-            style: TextStyle(color: Colors.black),
+            style: TextStyle(color: AppColors.text),
           ),
           centerTitle: true,
           leading: IconButton(

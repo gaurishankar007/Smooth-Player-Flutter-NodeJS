@@ -141,25 +141,28 @@ class _PlayingSongState extends State<PlayingSong> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       SizedBox(
-                        width: sWidth * .5,
+                        width: sWidth * .7,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              Player.playingSong!.title!,
-                              overflow: TextOverflow.fade,
-                              softWrap: false,
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
+                            SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Text(
+                                Player.playingSong!.title!,
+                                style: TextStyle(
+                                  color: AppColors.text,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
-                            Text(
-                              Player.playingSong!.album!.artist!.profile_name!,
-                              overflow: TextOverflow.fade,
-                              softWrap: false,
-                              style: TextStyle(
-                                color: Colors.black,
+                            SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Text(
+                                Player
+                                    .playingSong!.album!.artist!.profile_name!,
+                                style: TextStyle(
+                                  color: AppColors.text,
+                                ),
                               ),
                             ),
                           ],

@@ -9,8 +9,8 @@ void main() {
 
     // Executing the actual test
     await tester.pumpWidget(MaterialApp(home: MyMusic()));
-    // Checking outputs
 
+    // Checking outputs
     expect(elevatedButton, findsNWidgets(2));
     expect(find.text("Upload Album"), findsOneWidget);
     expect(find.text("Upload Song"), findsOneWidget);

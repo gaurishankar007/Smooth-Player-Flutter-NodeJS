@@ -244,57 +244,61 @@ class _CreateFeaturedSongState extends State<CreateFeaturedSong> {
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: [
-                                                    Text(
-                                                      snapshot
-                                                          .data![index].title!,
-                                                      overflow:
-                                                          TextOverflow.fade,
-                                                      softWrap: false,
-                                                      style: TextStyle(
-                                                        fontSize: 15,
-                                                        color: Player
-                                                                    .playingSong !=
-                                                                null
-                                                            ? Player.playingSong!
-                                                                        .id ==
-                                                                    snapshot
-                                                                        .data![
-                                                                            index]
-                                                                        .id!
-                                                                ? AppColors
-                                                                    .primary
-                                                                : Colors.black
-                                                            : Colors.black,
-                                                        fontWeight:
-                                                            FontWeight.bold,
+                                                    SingleChildScrollView(
+                                                      scrollDirection:
+                                                          Axis.horizontal,
+                                                      child: Text(
+                                                        snapshot.data![index]
+                                                            .title!,
+                                                        style: TextStyle(
+                                                          fontSize: 15,
+                                                          color: Player
+                                                                      .playingSong !=
+                                                                  null
+                                                              ? Player.playingSong!
+                                                                          .id ==
+                                                                      snapshot
+                                                                          .data![
+                                                                              index]
+                                                                          .id!
+                                                                  ? AppColors
+                                                                      .primary
+                                                                  : AppColors
+                                                                      .text
+                                                              : AppColors.text,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
                                                       ),
                                                     ),
                                                     SizedBox(
                                                       height: 5,
                                                     ),
-                                                    Text(
-                                                      snapshot
-                                                          .data![index]
-                                                          .album!
-                                                          .artist!
-                                                          .profile_name!,
-                                                      overflow:
-                                                          TextOverflow.fade,
-                                                      softWrap: false,
-                                                      style: TextStyle(
-                                                        color: Player
-                                                                    .playingSong !=
-                                                                null
-                                                            ? Player.playingSong!
-                                                                        .id ==
-                                                                    snapshot
-                                                                        .data![
-                                                                            index]
-                                                                        .id!
-                                                                ? AppColors
-                                                                    .primary
-                                                                : Colors.black
-                                                            : Colors.black,
+                                                    SingleChildScrollView(
+                                                      scrollDirection:
+                                                          Axis.horizontal,
+                                                      child: Text(
+                                                        snapshot
+                                                            .data![index]
+                                                            .album!
+                                                            .artist!
+                                                            .profile_name!,
+                                                        style: TextStyle(
+                                                          color: Player
+                                                                      .playingSong !=
+                                                                  null
+                                                              ? Player.playingSong!
+                                                                          .id ==
+                                                                      snapshot
+                                                                          .data![
+                                                                              index]
+                                                                          .id!
+                                                                  ? AppColors
+                                                                      .primary
+                                                                  : AppColors
+                                                                      .text
+                                                              : AppColors.text,
+                                                        ),
                                                       ),
                                                     ),
                                                   ],
@@ -593,54 +597,58 @@ class _CreateFeaturedSongState extends State<CreateFeaturedSong> {
                                                         CrossAxisAlignment
                                                             .start,
                                                     children: [
-                                                      Text(
-                                                        selectedSongs[index]
-                                                            .title!,
-                                                        overflow:
-                                                            TextOverflow.fade,
-                                                        softWrap: false,
-                                                        style: TextStyle(
-                                                          fontSize: 15,
-                                                          color: Player
-                                                                      .playingSong !=
-                                                                  null
-                                                              ? Player.playingSong!
-                                                                          .id ==
-                                                                      selectedSongs[
-                                                                              index]
-                                                                          .id!
-                                                                  ? AppColors
-                                                                      .primary
-                                                                  : Colors.black
-                                                              : Colors.black,
-                                                          fontWeight:
-                                                              FontWeight.bold,
+                                                      SingleChildScrollView(
+                                                        scrollDirection:
+                                                            Axis.horizontal,
+                                                        child: Text(
+                                                          selectedSongs[index]
+                                                              .title!,
+                                                          style: TextStyle(
+                                                            fontSize: 15,
+                                                            color: Player
+                                                                        .playingSong !=
+                                                                    null
+                                                                ? Player.playingSong!
+                                                                            .id ==
+                                                                        selectedSongs[index]
+                                                                            .id!
+                                                                    ? AppColors
+                                                                        .primary
+                                                                    : AppColors
+                                                                        .text
+                                                                : AppColors
+                                                                    .text,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
                                                         ),
                                                       ),
                                                       SizedBox(
                                                         height: 5,
                                                       ),
-                                                      Text(
-                                                        selectedSongs[index]
-                                                            .album!
-                                                            .artist!
-                                                            .profile_name!,
-                                                        overflow:
-                                                            TextOverflow.fade,
-                                                        softWrap: false,
-                                                        style: TextStyle(
-                                                          color: Player
-                                                                      .playingSong !=
-                                                                  null
-                                                              ? Player.playingSong!
-                                                                          .id ==
-                                                                      selectedSongs[
-                                                                              index]
-                                                                          .id!
-                                                                  ? AppColors
-                                                                      .primary
-                                                                  : Colors.black
-                                                              : Colors.black,
+                                                      SingleChildScrollView(
+                                                        scrollDirection:
+                                                            Axis.horizontal,
+                                                        child: Text(
+                                                          selectedSongs[index]
+                                                              .album!
+                                                              .artist!
+                                                              .profile_name!,
+                                                          style: TextStyle(
+                                                            color: Player
+                                                                        .playingSong !=
+                                                                    null
+                                                                ? Player.playingSong!
+                                                                            .id ==
+                                                                        selectedSongs[index]
+                                                                            .id!
+                                                                    ? AppColors
+                                                                        .primary
+                                                                    : AppColors
+                                                                        .text
+                                                                : AppColors
+                                                                    .text,
+                                                          ),
                                                         ),
                                                       ),
                                                     ],
