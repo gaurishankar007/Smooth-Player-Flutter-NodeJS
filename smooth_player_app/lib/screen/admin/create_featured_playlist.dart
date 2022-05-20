@@ -8,6 +8,8 @@ import 'package:smooth_player_app/api/model/featured_playlist_model.dart';
 import 'package:smooth_player_app/resource/colors.dart';
 import 'package:smooth_player_app/screen/admin/featured_playlist.dart';
 
+import '../../api/model/featured_playlist_model.dart';
+
 class CreateFeaturedPlaylist extends StatefulWidget {
   const CreateFeaturedPlaylist({Key? key}) : super(key: key);
 

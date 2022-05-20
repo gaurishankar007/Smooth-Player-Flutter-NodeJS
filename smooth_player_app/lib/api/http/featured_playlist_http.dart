@@ -7,6 +7,7 @@ import 'package:smooth_player_app/api/model/featured_playlist_model.dart';
 import 'package:smooth_player_app/api/res/featured_playlist_res.dart';
 import '../log_status.dart';
 
+import '../model/featured_playlist_model.dart';
 import '../urls.dart';
 
 class FeaturedPlaylistHttp {
