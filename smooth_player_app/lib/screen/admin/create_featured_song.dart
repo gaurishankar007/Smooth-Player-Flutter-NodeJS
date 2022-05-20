@@ -6,8 +6,8 @@ import 'package:smooth_player_app/screen/admin/featured_playlist_song.dart';
 import '../../api/http/song_http.dart';
 import '../../api/res/song_res.dart';
 import '../../api/urls.dart';
-import '../../colors.dart';
-import '../../player.dart';
+import '../../resource/colors.dart';
+import '../../resource/player.dart';
 import '../../widget/song_bar.dart';
 
 class CreateFeaturedSong extends StatefulWidget {

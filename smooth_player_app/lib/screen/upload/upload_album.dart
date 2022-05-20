@@ -5,9 +5,11 @@ import 'package:file_picker/file_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:smooth_player_app/api/http/album_http.dart';
 import 'package:smooth_player_app/api/model/album_model.dart';
-import 'package:smooth_player_app/colors.dart';
-import 'package:smooth_player_app/screen/home.dart';
+import 'package:smooth_player_app/resource/colors.dart';
 import 'package:smooth_player_app/screen/my_music.dart';
+
+import '../../resource/player.dart';
+import '../../widget/song_bar.dart';
 
 class UploadAlbum extends StatefulWidget {
   const UploadAlbum({Key? key}) : super(key: key);
@@ -18,6 +20,8 @@ class UploadAlbum extends StatefulWidget {
 
 class _UploadAlbumState extends State<UploadAlbum> {
   final _albumForm = GlobalKey<FormState>();
+
+  bool songBarVisibility = Player.isPlaying;
 
   File? _image;
   String albumTitle = "";
@@ -51,26 +55,26 @@ class _UploadAlbumState extends State<UploadAlbum> {
     double screenHight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            "Upload an Album",
-            style: TextStyle(color: AppColors.text),
-          ),
-          centerTitle: true,
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(
-              Icons.arrow_back,
-              color: Colors.black,
-            ),
-          ),
-          elevation: 0,
-          backgroundColor: Colors.transparent,
+      appBar: AppBar(
+        title: Text(
+          "Upload an Album",
+          style: TextStyle(color: AppColors.text),
         ),
-        body: SafeArea(
-            child: SingleChildScrollView(
+        centerTitle: true,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.black,
+          ),
+        ),
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.only(
               top: 30,
@@ -233,6 +237,15 @@ class _UploadAlbumState extends State<UploadAlbum> {
               ),
             ),
           ),
-        )));
+        ),
+      ),
+      floatingActionButton: songBarVisibility
+          ? SongBar(
+              songData: Player.playingSong,
+            )
+          : null,
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.miniCenterFloat,
+    );
   }
 }

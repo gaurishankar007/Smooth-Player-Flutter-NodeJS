@@ -30,6 +30,7 @@ router.post("/upload/albumSong", auth.verifyUser, musicFile.array('song_file', 2
     
     const newSong = new song({
         title: req.body.title,
+        genre: req.body.genre,
         album: mongoose.Types.ObjectId(req.body.albumId),
         music_file: music_file,
         cover_image: cover_image,
@@ -69,6 +70,7 @@ router.post("/upload/singleSong", auth.verifyUser, musicFile.array('song_file', 
     
     const newSong = new song({
         title: req.body.title,
+        genre: req.body.genre,
         album: newAlbum._id,
         music_file: music_file,
         cover_image: cover_image,
@@ -80,7 +82,7 @@ router.post("/upload/singleSong", auth.verifyUser, musicFile.array('song_file', 
 });
 
 router.post("/view/song", auth.verifyUser, async (req, res)=> {
-    const songs = await song.find({album: req.body.albumId}).populate("album").sort({created_at: -1});
+    const songs = await song.find({album: req.body.albumId}).populate("album").sort({createdAt: -1});
     const songs1 = await song.populate(songs, {
         path: "album.artist",
         select: "profile_name"
@@ -100,7 +102,7 @@ router.delete("/delete/song", auth.verifyUser, (req, res)=> {
             });   
         });     
     });
-} );
+});
 
 
 router.put("/edit/song/title", auth.verifyUser, (req, res)=> {
@@ -111,7 +113,7 @@ router.put("/edit/song/title", auth.verifyUser, (req, res)=> {
    song.updateOne({_id: req.body.songId}, {title: req.body.title}).then(()=> {
         res.send({resM: "Song Edited."});
     });  
-} );
+});
 
 router.put("/edit/song/image", auth.verifyUser, musicFile.single('song_file'), (req, res)=> {
     if(req.file==undefined) {

@@ -4,8 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:smooth_player_app/api/http/song_http.dart';
-import 'package:smooth_player_app/colors.dart';
+import 'package:smooth_player_app/resource/colors.dart';
 import 'package:smooth_player_app/screen/albums.dart';
+
+import '../../resource/player.dart';
+import '../../widget/song_bar.dart';
 
 class EditSong extends StatefulWidget {
   final String? songId;
@@ -28,6 +31,8 @@ class EditSong extends StatefulWidget {
 
 class _EditSongState extends State<EditSong> {
   final _songForm = GlobalKey<FormState>();
+
+  bool songBarVisibility = Player.isPlaying;
 
   File? _image;
   String title = "";
@@ -295,6 +300,13 @@ class _EditSongState extends State<EditSong> {
           ),
         ),
       ),
+      floatingActionButton: songBarVisibility
+          ? SongBar(
+              songData: Player.playingSong,
+            )
+          : null,
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.miniCenterFloat,
     );
   }
 }

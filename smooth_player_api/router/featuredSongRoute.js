@@ -30,7 +30,7 @@ router.post("/view/featuredSong", auth.verifyAdmin, async (req, res) => {
     .find({ featuredPlaylist: mongoose.Types.ObjectId(featuredPlaylistId) })
     .populate("song")
     .populate("featuredPlaylist")
-    .sort({ created_at: -1 });
+    .sort({createdAt: -1});
 
   const viewSongs1 = await featuredSong.populate(viewSongs, {
     path: "song.album",

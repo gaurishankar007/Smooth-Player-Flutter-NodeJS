@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 
-import '../player.dart';
+import '../resource/player.dart';
 import '../widget/navigator.dart';
 import '../widget/song_bar.dart';
 

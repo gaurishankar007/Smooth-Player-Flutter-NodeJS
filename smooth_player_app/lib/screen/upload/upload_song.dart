@@ -4,9 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:smooth_player_app/api/http/song_http.dart';
-import 'package:smooth_player_app/api/model/album_model.dart';
-import 'package:smooth_player_app/colors.dart';
+import 'package:smooth_player_app/resource/colors.dart';
+import 'package:smooth_player_app/resource/genre.dart';
 import 'package:smooth_player_app/screen/my_music.dart';
+
+import '../../api/model/song_model.dart';
+import '../../resource/player.dart';
+import '../../widget/song_bar.dart';
 
 class UploadSong extends StatefulWidget {
   const UploadSong({Key? key}) : super(key: key);
@@ -18,11 +22,12 @@ class UploadSong extends StatefulWidget {
 class _UploadSongState extends State<UploadSong> {
   final _songForm = GlobalKey<FormState>();
 
-  // final double height = MediaQuery.of(context).size.height
+  bool songBarVisibility = Player.isPlaying;
 
   File? _song;
   File? _image;
   String title = "";
+  String genre = "Select song genre";
 
   String dropdownValue = '';
 
@@ -71,26 +76,26 @@ class _UploadSongState extends State<UploadSong> {
     double screenHight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            "Upload a Song",
-            style: TextStyle(color: AppColors.text),
-          ),
-          centerTitle: true,
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(
-              Icons.arrow_back,
-              color: Colors.black,
-            ),
-          ),
-          elevation: 0,
-          backgroundColor: Colors.transparent,
+      appBar: AppBar(
+        title: Text(
+          "Upload a Song",
+          style: TextStyle(color: AppColors.text),
         ),
-        body: SafeArea(
-            child: SingleChildScrollView(
+        centerTitle: true,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.black,
+          ),
+        ),
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
           padding: EdgeInsets.only(
             top: 30,
             left: screenWidth * .05,
@@ -160,24 +165,60 @@ class _UploadSongState extends State<UploadSong> {
                   height: screenHight * .040,
                 ),
                 TextFormField(
-                    key: ValueKey("song_title"),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Song title is required";
-                      }
+                  key: ValueKey("song_title"),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Song title is required";
+                    }
+                  },
+                  onSaved: ((value) {
+                    title = value!;
+                  }),
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: AppColors.form,
+                    hintText: "Enter Song Title",
+                    enabledBorder: formBorder,
+                    focusedBorder: formBorder,
+                    errorBorder: formBorder,
+                    focusedErrorBorder: formBorder,
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 10,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColors.form,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: DropdownButton(
+                    value: genre,
+                    elevation: 20,
+                    underline: SizedBox(),
+                    style: TextStyle(
+                      color: AppColors.text,
+                      fontSize: 15,
+                    ),
+                    isExpanded: true,
+                    dropdownColor: AppColors.form,
+                    borderRadius: BorderRadius.circular(10),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        genre = newValue!;
+                      });
                     },
-                    onSaved: ((value) {
-                      title = value!;
-                    }),
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: AppColors.form,
-                      hintText: "Enter Song Title",
-                      enabledBorder: formBorder,
-                      focusedBorder: formBorder,
-                      errorBorder: formBorder,
-                      focusedErrorBorder: formBorder,
-                    )),
+                    items: MusicGenre.musicGenres.map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                  ),
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     vertical: 10,
@@ -187,19 +228,28 @@ class _UploadSongState extends State<UploadSong> {
                     children: [
                       Row(
                         children: [
-                          Text("Pick a song:"),
+                          Text(
+                            "Pick a song:",
+                            style: TextStyle(
+                              color: AppColors.text,
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                           SizedBox(
                             width: 10,
                           ),
                           SizedBox(
-                            width: screenWidth * .4,
-                            child: Text(
-                              _song == null
-                                  ? "No song selected"
-                                  : _song!.path.split('/').last,
-                              overflow: TextOverflow.fade,
-                              style: TextStyle(
-                                color: Colors.grey,
+                            width: screenWidth * .45,
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Text(
+                                _song == null
+                                    ? "No song selected"
+                                    : _song!.path.split('/').last,
+                                style: TextStyle(
+                                  color: AppColors.text,
+                                ),
                               ),
                             ),
                           ),
@@ -245,6 +295,15 @@ class _UploadSongState extends State<UploadSong> {
                         textColor: Colors.white,
                         msg: "Please select an image",
                       );
+                    } else if (genre == "Select song genre") {
+                      Fluttertoast.showToast(
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        timeInSecForIosWeb: 3,
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white,
+                        msg: "Please select a song genre",
+                      );
                     } else if (_song == null) {
                       Fluttertoast.showToast(
                         toastLength: Toast.LENGTH_SHORT,
@@ -259,6 +318,7 @@ class _UploadSongState extends State<UploadSong> {
                       final resData =
                           await SongHttp().uploadSingleSong(SongUploadModal(
                         title: title,
+                        genre: genre,
                         cover_image: _image,
                         music_file: _song,
                       ));
@@ -287,13 +347,21 @@ class _UploadSongState extends State<UploadSong> {
                         );
                       }
                     }
-                    // _songForm.currentContext!.save();
                   },
                   child: Text('Upload Song'),
                 )
               ],
             ),
           ),
-        )));
+        ),
+      ),
+      floatingActionButton: songBarVisibility
+          ? SongBar(
+              songData: Player.playingSong,
+            )
+          : null,
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.miniCenterFloat,
+    );
   }
 }

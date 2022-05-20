@@ -3,8 +3,8 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:http/http.dart';
 import 'package:smooth_player_app/api/log_status.dart';
-import 'package:smooth_player_app/api/model/album_model.dart';
 import 'package:http/http.dart' as http;
+import '../model/song_model.dart';
 import '../res/song_res.dart';
 import '../urls.dart';
 
@@ -24,6 +24,7 @@ class SongHttp {
       // Adding forms data
       Map<String, String> songDetail = {
         "title": "${songData.title}",
+        "genre": "${songData.genre}",
       };
       request.fields.addAll(songDetail);
       // Adding song
@@ -71,6 +72,7 @@ class SongHttp {
       // Adding forms data
       Map<String, String> songDetail = {
         "title": "${songData.title}",
+        "genre": "${songData.genre}",
         "albumId": albumId,
       };
       request.fields.addAll(songDetail);
@@ -140,7 +142,7 @@ class SongHttp {
   Future<Map> editSongTitle(String title, String songId) async {
     final response = await put(
       Uri.parse(routeUrl + "edit/song/title"),
-      body: {"title": title, "songId":songId},
+      body: {"title": title, "songId": songId},
       headers: {
         HttpHeaders.authorizationHeader: "Bearer $token",
       },
@@ -195,7 +197,7 @@ class SongHttp {
     };
   }
 
-   Future<List<Song>> searchSongByTitle(String title) async {
+  Future<List<Song>> searchSongByTitle(String title) async {
     final response = await post(
       Uri.parse(routeUrl + "search/songByTitle"),
       body: {"title": title},

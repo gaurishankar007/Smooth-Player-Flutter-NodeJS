@@ -9,8 +9,8 @@ import 'package:smooth_player_app/screen/admin/featured_playlist_song.dart';
 import 'package:smooth_player_app/widget/admin_navigator.dart';
 
 import '../../api/urls.dart';
-import '../../colors.dart';
-import '../../player.dart';
+import '../../resource/colors.dart';
+import '../../resource/player.dart';
 import '../../widget/song_bar.dart';
 import '../setting.dart';
 

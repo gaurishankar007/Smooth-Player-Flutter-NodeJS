@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:smooth_player_app/screen/setting.dart';
 import 'package:smooth_player_app/widget/navigator.dart';
 
-import '../colors.dart';
-import '../player.dart';
+import '../resource/colors.dart';
+import '../resource/player.dart';
 import '../widget/song_bar.dart';
 
 class Home extends StatefulWidget {

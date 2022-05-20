@@ -3,10 +3,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:smooth_player_app/colors.dart';
+import 'package:smooth_player_app/resource/colors.dart';
 import 'package:smooth_player_app/screen/my_music.dart';
 
 import '../../api/http/album_http.dart';
+import '../../resource/player.dart';
+import '../../widget/song_bar.dart';
 
 class EditAlbum extends StatefulWidget {
   final String? albumId;
@@ -19,7 +21,7 @@ class EditAlbum extends StatefulWidget {
 class _EditAlbumState extends State<EditAlbum> {
   final _songForm = GlobalKey<FormState>();
 
-  // final double height = MediaQuery.of(context).size.height
+  bool songBarVisibility = Player.isPlaying;
 
   File? _image;
   String title = "";
@@ -53,26 +55,26 @@ class _EditAlbumState extends State<EditAlbum> {
     double screenHight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            "Edit a Album",
-            style: TextStyle(color: AppColors.text),
-          ),
-          centerTitle: true,
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(
-              Icons.arrow_back,
-              color: Colors.black,
-            ),
-          ),
-          elevation: 0,
-          backgroundColor: Colors.transparent,
+      appBar: AppBar(
+        title: Text(
+          "Edit a Album",
+          style: TextStyle(color: AppColors.text),
         ),
-        body: SafeArea(
-            child: SingleChildScrollView(
+        centerTitle: true,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.black,
+          ),
+        ),
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
           padding: EdgeInsets.only(
             top: screenHight * .1,
             left: screenWidth * .05,
@@ -184,6 +186,11 @@ class _EditAlbumState extends State<EditAlbum> {
 
                           if (resData["statusCode"] == 200) {
                             Navigator.pop(context);
+                            Navigator.pop(context);
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (builder) => MyMusic()));
                             Fluttertoast.showToast(
                               toastLength: Toast.LENGTH_SHORT,
                               gravity: ToastGravity.BOTTOM,
@@ -263,6 +270,15 @@ class _EditAlbumState extends State<EditAlbum> {
               ],
             ),
           ),
-        )));
+        ),
+      ),
+      floatingActionButton: songBarVisibility
+          ? SongBar(
+              songData: Player.playingSong,
+            )
+          : null,
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.miniCenterFloat,
+    );
   }
 }

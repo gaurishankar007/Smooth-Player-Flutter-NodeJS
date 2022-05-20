@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../api/log_status.dart';
-import '../../colors.dart';
-import '../../player.dart';
+import '../../resource/colors.dart';
+import '../../resource/player.dart';
 
 class AdminSetting extends StatefulWidget {
   const AdminSetting({Key? key}) : super(key: key);

@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 
 import '../../api/res/song_res.dart';
 import '../../api/urls.dart';
-import '../../colors.dart';
-import '../../player.dart';
+import '../../resource/colors.dart';
+import '../../resource/player.dart';
 
 class SongQueue extends StatefulWidget {
   const SongQueue({

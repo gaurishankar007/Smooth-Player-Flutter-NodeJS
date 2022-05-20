@@ -4,12 +4,13 @@ const songSchema = new mongoose.Schema({
     title: {
         type: String,
         trim:true,
-
+    },
+    genre: {
+        type: String,
     },
     album:{
         type: mongoose.Schema.ObjectId,
         ref: "album",
-
     },
     music_file:{
         type:String
@@ -21,7 +22,6 @@ const songSchema = new mongoose.Schema({
         type: Number,
         default:0,
     }
-
 },
 {
     timestamps: true

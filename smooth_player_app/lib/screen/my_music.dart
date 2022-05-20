@@ -4,7 +4,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:smooth_player_app/api/urls.dart';
-import 'package:smooth_player_app/colors.dart';
+import 'package:smooth_player_app/resource/colors.dart';
 import 'package:smooth_player_app/screen/albums.dart';
 import 'package:smooth_player_app/screen/upload/edit_album.dart';
 import 'package:smooth_player_app/screen/upload/upload_album.dart';
@@ -12,7 +12,7 @@ import 'package:smooth_player_app/screen/upload/upload_song.dart';
 
 import '../api/http/album_http.dart';
 import '../api/res/album_res.dart';
-import '../player.dart';
+import '../resource/player.dart';
 import '../widget/navigator.dart';
 import '../widget/song_bar.dart';
 

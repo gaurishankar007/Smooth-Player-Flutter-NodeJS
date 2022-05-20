@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:smooth_player_app/api/urls.dart';
 
 import '../api/res/song_res.dart';
-import '../player.dart';
+import '../resource/player.dart';
 import '../screen/music/playing.dart';
 
 class SongBar extends StatefulWidget {
