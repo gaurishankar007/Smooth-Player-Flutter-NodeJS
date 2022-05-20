@@ -27,7 +27,9 @@ router.post("/upload/album", auth.verifyUser, albumUpload.single("album_image"),
 } );
 
 router.get("/view/album", auth.verifyUser, async (req, res)=> {
-    const albums = await album.find({artist: req.userInfo._id}).populate("artist", "profile_name").sort({created_at: -1});
+    const albums = await album.find({artist: req.userInfo._id})
+    .populate("artist", "profile_name")
+    .sort({createdAt: -1});
     res.send(albums);
 });
 

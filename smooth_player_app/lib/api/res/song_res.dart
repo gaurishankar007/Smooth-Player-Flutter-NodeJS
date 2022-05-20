@@ -12,6 +12,7 @@ class Song {
   String? id;
 
   String? title;
+  String? genre;
   Album? album;
   String? music_file;
   String? cover_image;
@@ -20,6 +21,7 @@ class Song {
   Song({
     this.id,
     this.title,
+    this.genre,
     this.album,
     this.music_file,
     this.cover_image,
@@ -30,5 +32,4 @@ class Song {
       _$SongFromJson(json);
 
   Map<String, dynamic> toJson() => _$SongToJson(this);
-
 }

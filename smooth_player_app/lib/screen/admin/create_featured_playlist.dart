@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:smooth_player_app/api/http/featured_playlist_http.dart';
+import 'package:smooth_player_app/api/model/featured_playlist_model.dart';
 import 'package:smooth_player_app/resource/colors.dart';
 import 'package:smooth_player_app/screen/admin/featured_playlist.dart';
 

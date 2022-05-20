@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
+import 'package:smooth_player_app/api/model/featured_playlist_model.dart';
 import 'package:smooth_player_app/api/res/featured_playlist_res.dart';
 import '../log_status.dart';
 

@@ -225,8 +225,6 @@ class _PlayingSongState extends State<PlayingSong> {
                 ),
                 Padding(
                   padding: EdgeInsets.only(
-                    right: sWidth * .06,
-                    left: sWidth * .06,
                     bottom: 20,
                   ),
                   child: Row(
@@ -242,7 +240,7 @@ class _PlayingSongState extends State<PlayingSong> {
                               },
                               child: Icon(
                                 Icons.shuffle_outlined,
-                                size: 40,
+                                size: 30,
                                 color: Color(0XFF5B86E5),
                               ),
                             )
@@ -255,7 +253,7 @@ class _PlayingSongState extends State<PlayingSong> {
                               },
                               child: Icon(
                                 Icons.shuffle_outlined,
-                                size: 40,
+                                size: 30,
                                 color: Colors.black,
                               ),
                             ),
@@ -276,6 +274,9 @@ class _PlayingSongState extends State<PlayingSong> {
                               size: 40,
                               color: AppColors.primary,
                             ),
+                          ),
+                          SizedBox(
+                            width: 10,
                           ),
                           Player.isPaused
                               ? GestureDetector(
@@ -356,6 +357,9 @@ class _PlayingSongState extends State<PlayingSong> {
                                     ],
                                   ),
                                 ),
+                          SizedBox(
+                            width: 10,
+                          ),
                           TextButton(
                             onPressed: () {
                               // Player().nextSong();
@@ -381,14 +385,9 @@ class _PlayingSongState extends State<PlayingSong> {
                                   isLoop = Player.isLoop;
                                 });
                               },
-                              style: TextButton.styleFrom(
-                                padding: EdgeInsets.zero,
-                                minimumSize: Size.zero,
-                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              ),
                               child: Icon(
                                 Icons.loop_rounded,
-                                size: 40,
+                                size: 30,
                                 color: Colors.black,
                               ),
                             )
@@ -403,15 +402,9 @@ class _PlayingSongState extends State<PlayingSong> {
                                           isLoop = Player.isLoop;
                                         });
                                       },
-                                      style: TextButton.styleFrom(
-                                        padding: EdgeInsets.zero,
-                                        minimumSize: Size.zero,
-                                        tapTargetSize:
-                                            MaterialTapTargetSize.shrinkWrap,
-                                      ),
                                       child: Icon(
                                         Icons.loop_rounded,
-                                        size: 40,
+                                        size: 30,
                                         color: Color(0XFF5B86E5),
                                       ),
                                     ),
@@ -430,15 +423,9 @@ class _PlayingSongState extends State<PlayingSong> {
                                       isLoop = Player.isLoop;
                                     });
                                   },
-                                  style: TextButton.styleFrom(
-                                    padding: EdgeInsets.zero,
-                                    minimumSize: Size.zero,
-                                    tapTargetSize:
-                                        MaterialTapTargetSize.shrinkWrap,
-                                  ),
                                   child: Icon(
                                     Icons.loop_rounded,
-                                    size: 40,
+                                    size: 30,
                                     color: Color(0XFF5B86E5),
                                   ),
                                 ),
