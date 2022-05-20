@@ -3,10 +3,10 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
-import 'package:smooth_player_app/api/model/playlist.dart';
 import 'package:smooth_player_app/api/res/featured_playlist_res.dart';
 import '../log_status.dart';
 
+import '../model/featured_playlist_model.dart';
 import '../urls.dart';
 
 class FeaturedPlaylistHttp {
@@ -32,7 +32,7 @@ class FeaturedPlaylistHttp {
         .toList();
   }
 
-  Future<Map> createFeaturedPlaylist(PlaylistModel playlistData) async {
+  Future<Map> createFeaturedPlaylist(FeaturedPlaylistModel playlistData) async {
     try {
       var request = http.MultipartRequest(
           'POST', Uri.parse(routeUrl + "upload/featuredPlaylist"));
