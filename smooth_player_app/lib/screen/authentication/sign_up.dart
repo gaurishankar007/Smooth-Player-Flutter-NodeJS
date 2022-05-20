@@ -9,7 +9,7 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:smooth_player_app/api/http/authentication/sign_up_http.dart';
 import 'package:smooth_player_app/api/model/user_model.dart';
 
-import '../../colors.dart';
+import '../../resource/colors.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);

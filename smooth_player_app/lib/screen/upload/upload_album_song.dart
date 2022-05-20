@@ -5,7 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:smooth_player_app/api/http/song_http.dart';
 import 'package:smooth_player_app/api/model/album_model.dart';
-import 'package:smooth_player_app/colors.dart';
+import 'package:smooth_player_app/resource/colors.dart';
 import 'package:smooth_player_app/screen/albums.dart';
 
 class UploadAlbumSong extends StatefulWidget {

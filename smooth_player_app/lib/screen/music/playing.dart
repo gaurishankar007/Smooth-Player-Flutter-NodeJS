@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:smooth_player_app/colors.dart';
+import 'package:smooth_player_app/resource/colors.dart';
 
 import '../../api/urls.dart';
-import '../../player.dart';
+import '../../resource/player.dart';
 import 'queue.dart';
 
 class PlayingSong extends StatefulWidget {

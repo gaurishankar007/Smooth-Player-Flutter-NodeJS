@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:smooth_player_app/player.dart';
+import 'package:smooth_player_app/resource/player.dart';
 
 import '../api/log_status.dart';
-import '../colors.dart';
+import '../resource/colors.dart';
 
 class Setting extends StatefulWidget {
   const Setting({Key? key}) : super(key: key);

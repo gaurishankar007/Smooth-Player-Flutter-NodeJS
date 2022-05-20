@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:smooth_player_app/colors.dart';
+import 'package:smooth_player_app/resource/colors.dart';
 import 'package:smooth_player_app/api/http/authentication/login_http.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../../api/log_status.dart';

@@ -2,8 +2,8 @@ import 'dart:collection';
 import "dart:math";
 import 'package:audioplayers/audioplayers.dart';
 
-import 'api/res/song_res.dart';
-import 'api/urls.dart';
+import '../api/res/song_res.dart';
+import '../api/urls.dart';
 
 class Player {
   final songUrl = ApiUrls.musicUrl;

@@ -3,14 +3,14 @@ import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:smooth_player_app/colors.dart';
+import 'package:smooth_player_app/resource/colors.dart';
 import 'package:smooth_player_app/screen/upload/edit_song.dart';
 import 'package:smooth_player_app/screen/upload/upload_album_song.dart';
 
 import '../api/http/song_http.dart';
 import '../api/res/song_res.dart';
 import '../api/urls.dart';
-import '../player.dart';
+import '../resource/player.dart';
 import '../widget/navigator.dart';
 import '../widget/song_bar.dart';
 

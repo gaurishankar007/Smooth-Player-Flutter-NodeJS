@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:smooth_player_app/api/http/featured_playlist_http.dart';
 import 'package:smooth_player_app/api/model/playlist.dart';
-import 'package:smooth_player_app/colors.dart';
+import 'package:smooth_player_app/resource/colors.dart';
 import 'package:smooth_player_app/screen/admin/featured_playlist.dart';
 
 class CreateFeaturedPlaylist extends StatefulWidget {
