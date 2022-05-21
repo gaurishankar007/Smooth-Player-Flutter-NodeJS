@@ -1,6 +1,8 @@
 import 'dart:collection';
 import "dart:math";
 import 'package:audioplayers/audioplayers.dart';
+import 'package:smooth_player_app/api/http/recently_played_http.dart';
+import 'package:smooth_player_app/api/log_status.dart';
 
 import '../api/res/song_res.dart';
 import '../api/urls.dart';
@@ -13,6 +15,7 @@ class Player {
   static bool isPaused = false;
   static bool isShuffle = false;
   static bool playingFromQueue = false;
+  static bool autoNext = false;
   static int isLoop = 0;
   static Duration duration = Duration.zero;
   static Duration position = Duration.zero;
@@ -93,6 +96,8 @@ class Player {
       await player.stop();
       await player.play(songUrl + song.music_file!);
     }
+
+    await RecentlyPlayedHttp().addRecentSong(song.id!);
   }
 
   void pauseSong() async {
@@ -112,6 +117,10 @@ class Player {
   }
 
   void autoNextSong() {
+    if (autoNext) {
+      return;
+    }
+    autoNext = true;
     if (songQueue.isEmpty) {
       if (nextSongs.isNotEmpty) {
         prevSongs.addFirst(currentSong.removeFirst());

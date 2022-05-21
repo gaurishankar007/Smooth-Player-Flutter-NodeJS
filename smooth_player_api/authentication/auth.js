@@ -13,14 +13,14 @@ module.exports.verifyUser = function(req, res, next) {
                 next();
             }
             else {
-                res.status(400).send({resM: "Access Denied."});
+                res.status(401).send({resM: "Access Denied."});
             }
         }).catch(function(e){
             res.status(400).send({resM: e});
         });
     }
     catch(e) {
-        res.status(400).send({resM: "Invalid Token!"});
+        res.status(401).send({resM: "Invalid Token!"});
     }
 } 
 
@@ -36,13 +36,13 @@ module.exports.verifyAdmin = function(req, res, next) {
                 next();
             }
             else {
-                res.status(400).send({resM: "Access Denied."});
+                res.status(401).send({resM: "Access Denied."});
             }
         }).catch(function(e){
             res.status(400).send({resM: e});
         });
     }
     catch(e) {
-        res.status(400).send({resM: "Invalid Token!"});
+        res.status(401).send({resM: "Invalid Token!"});
     }
 } 
