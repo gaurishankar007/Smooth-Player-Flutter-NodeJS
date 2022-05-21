@@ -20,7 +20,7 @@ class _SongBarState extends State<SongBar> {
   final AudioPlayer player = Player.player;
   final coverImage = ApiUrls.coverImageUrl;
 
-  late StreamSubscription stateSub, completionSub;
+  late StreamSubscription stateSub, completionSub, durationSub;
   late Song? songData;
 
   @override
@@ -36,8 +36,12 @@ class _SongBarState extends State<SongBar> {
       });
     });
 
+    durationSub = player.onDurationChanged.listen((newDuration) {
+      Player.autoNext = false;
+    });
+
     completionSub = player.onPlayerCompletion.listen((state) {
-      // Player().autoNextSong();
+      Player().autoNextSong();
     });
   }
 
@@ -45,6 +49,7 @@ class _SongBarState extends State<SongBar> {
   void dispose() {
     super.dispose();
     stateSub.cancel();
+    durationSub.cancel();
     completionSub.cancel();
   }
 
@@ -146,10 +151,10 @@ class _SongBarState extends State<SongBar> {
                 children: [
                   TextButton(
                     onPressed: () {
-                      // Player().previousSong();
-                      // setState(() {
-                      //   songData = Player.playingSong;
-                      // });
+                      Player().previousSong();
+                      setState(() {
+                        songData = Player.playingSong;
+                      });
                     },
                     style: TextButton.styleFrom(
                       padding: EdgeInsets.zero,
@@ -195,10 +200,10 @@ class _SongBarState extends State<SongBar> {
                         ),
                   TextButton(
                     onPressed: () {
-                      // Player().nextSong();
-                      // setState(() {
-                      //   songData = Player.playingSong;
-                      // });
+                      Player().nextSong();
+                      setState(() {
+                        songData = Player.playingSong;
+                      });
                     },
                     style: TextButton.styleFrom(
                       padding: EdgeInsets.zero,

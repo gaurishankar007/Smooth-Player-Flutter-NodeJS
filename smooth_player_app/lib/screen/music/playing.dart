@@ -262,7 +262,7 @@ class _PlayingSongState extends State<PlayingSong> {
                         children: [
                           TextButton(
                             onPressed: () {
-                              // Player().previousSong();
+                              Player().previousSong();
                             },
                             style: TextButton.styleFrom(
                               padding: EdgeInsets.zero,
@@ -362,7 +362,7 @@ class _PlayingSongState extends State<PlayingSong> {
                           ),
                           TextButton(
                             onPressed: () {
-                              // Player().nextSong();
+                              Player().nextSong();
                             },
                             style: TextButton.styleFrom(
                               padding: EdgeInsets.zero,
