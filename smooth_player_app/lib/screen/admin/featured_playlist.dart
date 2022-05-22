@@ -342,7 +342,7 @@ class _FeaturedPlaylistViewState extends State<FeaturedPlaylistView> {
                   return Center(
                     child: CircularProgressIndicator(
                       strokeWidth: 5,
-                      color: Colors.greenAccent,
+                      color: AppColors.primary,
                     ),
                   );
                 },
