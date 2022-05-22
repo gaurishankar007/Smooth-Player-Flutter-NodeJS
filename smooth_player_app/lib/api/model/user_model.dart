@@ -40,6 +40,17 @@ class User {
     this.liked_featured_playlist_publication,
     this.created_playlist_publication,
   });
+
+  factory User.fromJson(Map<String, dynamic> json) => User(
+        id: json['_id'] as String?,
+        username: json['username'] as String?,
+        email: json['email'] as String?,
+        profile_name: json['profile_name'] as String?,
+        profile_picture: json['profile_picture'] as String?,
+        gender: json['gender'] as String?,
+        birth_date: json['birth_date'] as String?,
+        biography: json['biography'] as String?,
+      );
 }
 
 class UploadUser {
