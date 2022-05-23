@@ -8,6 +8,7 @@ import 'package:smooth_player_app/screen/admin/create_featured_playlist.dart';
 import 'package:smooth_player_app/screen/admin/featured_playlist_song.dart';
 import 'package:smooth_player_app/widget/admin_navigator.dart';
 
+import '../../api/log_status.dart';
 import '../../api/urls.dart';
 import '../../resource/colors.dart';
 import '../../resource/player.dart';
@@ -100,16 +101,18 @@ class _FeaturedPlaylistViewState extends State<FeaturedPlaylistView> {
                           constraints: BoxConstraints(),
                           padding: EdgeInsets.zero,
                           icon: Icon(
-                            Icons.settings,
+                            Icons.logout,
                             color: AppColors.primary,
                           ),
                           onPressed: () {
-                            Navigator.push(
+                            LogStatus().removeToken();
+                            LogStatus.token = "";
+                            Navigator.pushNamedAndRemoveUntil(
                               context,
-                              MaterialPageRoute(
-                                builder: (builder) => Setting(),
-                              ),
+                              "login",
+                              (route) => false,
                             );
+                            Player().stopSong();
                           },
                         ),
                       ],
@@ -342,7 +345,7 @@ class _FeaturedPlaylistViewState extends State<FeaturedPlaylistView> {
                   return Center(
                     child: CircularProgressIndicator(
                       strokeWidth: 5,
-                      color: Colors.greenAccent,
+                      color: AppColors.primary,
                     ),
                   );
                 },

@@ -354,7 +354,7 @@ class _MyMusicState extends State<MyMusic> {
                   return Center(
                     child: CircularProgressIndicator(
                       strokeWidth: 5,
-                      color: Colors.greenAccent,
+                      color: AppColors.primary,
                     ),
                   );
                 },

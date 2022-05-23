@@ -472,7 +472,7 @@ class _FeaturedPlaylistSongState extends State<FeaturedPlaylistSong> {
                   return Center(
                     child: CircularProgressIndicator(
                       strokeWidth: 5,
-                      color: Colors.greenAccent,
+                      color: AppColors.primary,
                     ),
                   );
                 },
