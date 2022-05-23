@@ -26,10 +26,10 @@ describe('song schema test', ()=> {
             
         } 
         return song.create(newSong).then((songData)=>{
-            expect(songData.title).toEqual("test")
+            expect(songData.title).toEqual("test")            
+            expect(songData.album).toEqual(mongoose.Types.ObjectId("627b62e2a6487bbb7d0a85ed"))
             expect(songData.music_file).toEqual("song.mp3")
             expect(songData.cover_image).toEqual("cover.jpg")
-            
         })
     })
 
@@ -43,6 +43,5 @@ describe('song schema test', ()=> {
                 expect(songData.title).toEqual("New test")
             })
         })
-    })
-    
+    })    
 })

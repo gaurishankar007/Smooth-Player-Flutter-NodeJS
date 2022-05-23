@@ -13,7 +13,6 @@ import '../../api/urls.dart';
 import '../../resource/colors.dart';
 import '../../resource/player.dart';
 import '../../widget/song_bar.dart';
-import '../setting.dart';
 
 class FeaturedPlaylistView extends StatefulWidget {
   const FeaturedPlaylistView({Key? key}) : super(key: key);

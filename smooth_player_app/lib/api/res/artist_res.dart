@@ -8,11 +8,11 @@ part 'artist_res.g.dart';
 class Artist {
   @JsonKey(name: "_id")
   String? id;
-  
+
   String? profile_name;
 
-  Artist({this.profile_name});  
-  
+  Artist({this.profile_name}); 
+
   factory Artist.fromJson(Map<String, dynamic> json) => _$ArtistFromJson(json);
 
   Map<String, dynamic> toJson() => _$ArtistToJson(this);
