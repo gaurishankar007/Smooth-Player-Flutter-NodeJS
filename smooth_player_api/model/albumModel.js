@@ -4,7 +4,6 @@ const albumSchema = new mongoose.Schema({
     title:{
         type: String,
         trim: true,
-
     },
     artist:{
         type:mongoose.Schema.ObjectId,
@@ -12,8 +11,11 @@ const albumSchema = new mongoose.Schema({
     },
     album_image:{
         type: String
-    }
-    
+    },
+    like:{
+        type: Number,
+        default:0,
+    }    
 },
 {
     timestamps: true

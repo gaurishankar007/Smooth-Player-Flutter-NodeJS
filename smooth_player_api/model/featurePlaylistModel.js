@@ -9,6 +9,10 @@ const featuredPlaylistSchema = new mongoose.Schema(
     featured_playlist_image: {
       type: String,
     },
+    like:{
+        type: Number,
+        default:0,
+    }
   },
   {
     timestamps: true,

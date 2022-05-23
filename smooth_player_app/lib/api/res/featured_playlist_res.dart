@@ -11,10 +11,17 @@ class FeaturedPlaylist {
 
   String? title;
   String? featured_playlist_image;
+  int? like;
 
-  FeaturedPlaylist({this.id, this.title, this.featured_playlist_image});
+  FeaturedPlaylist({
+    this.id,
+    this.title,
+    this.featured_playlist_image,
+    this.like,
+  });
 
-  factory FeaturedPlaylist.fromJson(Map<String, dynamic> json) => _$FeaturedPlaylistFromJson(json);
+  factory FeaturedPlaylist.fromJson(Map<String, dynamic> json) =>
+      _$FeaturedPlaylistFromJson(json);
 
   Map<String, dynamic> toJson() => _$FeaturedPlaylistToJson(this);
 }

@@ -11,6 +11,7 @@ FeaturedPlaylist _$FeaturedPlaylistFromJson(Map<String, dynamic> json) =>
       id: json['_id'] as String?,
       title: json['title'] as String?,
       featured_playlist_image: json['featured_playlist_image'] as String?,
+      like: json['like'] as int?,
     );
 
 Map<String, dynamic> _$FeaturedPlaylistToJson(FeaturedPlaylist instance) =>
@@ -18,4 +19,5 @@ Map<String, dynamic> _$FeaturedPlaylistToJson(FeaturedPlaylist instance) =>
       '_id': instance.id,
       'title': instance.title,
       'featured_playlist_image': instance.featured_playlist_image,
+      'like': instance.like,
     };

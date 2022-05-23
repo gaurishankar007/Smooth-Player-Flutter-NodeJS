@@ -25,6 +25,10 @@ const userSchema = new mongoose.Schema({
     biography: {
         type: String, trim: true
     },
+    follower:{
+        type: Number,
+        default:0,
+    },
     verified: {
         type: Boolean, default: false
     },

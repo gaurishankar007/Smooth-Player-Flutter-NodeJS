@@ -207,7 +207,7 @@ class _CreateFeaturedSongState extends State<CreateFeaturedSong> {
                                           Row(
                                             children: [
                                               SizedBox(
-                                                width: 40,
+                                                width: 30,
                                               ),
                                               Container(
                                                 width: 50,
@@ -236,7 +236,7 @@ class _CreateFeaturedSongState extends State<CreateFeaturedSong> {
                                                 ),
                                               ),
                                               SizedBox(
-                                                width: 20,
+                                                width: 10,
                                               ),
                                               SizedBox(
                                                 width: screenWidth * .35,
@@ -558,7 +558,7 @@ class _CreateFeaturedSongState extends State<CreateFeaturedSong> {
                                             Row(
                                               children: [
                                                 SizedBox(
-                                                  width: 40,
+                                                  width: 30,
                                                 ),
                                                 Container(
                                                   width: 50,
@@ -588,7 +588,7 @@ class _CreateFeaturedSongState extends State<CreateFeaturedSong> {
                                                   ),
                                                 ),
                                                 SizedBox(
-                                                  width: 20,
+                                                  width: 10,
                                                 ),
                                                 SizedBox(
                                                   width: screenWidth * .35,

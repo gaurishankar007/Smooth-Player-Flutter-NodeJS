@@ -248,7 +248,7 @@ class _SettingState extends State<Setting> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Account Pulication",
+                        "Account Publication",
                         style: TextStyle(
                           color: AppColors.text,
                           fontWeight: FontWeight.bold,

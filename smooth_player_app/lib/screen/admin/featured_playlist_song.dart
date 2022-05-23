@@ -134,8 +134,8 @@ class _FeaturedPlaylistSongState extends State<FeaturedPlaylistSong> {
             Padding(
               padding: EdgeInsets.only(
                 top: 5,
-                left: sWidth * 0.05,
-                right: sWidth * 0.05,
+                left: sWidth * 0.03,
+                right: sWidth * 0.03,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -191,8 +191,8 @@ class _FeaturedPlaylistSongState extends State<FeaturedPlaylistSong> {
             Padding(
               padding: EdgeInsets.only(
                 top: 20,
-                left: sWidth * 0.05,
-                right: sWidth * 0.05,
+                left: sWidth * 0.03,
+                right: sWidth * 0.03,
                 bottom: 80,
               ),
               child: FutureBuilder<List<FeaturedSong>>(
@@ -254,7 +254,7 @@ class _FeaturedPlaylistSongState extends State<FeaturedPlaylistSong> {
                                     Row(
                                       children: [
                                         SizedBox(
-                                          width: 40,
+                                          width: 30,
                                         ),
                                         Container(
                                           width: 50,
@@ -283,7 +283,7 @@ class _FeaturedPlaylistSongState extends State<FeaturedPlaylistSong> {
                                           ),
                                         ),
                                         SizedBox(
-                                          width: 20,
+                                          width: 10,
                                         ),
                                         SizedBox(
                                           width: sWidth * .35,
@@ -355,14 +355,6 @@ class _FeaturedPlaylistSongState extends State<FeaturedPlaylistSong> {
                                     ),
                                     Row(
                                       children: [
-                                        Icon(
-                                          Icons.favorite,
-                                          color: AppColors.primary,
-                                          size: 18,
-                                        ),
-                                        SizedBox(
-                                          width: 5,
-                                        ),
                                         Text(
                                           snapshot.data![index].song!.like!
                                               .toString(),
@@ -372,84 +364,105 @@ class _FeaturedPlaylistSongState extends State<FeaturedPlaylistSong> {
                                             color: AppColors.text,
                                           ),
                                         ),
-                                      ],
-                                    ),
-                                    IconButton(
-                                      constraints: BoxConstraints(),
-                                      padding: EdgeInsets.zero,
-                                      onPressed: () async {
-                                        showDialog(
-                                          context: context,
-                                          builder: (ctx) => AlertDialog(
-                                            title: Text("Delete " +
-                                                snapshot
-                                                    .data![index].song!.title!),
-                                            content: Text(
-                                                "Are you sure you want to delete this featured song? "),
-                                            actions: <Widget>[
-                                              ElevatedButton(
-                                                style: ElevatedButton.styleFrom(
-                                                  primary: Colors.red,
-                                                  elevation: 10,
-                                                  shadowColor: Colors.black,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            15),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        Icon(
+                                          Icons.favorite,
+                                          color: AppColors.primary,
+                                          size: 18,
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        IconButton(
+                                          constraints: BoxConstraints(),
+                                          padding: EdgeInsets.zero,
+                                          onPressed: () async {
+                                            showDialog(
+                                              context: context,
+                                              builder: (ctx) => AlertDialog(
+                                                title: Text("Delete " +
+                                                    snapshot.data![index].song!
+                                                        .title!),
+                                                content: Text(
+                                                    "Are you sure you want to delete this featured song? "),
+                                                actions: <Widget>[
+                                                  ElevatedButton(
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      primary: Colors.red,
+                                                      elevation: 10,
+                                                      shadowColor: Colors.black,
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(15),
+                                                      ),
+                                                    ),
+                                                    onPressed: () async {
+                                                      await FeaturedSongHttp()
+                                                          .deleteFeaturedSong(
+                                                              snapshot
+                                                                  .data![index]
+                                                                  .id!);
+                                                      Navigator.pop(context);
+                                                      setState(() {
+                                                        featuredPlaylistSongs =
+                                                            FeaturedSongHttp()
+                                                                .getFeaturedSongs(
+                                                                    widget
+                                                                        .featuredPlaylistId!);
+                                                      });
+                                                      Fluttertoast.showToast(
+                                                        msg: snapshot
+                                                                .data![index]
+                                                                .song!
+                                                                .title! +
+                                                            " featured song has been removed from the featured playlist",
+                                                        toastLength:
+                                                            Toast.LENGTH_SHORT,
+                                                        gravity:
+                                                            ToastGravity.BOTTOM,
+                                                        timeInSecForIosWeb: 3,
+                                                        backgroundColor:
+                                                            Colors.red,
+                                                        textColor: Colors.white,
+                                                        fontSize: 16.0,
+                                                      );
+                                                    },
+                                                    child: Text("Delete"),
                                                   ),
-                                                ),
-                                                onPressed: () async {
-                                                  await FeaturedSongHttp()
-                                                      .deleteFeaturedSong(
-                                                          snapshot.data![index]
-                                                              .id!);
-                                                  Navigator.pop(context);
-                                                  setState(() {
-                                                    featuredPlaylistSongs =
-                                                        FeaturedSongHttp()
-                                                            .getFeaturedSongs(widget
-                                                                .featuredPlaylistId!);
-                                                  });
-                                                  Fluttertoast.showToast(
-                                                    msg: snapshot.data![index]
-                                                            .song!.title! +
-                                                        " featured song has been removed from the featured playlist",
-                                                    toastLength:
-                                                        Toast.LENGTH_SHORT,
-                                                    gravity:
-                                                        ToastGravity.BOTTOM,
-                                                    timeInSecForIosWeb: 3,
-                                                    backgroundColor: Colors.red,
-                                                    textColor: Colors.white,
-                                                    fontSize: 16.0,
-                                                  );
-                                                },
-                                                child: Text("Delete"),
-                                              ),
-                                              ElevatedButton(
-                                                style: ElevatedButton.styleFrom(
-                                                  primary: AppColors.primary,
-                                                  elevation: 10,
-                                                  shadowColor: Colors.black,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            15),
+                                                  ElevatedButton(
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      primary:
+                                                          AppColors.primary,
+                                                      elevation: 10,
+                                                      shadowColor: Colors.black,
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(15),
+                                                      ),
+                                                    ),
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: Text("Cancel"),
                                                   ),
-                                                ),
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                                child: Text("Cancel"),
+                                                ],
                                               ),
-                                            ],
+                                            );
+                                          },
+                                          icon: Icon(
+                                            Icons.remove_circle,
+                                            color: Colors.red,
                                           ),
-                                        );
-                                      },
-                                      icon: Icon(
-                                        Icons.remove_circle,
-                                        color: Colors.red,
-                                      ),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
