@@ -49,7 +49,7 @@ describe('user schema test', ()=> {
         })
     })
 
-    delete
+    // delete
     it('user delete testing', async ()=> {
         const status = await user.deleteMany()
         expect(status.ok)
