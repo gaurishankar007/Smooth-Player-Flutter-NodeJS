@@ -13,6 +13,7 @@ Album _$AlbumFromJson(Map<String, dynamic> json) => Album(
           ? null
           : Artist.fromJson(json['artist'] as Map<String, dynamic>),
       album_image: json['album_image'] as String?,
+      like: json['like'] as int?,
     );
 
 Map<String, dynamic> _$AlbumToJson(Album instance) => <String, dynamic>{
@@ -20,4 +21,5 @@ Map<String, dynamic> _$AlbumToJson(Album instance) => <String, dynamic>{
       'title': instance.title,
       'artist': instance.artist?.toJson(),
       'album_image': instance.album_image,
+      'like': instance.like,
     };

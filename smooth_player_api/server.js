@@ -27,6 +27,9 @@ app.use(featuredSongRoute);
 const RecentlyPlayed = require("./router/RecentlyPlayedRoute");
 app.use(RecentlyPlayed);
 
+const artist = require("./router/ArtistRoute");
+app.use(artist);
+
 app.listen(8080, () => {
   console.log("Server running on port: 8080...");
 });

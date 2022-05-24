@@ -304,7 +304,6 @@ class Player {
       isLoop = 0;
       duration = Duration.zero;
       position = Duration.zero;
-      playingSong = null;
 
       songsList = [];
       prevSongs.clear();

@@ -21,17 +21,16 @@ describe('album schema test', ()=> {
         const newAlbum = {
             "title": "test",
             "artist": "627b61735bef0dc353f3d39a",
-            "album_image": "album.jpg",
-            
+            "album_image": "album.jpg", 
         } 
         return album.create(newAlbum).then((albumData)=>{
             expect(albumData.title).toEqual("test")
-            expect(albumData.album_image).toEqual("album.jpg")
-            
+            expect(album.artist).toEqual(mongoose.Types.ObjectId("627b61735bef0dc353f3d39a"))
+            expect(albumData.album_image).toEqual("album.jpg")            
         })
     })
 
-    delete
+    // delete
     it('album delete testing', async ()=> {
         const status = await album.deleteMany()
         expect(status.ok)

@@ -14,8 +14,15 @@ class Album {
   String? title;
   Artist? artist;
   String? album_image;
+  int? like;
 
-  Album({this.id, this.title, this.artist, this.album_image});
+  Album({
+    this.id,
+    this.title,
+    this.artist,
+    this.album_image,
+    this.like,
+  });
 
   factory Album.fromJson(Map<String, dynamic> json) => _$AlbumFromJson(json);
 

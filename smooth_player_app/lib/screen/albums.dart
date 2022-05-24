@@ -131,8 +131,8 @@ class _AlbumViewState extends State<AlbumView> {
             Padding(
               padding: EdgeInsets.only(
                 top: 5,
-                left: sWidth * 0.05,
-                right: sWidth * 0.05,
+                left: sWidth * 0.03,
+                right: sWidth * 0.03,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -188,8 +188,8 @@ class _AlbumViewState extends State<AlbumView> {
             Padding(
               padding: EdgeInsets.only(
                 top: 20,
-                left: sWidth * 0.05,
-                right: sWidth * 0.05,
+                left: sWidth * 0.03,
+                right: sWidth * 0.03,
                 bottom: 80,
               ),
               child: FutureBuilder<List<Song>>(
@@ -249,7 +249,7 @@ class _AlbumViewState extends State<AlbumView> {
                                     Row(
                                       children: [
                                         SizedBox(
-                                          width: 40,
+                                          width: 30,
                                         ),
                                         Container(
                                           width: 50,
@@ -278,7 +278,7 @@ class _AlbumViewState extends State<AlbumView> {
                                           ),
                                         ),
                                         SizedBox(
-                                          width: 20,
+                                          width: 10,
                                         ),
                                         SizedBox(
                                           width: sWidth * .35,
@@ -308,14 +308,6 @@ class _AlbumViewState extends State<AlbumView> {
                                     ),
                                     Row(
                                       children: [
-                                        Icon(
-                                          Icons.favorite,
-                                          color: AppColors.primary,
-                                          size: 18,
-                                        ),
-                                        SizedBox(
-                                          width: 5,
-                                        ),
                                         Text(
                                           snapshot.data![index].like!
                                               .toString(),
@@ -325,165 +317,191 @@ class _AlbumViewState extends State<AlbumView> {
                                             color: AppColors.text,
                                           ),
                                         ),
-                                      ],
-                                    ),
-                                    IconButton(
-                                      constraints: BoxConstraints(),
-                                      padding: EdgeInsets.zero,
-                                      onPressed: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (ctx) => SimpleDialog(
-                                            children: [
-                                              SimpleDialogOption(
-                                                padding: EdgeInsets.symmetric(
-                                                  horizontal: 75,
-                                                ),
-                                                child: ElevatedButton(
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                    primary: AppColors.primary,
-                                                    elevation: 10,
-                                                    shadowColor: Colors.black,
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              15),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        Icon(
+                                          Icons.favorite,
+                                          color: AppColors.primary,
+                                          size: 18,
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        IconButton(
+                                          constraints: BoxConstraints(),
+                                          padding: EdgeInsets.zero,
+                                          onPressed: () {
+                                            showDialog(
+                                              context: context,
+                                              builder: (ctx) => SimpleDialog(
+                                                children: [
+                                                  SimpleDialogOption(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                      horizontal: 75,
                                                     ),
-                                                  ),
-                                                  onPressed: () {
-                                                    Navigator.of(ctx).pop();
-
-                                                    // Player.songQueue.add(
-                                                    //   Song(
-                                                    //     id: snapshot
-                                                    //         .data![index].id!,
-                                                    //     title: snapshot
-                                                    //         .data![index]
-                                                    //         .title!,
-                                                    //     album: snapshot
-                                                    //         .data![index]
-                                                    //         .album!,
-                                                    //     music_file: snapshot
-                                                    //         .data![index]
-                                                    //         .music_file!,
-                                                    //     cover_image: snapshot
-                                                    //         .data![index]
-                                                    //         .cover_image!,
-                                                    //     like: snapshot
-                                                    //         .data![index].like!,
-                                                    //   ),
-                                                    // );
-                                                    // Fluttertoast.showToast(
-                                                    //   msg: snapshot.data![index]
-                                                    //           .title! +
-                                                    //       " is added to the queue.",
-                                                    //   toastLength:
-                                                    //       Toast.LENGTH_SHORT,
-                                                    //   gravity:
-                                                    //       ToastGravity.BOTTOM,
-                                                    //   timeInSecForIosWeb: 3,
-                                                    // );
-                                                  },
-                                                  child: Text("Add to queue"),
-                                                ),
-                                              ),
-                                              SimpleDialogOption(
-                                                padding: EdgeInsets.symmetric(
-                                                  horizontal: 75,
-                                                ),
-                                                child: ElevatedButton(
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                    primary: AppColors.primary,
-                                                    elevation: 10,
-                                                    shadowColor: Colors.black,
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              15),
-                                                    ),
-                                                  ),
-                                                  onPressed: () {
-                                                    Navigator.of(ctx).pop();
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (builder) =>
-                                                            EditSong(
-                                                          songId: snapshot
-                                                              .data![index].id,
-                                                          albumId:
-                                                              widget.albumId,
-                                                          title: widget.title,
-                                                          albumImage:
-                                                              widget.albumImage,
-                                                          pageIndex:
-                                                              widget.pageIndex,
+                                                    child: ElevatedButton(
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                        primary:
+                                                            AppColors.primary,
+                                                        elevation: 10,
+                                                        shadowColor:
+                                                            Colors.black,
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(15),
                                                         ),
                                                       ),
-                                                    );
-                                                  },
-                                                  child: Text("Edit Song"),
-                                                ),
-                                              ),
-                                              SimpleDialogOption(
-                                                padding: EdgeInsets.symmetric(
-                                                  horizontal: 75,
-                                                ),
-                                                child: ElevatedButton(
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                    primary: Colors.red,
-                                                    elevation: 10,
-                                                    shadowColor: Colors.black,
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              15),
+                                                      onPressed: () {
+                                                        Navigator.of(ctx).pop();
+
+                                                        // Player.songQueue.add(
+                                                        //   Song(
+                                                        //     id: snapshot
+                                                        //         .data![index].id!,
+                                                        //     title: snapshot
+                                                        //         .data![index]
+                                                        //         .title!,
+                                                        //     album: snapshot
+                                                        //         .data![index]
+                                                        //         .album!,
+                                                        //     music_file: snapshot
+                                                        //         .data![index]
+                                                        //         .music_file!,
+                                                        //     cover_image: snapshot
+                                                        //         .data![index]
+                                                        //         .cover_image!,
+                                                        //     like: snapshot
+                                                        //         .data![index].like!,
+                                                        //   ),
+                                                        // );
+                                                        // Fluttertoast.showToast(
+                                                        //   msg: snapshot.data![index]
+                                                        //           .title! +
+                                                        //       " is added to the queue.",
+                                                        //   toastLength:
+                                                        //       Toast.LENGTH_SHORT,
+                                                        //   gravity:
+                                                        //       ToastGravity.BOTTOM,
+                                                        //   timeInSecForIosWeb: 3,
+                                                        // );
+                                                      },
+                                                      child:
+                                                          Text("Add to queue"),
                                                     ),
                                                   ),
-                                                  onPressed: () async {
-                                                    await SongHttp().deleteSong(
-                                                        snapshot
-                                                            .data![index].id!);
+                                                  SimpleDialogOption(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                      horizontal: 75,
+                                                    ),
+                                                    child: ElevatedButton(
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                        primary:
+                                                            AppColors.primary,
+                                                        elevation: 10,
+                                                        shadowColor:
+                                                            Colors.black,
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(15),
+                                                        ),
+                                                      ),
+                                                      onPressed: () {
+                                                        Navigator.of(ctx).pop();
+                                                        Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder:
+                                                                (builder) =>
+                                                                    EditSong(
+                                                              songId: snapshot
+                                                                  .data![index]
+                                                                  .id,
+                                                              albumId: widget
+                                                                  .albumId,
+                                                              title:
+                                                                  widget.title,
+                                                              albumImage: widget
+                                                                  .albumImage,
+                                                              pageIndex: widget
+                                                                  .pageIndex,
+                                                            ),
+                                                          ),
+                                                        );
+                                                      },
+                                                      child: Text("Edit Song"),
+                                                    ),
+                                                  ),
+                                                  SimpleDialogOption(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                      horizontal: 75,
+                                                    ),
+                                                    child: ElevatedButton(
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                        primary: Colors.red,
+                                                        elevation: 10,
+                                                        shadowColor:
+                                                            Colors.black,
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(15),
+                                                        ),
+                                                      ),
+                                                      onPressed: () async {
+                                                        await SongHttp()
+                                                            .deleteSong(snapshot
+                                                                .data![index]
+                                                                .id!);
 
-                                                    Navigator.pop(context);
+                                                        Navigator.pop(context);
 
-                                                    setState(() {
-                                                      albumSongs = SongHttp()
-                                                          .getSongs(
-                                                              widget.albumId!);
-                                                    });
+                                                        setState(() {
+                                                          albumSongs = SongHttp()
+                                                              .getSongs(widget
+                                                                  .albumId!);
+                                                        });
 
-                                                    Fluttertoast.showToast(
-                                                      msg: snapshot.data![index]
-                                                              .title! +
-                                                          " song has been deleted",
-                                                      toastLength:
-                                                          Toast.LENGTH_SHORT,
-                                                      gravity:
-                                                          ToastGravity.BOTTOM,
-                                                      timeInSecForIosWeb: 3,
-                                                      backgroundColor:
-                                                          Colors.red,
-                                                      textColor: Colors.white,
-                                                      fontSize: 16.0,
-                                                    );
-                                                  },
-                                                  child: Text("Delete"),
-                                                ),
+                                                        Fluttertoast.showToast(
+                                                          msg: snapshot
+                                                                  .data![index]
+                                                                  .title! +
+                                                              " song has been deleted",
+                                                          toastLength: Toast
+                                                              .LENGTH_SHORT,
+                                                          gravity: ToastGravity
+                                                              .BOTTOM,
+                                                          timeInSecForIosWeb: 3,
+                                                          backgroundColor:
+                                                              Colors.red,
+                                                          textColor:
+                                                              Colors.white,
+                                                          fontSize: 16.0,
+                                                        );
+                                                      },
+                                                      child: Text("Delete"),
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                            ],
+                                            );
+                                          },
+                                          icon: Icon(
+                                            Icons.more_vert,
                                           ),
-                                        );
-                                      },
-                                      icon: Icon(
-                                        Icons.more_vert,
-                                      ),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
@@ -506,7 +524,7 @@ class _AlbumViewState extends State<AlbumView> {
                   return Center(
                     child: CircularProgressIndicator(
                       strokeWidth: 5,
-                      color: Colors.greenAccent,
+                      color: AppColors.primary,
                     ),
                   );
                 },

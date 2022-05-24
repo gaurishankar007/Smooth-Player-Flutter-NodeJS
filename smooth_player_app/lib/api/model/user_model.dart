@@ -12,14 +12,15 @@ class User {
   String? gender;
   String? birth_date;
   String? biography;
+  int? follower;
   String? verified;
   String? admin;
-  String? profile_publication;
-  String? followed_artist_publication;
-  String? liked_song_publication;
-  String? liked_album_publication;
-  String? liked_featured_playlist_publication;
-  String? created_playlist_publication;
+  bool? profile_publication;
+  bool? followed_artist_publication;
+  bool? liked_song_publication;
+  bool? liked_album_publication;
+  bool? liked_featured_playlist_publication;
+  bool? created_playlist_publication;
 
   User({
     this.id,
@@ -31,6 +32,7 @@ class User {
     this.gender,
     this.birth_date,
     this.biography,
+    this.follower,
     this.verified,
     this.admin,
     this.profile_publication,
@@ -40,6 +42,27 @@ class User {
     this.liked_featured_playlist_publication,
     this.created_playlist_publication,
   });
+
+  factory User.fromJson(Map<String, dynamic> json) => User(
+        id: json['_id'] as String?,
+        username: json['username'] as String?,
+        email: json['email'] as String?,
+        profile_name: json['profile_name'] as String?,
+        profile_picture: json['profile_picture'] as String?,
+        gender: json['gender'] as String?,
+        birth_date: json['birth_date'] as String?,
+        biography: json['biography'] as String?,
+        follower: json['follower'] as int?,
+        profile_publication: json['profile_publication'] as bool?,
+        followed_artist_publication:
+            json['followed_artist_publication'] as bool?,
+        liked_album_publication: json['liked_album_publication'] as bool?,
+        liked_song_publication: json['liked_song_publication'] as bool?,
+        liked_featured_playlist_publication:
+            json['liked_featured_playlist_publication'] as bool?,
+        created_playlist_publication:
+            json['created_playlist_publication'] as bool?,
+      );
 }
 
 class UploadUser {
