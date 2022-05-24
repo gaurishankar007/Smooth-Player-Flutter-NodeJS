@@ -4,13 +4,13 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:smooth_player_app/api/http/user_http.dart';
-import 'package:smooth_player_app/api/model/user_model.dart';
 import 'package:smooth_player_app/api/urls.dart';
 import 'package:smooth_player_app/resource/player.dart';
 import 'package:smooth_player_app/screen/setting/password_setting.dart';
 import 'package:smooth_player_app/screen/setting/user_setting.dart';
 
 import '../api/log_status.dart';
+import '../api/res/user_res.dart';
 import '../resource/colors.dart';
 
 class Setting extends StatefulWidget {
@@ -289,7 +289,7 @@ class _SettingState extends State<Setting> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Followed Artist Pulication",
+                        "Followed Artist Publication",
                         style: TextStyle(
                           color: AppColors.text,
                           fontWeight: FontWeight.bold,
@@ -330,7 +330,7 @@ class _SettingState extends State<Setting> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Liked Song Pulication",
+                        "Liked Song Publication",
                         style: TextStyle(
                           color: AppColors.text,
                           fontWeight: FontWeight.bold,

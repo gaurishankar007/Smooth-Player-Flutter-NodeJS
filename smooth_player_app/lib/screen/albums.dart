@@ -18,14 +18,16 @@ class AlbumView extends StatefulWidget {
   final String? albumId;
   final String? title;
   final String? albumImage;
+  final int? like;
   final int? pageIndex;
-  const AlbumView(
-      {Key? key,
-      @required this.albumId,
-      @required this.title,
-      @required this.albumImage,
-      @required this.pageIndex})
-      : super(key: key);
+  const AlbumView({
+    Key? key,
+    @required this.albumId,
+    @required this.title,
+    @required this.albumImage,
+    @required this.like,
+    @required this.pageIndex,
+  }) : super(key: key);
 
   @override
   State<AlbumView> createState() => _AlbumViewState();
@@ -86,7 +88,7 @@ class _AlbumViewState extends State<AlbumView> {
               alignment: Alignment.topCenter,
               children: [
                 Padding(
-                  padding: EdgeInsets.only(left: 10),
+                  padding: EdgeInsets.only(left: 5),
                   child: Row(
                     children: [
                       IconButton(
@@ -117,7 +119,7 @@ class _AlbumViewState extends State<AlbumView> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(5),
                     child: Image(
-                      width: sWidth * .75,
+                      width: sWidth * .8,
                       height: sHeight * .3,
                       fit: BoxFit.cover,
                       image: NetworkImage(
@@ -140,16 +142,33 @@ class _AlbumViewState extends State<AlbumView> {
                 children: [
                   SizedBox(
                     width: sWidth * .7,
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Text(
-                        widget.title!,
-                        style: TextStyle(
-                          color: AppColors.text,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Text(
+                            widget.title!,
+                            style: TextStyle(
+                              color: AppColors.text,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                          ),
                         ),
-                      ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Text(
+                            widget.like!.toString() + " likes",
+                            style: TextStyle(
+                              color: AppColors.text,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   ElevatedButton(

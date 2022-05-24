@@ -10,8 +10,17 @@ class Artist {
   String? id;
 
   String? profile_name;
+  String? profile_picture;
+  String? biography;
+  int? follower;
+  bool? verified;
 
-  Artist({this.profile_name}); 
+  Artist({
+    this.profile_name,
+    this.profile_picture,
+    this.biography,
+    this.verified,
+  });
 
   factory Artist.fromJson(Map<String, dynamic> json) => _$ArtistFromJson(json);
 
