@@ -7,7 +7,7 @@ import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 
 import '../log_status.dart';
-import '../model/user_model.dart';
+import '../res/user_res.dart';
 import '../urls.dart';
 
 class UserHttp {

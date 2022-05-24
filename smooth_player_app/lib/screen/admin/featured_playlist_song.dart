@@ -16,12 +16,14 @@ class FeaturedPlaylistSong extends StatefulWidget {
   final String? featuredPlaylistId;
   final String? title;
   final String? featuredPlaylistImage;
+  final int? like;
   final int? pageIndex;
   const FeaturedPlaylistSong({
     Key? key,
     @required this.featuredPlaylistId,
     @required this.title,
     @required this.featuredPlaylistImage,
+    @required this.like,
     @required this.pageIndex,
   }) : super(key: key);
 
@@ -89,7 +91,7 @@ class _FeaturedPlaylistSongState extends State<FeaturedPlaylistSong> {
               alignment: Alignment.topCenter,
               children: [
                 Padding(
-                  padding: EdgeInsets.only(left: 10),
+                  padding: EdgeInsets.only(left: 5),
                   child: Row(
                     children: [
                       IconButton(
@@ -120,7 +122,7 @@ class _FeaturedPlaylistSongState extends State<FeaturedPlaylistSong> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(5),
                     child: Image(
-                      width: sWidth * .75,
+                      width: sWidth * .8,
                       height: sHeight * .3,
                       fit: BoxFit.cover,
                       image: NetworkImage(
@@ -143,16 +145,33 @@ class _FeaturedPlaylistSongState extends State<FeaturedPlaylistSong> {
                 children: [
                   SizedBox(
                     width: sWidth * .7,
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Text(
-                        widget.title!,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Text(
+                            widget.title!,
+                            style: TextStyle(
+                              color: AppColors.text,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                          ),
                         ),
-                      ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Text(
+                            widget.like!.toString() + " likes",
+                            style: TextStyle(
+                              color: AppColors.text,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   ElevatedButton(
