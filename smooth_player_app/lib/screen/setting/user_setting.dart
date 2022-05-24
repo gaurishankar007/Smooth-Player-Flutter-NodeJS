@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_holo_date_picker/flutter_holo_date_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:smooth_player_app/api/model/user_model.dart';
 
 import '../../api/http/user_http.dart';
+import '../../api/res/user_res.dart';
 import '../../resource/colors.dart';
 
 class UserSetting extends StatefulWidget {

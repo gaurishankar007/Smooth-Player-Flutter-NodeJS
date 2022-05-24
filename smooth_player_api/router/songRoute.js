@@ -82,12 +82,15 @@ router.post("/upload/singleSong", auth.verifyUser, musicFile.array('song_file', 
 });
 
 router.post("/view/song", auth.verifyUser, async (req, res)=> {
-    const songs = await song.find({album: req.body.albumId}).populate("album").sort({createdAt: -1});
-    const songs1 = await song.populate(songs, {
+    const songs1 = await song.find({album: req.body.albumId})
+    .populate("album", "title artist album_image like")
+    .sort({createdAt: -1});
+
+    const songs = await song.populate(songs1, {
         path: "album.artist",
-        select: "profile_name"
+        select: "profile_name profile_picture biography follower verified"
     });
-    res.send(songs1);
+    res.send(songs);
 });
 
 router.delete("/delete/song", auth.verifyUser, (req, res)=> {
@@ -103,7 +106,6 @@ router.delete("/delete/song", auth.verifyUser, (req, res)=> {
         });     
     });
 });
-
 
 router.put("/edit/song/title", auth.verifyUser, (req, res)=> {
     if(req.body.title.trim()==="") {
@@ -136,7 +138,7 @@ router.post("/search/songByTitle", auth.verifyAdmin, async (req, res)=> {
     const songs = await song.find(songTitle).populate("album")  
     const songs1 = await song.populate(songs, {
         path: "album.artist",
-        select: "profile_name"
+        select: "profile_name profile_picture biography verified"
     });
     res.send(songs1); 
 });

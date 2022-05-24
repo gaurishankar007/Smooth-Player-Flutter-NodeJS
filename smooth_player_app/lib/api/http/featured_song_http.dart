@@ -11,7 +11,7 @@ class FeaturedSongHttp {
 
   Future<List<FeaturedSong>> getFeaturedSongs(String featuredPlaylistId) async {
     final response = await post(
-      Uri.parse(routeUrl + "view/featuredSong"),
+      Uri.parse(routeUrl + "view/featuredSongs"),
       body: {"featuredPlaylistId": featuredPlaylistId},
       headers: {
         HttpHeaders.authorizationHeader: "Bearer $token",
@@ -53,9 +53,11 @@ class FeaturedSongHttp {
     final bearerToken = {
       HttpHeaders.authorizationHeader: 'Bearer $token',
     };
-    
-    final response = await delete(Uri.parse(routeUrl + "delete/featuredPlaylistSong"),
-        body: {"featuredSongId": featuredSongId}, headers: bearerToken);
+
+    final response = await delete(
+        Uri.parse(routeUrl + "delete/featuredPlaylistSong"),
+        body: {"featuredSongId": featuredSongId},
+        headers: bearerToken);
 
     final responseData = jsonDecode(response.body);
     return responseData;
