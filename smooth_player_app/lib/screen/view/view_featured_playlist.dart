@@ -16,12 +16,14 @@ class ViewFeaturedPlaylist extends StatefulWidget {
   final String? featuredPlaylistId;
   final String? title;
   final String? featuredPlaylistImage;
+  final int? like;
   final int? pageIndex;
   const ViewFeaturedPlaylist({
     Key? key,
     @required this.featuredPlaylistId,
     @required this.title,
     @required this.featuredPlaylistImage,
+    @required this.like,
     @required this.pageIndex,
   }) : super(key: key);
 
@@ -89,7 +91,7 @@ class _ViewFeaturedPlaylistState extends State<ViewFeaturedPlaylist> {
               alignment: Alignment.topCenter,
               children: [
                 Padding(
-                  padding: EdgeInsets.only(left: 10),
+                  padding: EdgeInsets.only(left: 5),
                   child: Row(
                     children: [
                       IconButton(
@@ -120,7 +122,7 @@ class _ViewFeaturedPlaylistState extends State<ViewFeaturedPlaylist> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(5),
                     child: Image(
-                      width: sWidth * .75,
+                      width: sWidth * .8,
                       height: sHeight * .3,
                       fit: BoxFit.cover,
                       image: NetworkImage(
@@ -134,8 +136,8 @@ class _ViewFeaturedPlaylistState extends State<ViewFeaturedPlaylist> {
             Padding(
               padding: EdgeInsets.only(
                 top: 5,
-                left: sWidth * 0.05,
-                right: sWidth * 0.05,
+                left: sWidth * 0.03,
+                right: sWidth * 0.03,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -143,16 +145,33 @@ class _ViewFeaturedPlaylistState extends State<ViewFeaturedPlaylist> {
                 children: [
                   SizedBox(
                     width: sWidth * .7,
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Text(
-                        widget.title!,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Text(
+                            widget.title!,
+                            style: TextStyle(
+                              color: AppColors.text,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                          ),
                         ),
-                      ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Text(
+                            widget.like!.toString() + " likes",
+                            style: TextStyle(
+                              color: AppColors.text,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   IconButton(
@@ -169,8 +188,8 @@ class _ViewFeaturedPlaylistState extends State<ViewFeaturedPlaylist> {
             Padding(
               padding: EdgeInsets.only(
                 top: 20,
-                left: sWidth * 0.05,
-                right: sWidth * 0.05,
+                left: sWidth * 0.03,
+                right: sWidth * 0.03,
                 bottom: 80,
               ),
               child: FutureBuilder<List<FeaturedSong>>(
@@ -232,7 +251,7 @@ class _ViewFeaturedPlaylistState extends State<ViewFeaturedPlaylist> {
                                     Row(
                                       children: [
                                         SizedBox(
-                                          width: 40,
+                                          width: 30,
                                         ),
                                         Container(
                                           width: 50,
@@ -261,7 +280,7 @@ class _ViewFeaturedPlaylistState extends State<ViewFeaturedPlaylist> {
                                           ),
                                         ),
                                         SizedBox(
-                                          width: 20,
+                                          width: 10,
                                         ),
                                         SizedBox(
                                           width: sWidth * .35,
@@ -333,14 +352,6 @@ class _ViewFeaturedPlaylistState extends State<ViewFeaturedPlaylist> {
                                     ),
                                     Row(
                                       children: [
-                                        Icon(
-                                          Icons.favorite,
-                                          color: AppColors.primary,
-                                          size: 18,
-                                        ),
-                                        SizedBox(
-                                          width: 5,
-                                        ),
                                         Text(
                                           snapshot.data![index].song!.like!
                                               .toString(),
@@ -350,99 +361,117 @@ class _ViewFeaturedPlaylistState extends State<ViewFeaturedPlaylist> {
                                             color: AppColors.text,
                                           ),
                                         ),
-                                      ],
-                                    ),
-                                    IconButton(
-                                      constraints: BoxConstraints(),
-                                      padding: EdgeInsets.zero,
-                                      onPressed: () async {
-                                        showDialog(
-                                          context: context,
-                                          builder: (ctx) => SimpleDialog(
-                                            children: [
-                                              SimpleDialogOption(
-                                                padding: EdgeInsets.symmetric(
-                                                  horizontal: 75,
-                                                ),
-                                                child: ElevatedButton(
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                    primary: AppColors.primary,
-                                                    elevation: 10,
-                                                    shadowColor: Colors.black,
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              15),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        Icon(
+                                          Icons.favorite,
+                                          color: AppColors.primary,
+                                          size: 18,
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        IconButton(
+                                          constraints: BoxConstraints(),
+                                          padding: EdgeInsets.zero,
+                                          onPressed: () async {
+                                            showDialog(
+                                              context: context,
+                                              builder: (ctx) => SimpleDialog(
+                                                children: [
+                                                  SimpleDialogOption(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                      horizontal: 75,
                                                     ),
-                                                  ),
-                                                  onPressed: () {
-                                                    Navigator.of(ctx).pop();
+                                                    child: ElevatedButton(
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                        primary:
+                                                            AppColors.primary,
+                                                        elevation: 10,
+                                                        shadowColor:
+                                                            Colors.black,
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(15),
+                                                        ),
+                                                      ),
+                                                      onPressed: () {
+                                                        Navigator.of(ctx).pop();
 
-                                                    // Player.songQueue.add(
-                                                    //   Song(
-                                                    //     id: snapshot
-                                                    //         .data![index].id!,
-                                                    //     title: snapshot
-                                                    //         .data![index]
-                                                    //         .title!,
-                                                    //     album: snapshot
-                                                    //         .data![index]
-                                                    //         .album!,
-                                                    //     music_file: snapshot
-                                                    //         .data![index]
-                                                    //         .music_file!,
-                                                    //     cover_image: snapshot
-                                                    //         .data![index]
-                                                    //         .cover_image!,
-                                                    //     like: snapshot
-                                                    //         .data![index].like!,
-                                                    //   ),
-                                                    // );
-                                                    // Fluttertoast.showToast(
-                                                    //   msg: snapshot.data![index]
-                                                    //           .title! +
-                                                    //       " is added to the queue.",
-                                                    //   toastLength:
-                                                    //       Toast.LENGTH_SHORT,
-                                                    //   gravity:
-                                                    //       ToastGravity.BOTTOM,
-                                                    //   timeInSecForIosWeb: 3,
-                                                    // );
-                                                  },
-                                                  child: Text("Add to queue"),
-                                                ),
-                                              ),
-                                              SimpleDialogOption(
-                                                padding: EdgeInsets.symmetric(
-                                                  horizontal: 75,
-                                                ),
-                                                child: ElevatedButton(
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                    primary: AppColors.primary,
-                                                    elevation: 10,
-                                                    shadowColor: Colors.black,
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              15),
+                                                        // Player.songQueue.add(
+                                                        //   Song(
+                                                        //     id: snapshot
+                                                        //         .data![index].id!,
+                                                        //     title: snapshot
+                                                        //         .data![index]
+                                                        //         .title!,
+                                                        //     album: snapshot
+                                                        //         .data![index]
+                                                        //         .album!,
+                                                        //     music_file: snapshot
+                                                        //         .data![index]
+                                                        //         .music_file!,
+                                                        //     cover_image: snapshot
+                                                        //         .data![index]
+                                                        //         .cover_image!,
+                                                        //     like: snapshot
+                                                        //         .data![index].like!,
+                                                        //   ),
+                                                        // );
+                                                        // Fluttertoast.showToast(
+                                                        //   msg: snapshot.data![index]
+                                                        //           .title! +
+                                                        //       " is added to the queue.",
+                                                        //   toastLength:
+                                                        //       Toast.LENGTH_SHORT,
+                                                        //   gravity:
+                                                        //       ToastGravity.BOTTOM,
+                                                        //   timeInSecForIosWeb: 3,
+                                                        // );
+                                                      },
+                                                      child:
+                                                          Text("Add to queue"),
                                                     ),
                                                   ),
-                                                  onPressed: () {},
-                                                  child:
-                                                      Text("Add to playlist"),
-                                                ),
+                                                  SimpleDialogOption(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                      horizontal: 75,
+                                                    ),
+                                                    child: ElevatedButton(
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                        primary:
+                                                            AppColors.primary,
+                                                        elevation: 10,
+                                                        shadowColor:
+                                                            Colors.black,
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(15),
+                                                        ),
+                                                      ),
+                                                      onPressed: () {},
+                                                      child: Text(
+                                                          "Add to playlist"),
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                            ],
+                                            );
+                                          },
+                                          icon: Icon(
+                                            Icons.more_vert,
                                           ),
-                                        );
-                                      },
-                                      icon: Icon(
-                                        Icons.more_vert,
-                                      ),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
