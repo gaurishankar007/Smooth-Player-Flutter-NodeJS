@@ -30,6 +30,9 @@ app.use(RecentlyPlayed);
 const artist = require("./router/ArtistRoute");
 app.use(artist);
 
+const home = require("./router/homeRoute");
+app.use(home);
+
 app.listen(8080, () => {
   console.log("Server running on port: 8080...");
 });
