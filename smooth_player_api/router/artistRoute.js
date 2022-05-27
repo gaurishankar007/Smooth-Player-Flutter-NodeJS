@@ -5,7 +5,7 @@ const auth = require("../authentication/auth");
 
 const user = require("../model/userModel");
 const album = require("../model/albumModel");
-const song = require("../model/songModel");
+const song = require( "../model/songModel" );
 
 router.post("/view/artistProfile", auth.verifyUser, async (req, res) => {
   const userDetail = await user.findOne({ _id: req.body.artistId });

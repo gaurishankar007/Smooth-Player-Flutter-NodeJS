@@ -20,23 +20,23 @@ router.post("/add/recentSong", auth.verifyUser, async (req, res)=> {
 });
 
 router.get("/view/recentSong", auth.verifyUser, async (req, res)=> {
-    const recentSongs = await recentlyPlayed.find({user: req.userInfo._id})
+    const recentSongs1 = await recentlyPlayed.find({user: req.userInfo._id})
     .populate("user", "profile_name")
     .populate("song")
     .sort({createdAt: -1})
     .limit(30);
 
-    const recentSongs1 = await recentlyPlayed.populate(recentSongs, {
-        path: "song.album",
-        select: "title artist album_image"
-    });
-
     const recentSongs2 = await recentlyPlayed.populate(recentSongs1, {
-        path: "song.album.artist",
-        select: "profile_name"
+        path: "song.album",
+        select: "title artist album_image like"
     });
 
-    res.send(recentSongs2);
+    const recentSongs = await recentlyPlayed.populate(recentSongs2, {
+        path: "song.album.artist",
+        select: "profile_name profile_picture biography follower verified"
+    });
+
+    res.send(recentSongs);
 });
 
 module.exports = router;

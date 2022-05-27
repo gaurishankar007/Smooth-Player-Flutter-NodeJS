@@ -1,24 +1,24 @@
 import 'dart:async';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:smooth_player_app/api/http/featured_song_http.dart';
-import 'package:smooth_player_app/api/res/featured_song_res.dart';
-import 'package:smooth_player_app/api/res/song_res.dart';
-import 'package:smooth_player_app/api/urls.dart';
-import 'package:smooth_player_app/resource/colors.dart';
-import 'package:smooth_player_app/resource/player.dart';
-import 'package:smooth_player_app/screen/admin/create_featured_song.dart';
-import 'package:smooth_player_app/widget/admin_navigator.dart';
-import 'package:smooth_player_app/widget/song_bar.dart';
 
-class FeaturedPlaylistSong extends StatefulWidget {
+import '../../api/http/featured_song_http.dart';
+import '../../api/res/featured_song_res.dart';
+import '../../api/res/song_res.dart';
+import '../../api/urls.dart';
+import '../../resource/colors.dart';
+import '../../resource/player.dart';
+import '../../widget/navigator.dart';
+import '../../widget/song_bar.dart';
+
+class ViewFeaturedPlaylist extends StatefulWidget {
   final String? featuredPlaylistId;
   final String? title;
   final String? featuredPlaylistImage;
   final int? like;
   final int? pageIndex;
-  const FeaturedPlaylistSong({
+  const ViewFeaturedPlaylist({
     Key? key,
     @required this.featuredPlaylistId,
     @required this.title,
@@ -28,10 +28,10 @@ class FeaturedPlaylistSong extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<FeaturedPlaylistSong> createState() => _FeaturedPlaylistSongState();
+  State<ViewFeaturedPlaylist> createState() => _ViewFeaturedPlaylistState();
 }
 
-class _FeaturedPlaylistSongState extends State<FeaturedPlaylistSong> {
+class _ViewFeaturedPlaylistState extends State<ViewFeaturedPlaylist> {
   final AudioPlayer player = Player.player;
   Song? song = Player.playingSong;
   final coverImage = ApiUrls.coverImageUrl;
@@ -174,34 +174,12 @@ class _FeaturedPlaylistSongState extends State<FeaturedPlaylistSong> {
                       ],
                     ),
                   ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (builder) => CreateFeaturedSong(
-                            featuredPlaylistId: widget.featuredPlaylistId,
-                            title: widget.title,
-                            featuredPlaylistImage: widget.featuredPlaylistImage,
-                            pageIndex: widget.pageIndex,
-                          ),
-                        ),
-                      );
-                    },
-                    child: Icon(
-                      Icons.add,
-                      color: Colors.white,
+                  IconButton(
+                    onPressed: () {},
+                    icon: Icon(
+                      Icons.favorite,
+                      color: AppColors.primary,
                       size: 30,
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.all(2),
-                      minimumSize: Size.zero,
-                      primary: AppColors.primary,
-                      elevation: 10,
-                      shadowColor: Colors.black,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
                     ),
                   ),
                 ],
@@ -400,85 +378,97 @@ class _FeaturedPlaylistSongState extends State<FeaturedPlaylistSong> {
                                           onPressed: () async {
                                             showDialog(
                                               context: context,
-                                              builder: (ctx) => AlertDialog(
-                                                title: Text("Delete " +
-                                                    snapshot.data![index].song!
-                                                        .title!),
-                                                content: Text(
-                                                    "Are you sure you want to delete this featured song? "),
-                                                actions: <Widget>[
-                                                  ElevatedButton(
-                                                    style: ElevatedButton
-                                                        .styleFrom(
-                                                      primary: Colors.red,
-                                                      elevation: 10,
-                                                      shadowColor: Colors.black,
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(15),
-                                                      ),
+                                              builder: (ctx) => SimpleDialog(
+                                                children: [
+                                                  SimpleDialogOption(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                      horizontal: 75,
                                                     ),
-                                                    onPressed: () async {
-                                                      await FeaturedSongHttp()
-                                                          .deleteFeaturedSong(
-                                                              snapshot
-                                                                  .data![index]
-                                                                  .id!);
-                                                      Navigator.pop(context);
-                                                      setState(() {
-                                                        featuredPlaylistSongs =
-                                                            FeaturedSongHttp()
-                                                                .getFeaturedSongs(
-                                                                    widget
-                                                                        .featuredPlaylistId!);
-                                                      });
-                                                      Fluttertoast.showToast(
-                                                        msg: snapshot
-                                                                .data![index]
-                                                                .song!
-                                                                .title! +
-                                                            " featured song has been removed from the featured playlist",
-                                                        toastLength:
-                                                            Toast.LENGTH_SHORT,
-                                                        gravity:
-                                                            ToastGravity.BOTTOM,
-                                                        timeInSecForIosWeb: 3,
-                                                        backgroundColor:
-                                                            Colors.red,
-                                                        textColor: Colors.white,
-                                                        fontSize: 16.0,
-                                                      );
-                                                    },
-                                                    child: Text("Delete"),
+                                                    child: ElevatedButton(
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                        primary:
+                                                            AppColors.primary,
+                                                        elevation: 10,
+                                                        shadowColor:
+                                                            Colors.black,
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(15),
+                                                        ),
+                                                      ),
+                                                      onPressed: () {
+                                                        Navigator.of(ctx).pop();
+
+                                                        // Player.songQueue.add(
+                                                        //   Song(
+                                                        //     id: snapshot
+                                                        //         .data![index].id!,
+                                                        //     title: snapshot
+                                                        //         .data![index]
+                                                        //         .title!,
+                                                        //     album: snapshot
+                                                        //         .data![index]
+                                                        //         .album!,
+                                                        //     music_file: snapshot
+                                                        //         .data![index]
+                                                        //         .music_file!,
+                                                        //     cover_image: snapshot
+                                                        //         .data![index]
+                                                        //         .cover_image!,
+                                                        //     like: snapshot
+                                                        //         .data![index].like!,
+                                                        //   ),
+                                                        // );
+                                                        // Fluttertoast.showToast(
+                                                        //   msg: snapshot.data![index]
+                                                        //           .title! +
+                                                        //       " is added to the queue.",
+                                                        //   toastLength:
+                                                        //       Toast.LENGTH_SHORT,
+                                                        //   gravity:
+                                                        //       ToastGravity.BOTTOM,
+                                                        //   timeInSecForIosWeb: 3,
+                                                        // );
+                                                      },
+                                                      child:
+                                                          Text("Add to queue"),
+                                                    ),
                                                   ),
-                                                  ElevatedButton(
-                                                    style: ElevatedButton
-                                                        .styleFrom(
-                                                      primary:
-                                                          AppColors.primary,
-                                                      elevation: 10,
-                                                      shadowColor: Colors.black,
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(15),
-                                                      ),
+                                                  SimpleDialogOption(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                      horizontal: 75,
                                                     ),
-                                                    onPressed: () {
-                                                      Navigator.pop(context);
-                                                    },
-                                                    child: Text("Cancel"),
+                                                    child: ElevatedButton(
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                        primary:
+                                                            AppColors.primary,
+                                                        elevation: 10,
+                                                        shadowColor:
+                                                            Colors.black,
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(15),
+                                                        ),
+                                                      ),
+                                                      onPressed: () {},
+                                                      child: Text(
+                                                          "Add to playlist"),
+                                                    ),
                                                   ),
                                                 ],
                                               ),
                                             );
                                           },
                                           icon: Icon(
-                                            Icons.remove_circle,
-                                            color: Colors.red,
+                                            Icons.more_vert,
                                           ),
                                         ),
                                       ],
@@ -504,7 +494,7 @@ class _FeaturedPlaylistSongState extends State<FeaturedPlaylistSong> {
                   return Center(
                     child: CircularProgressIndicator(
                       strokeWidth: 5,
-                      color: AppColors.primary,
+                      color: Colors.greenAccent,
                     ),
                   );
                 },
@@ -520,7 +510,7 @@ class _FeaturedPlaylistSongState extends State<FeaturedPlaylistSong> {
           : null,
       floatingActionButtonLocation:
           FloatingActionButtonLocation.miniCenterFloat,
-      bottomNavigationBar: AdminPageNavigator(pageIndex: widget.pageIndex),
+      bottomNavigationBar: PageNavigator(pageIndex: widget.pageIndex),
     );
   }
 }

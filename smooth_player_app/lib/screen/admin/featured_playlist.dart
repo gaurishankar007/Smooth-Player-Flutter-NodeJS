@@ -265,6 +265,7 @@ class _FeaturedPlaylistViewState extends State<FeaturedPlaylistView> {
                                     title: snapshot.data![index].title!,
                                     featuredPlaylistImage: snapshot
                                         .data![index].featured_playlist_image,
+                                    like: snapshot.data![index].like,
                                     pageIndex: 0,
                                   ),
                                 ),
