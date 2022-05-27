@@ -4,7 +4,13 @@ const mongoose = require("mongoose");
 const auth = require("../authentication/auth");
 const recentlyPlayed = require("../model/RecentlyPlayedModel");
 
-router.post("/add/recentSong", auth.verifyUser, (req, res)=> {
+router.post("/add/recentSong", auth.verifyUser, async (req, res)=> {
+
+    const recentCount = await recentlyPlayed.count({user: req.userInfo._id});
+    if(recentCount >= 100){
+        recentlyPlayed.findOneAndDelete({user: req.userInfo._id},{"sort": { "_id": 1 }}).then();
+    }
+
     new recentlyPlayed({
         user: req.userInfo._id,
         song: mongoose.Types.ObjectId(req.body.songId)
