@@ -17,15 +17,17 @@ class UploadAlbumSong extends StatefulWidget {
   final String? albumId;
   final String? title;
   final String? albumImage;
+  final int? like;
   final int? pageIndex;
 
-  const UploadAlbumSong(
-      {Key? key,
-      @required this.albumId,
-      @required this.title,
-      @required this.albumImage,
-      @required this.pageIndex})
-      : super(key: key);
+  const UploadAlbumSong({
+    Key? key,
+    @required this.albumId,
+    @required this.title,
+    @required this.albumImage,
+    @required this.like,
+    @required this.pageIndex,
+  }) : super(key: key);
 
   @override
   State<UploadAlbumSong> createState() => _UploadAlbumSongState();
@@ -340,14 +342,17 @@ class _UploadAlbumSongState extends State<UploadAlbumSong> {
                         Navigator.pop(context);
                         Navigator.pop(context);
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => AlbumView(
-                                      albumId: widget.albumId,
-                                      title: widget.title,
-                                      albumImage: widget.albumImage,
-                                      pageIndex: widget.pageIndex,
-                                    )));
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AlbumView(
+                              albumId: widget.albumId,
+                              title: widget.title,
+                              albumImage: widget.albumImage,
+                              like: widget.like,
+                              pageIndex: widget.pageIndex,
+                            ),
+                          ),
+                        );
 
                         Fluttertoast.showToast(
                           toastLength: Toast.LENGTH_SHORT,

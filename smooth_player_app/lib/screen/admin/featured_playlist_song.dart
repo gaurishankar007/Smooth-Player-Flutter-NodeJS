@@ -183,6 +183,7 @@ class _FeaturedPlaylistSongState extends State<FeaturedPlaylistSong> {
                             featuredPlaylistId: widget.featuredPlaylistId,
                             title: widget.title,
                             featuredPlaylistImage: widget.featuredPlaylistImage,
+                            like: widget.like,
                             pageIndex: widget.pageIndex,
                           ),
                         ),

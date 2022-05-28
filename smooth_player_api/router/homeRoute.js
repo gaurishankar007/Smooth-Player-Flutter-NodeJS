@@ -8,15 +8,30 @@ const recentlyPlayed = require("../model/RecentlyPlayedModel");
 const featuredPlaylist = require("../model/featurePlaylistModel");
 const follow = require("../model/followModel");
 
-router.post("/load/home", auth.verifyUser, async (req, res) => {
-  const userId = req.body.userId;
+router.get("/load/home", auth.verifyUser, async (req, res) => {
+  const albumIds = [],
+    albumIdsCount = [],
+    sortedAlbumIdsAndCount = [],
+    sortedAlbumIds = [],
+    artistIds = [],
+    artistIdsCount = [],
+    sortedArtistIdsAndCount = [],
+    sortedArtistIds = [],
+    genres = [],
+    genresCount = [],
+    sortedGenresAndCount = [],
+    sortedGenres = [],
+    prevAlbumIds = [],
+    prevAlbumIdsCount = [],
+    sortedPrevAlbumIdsAndCount = [],
+    sortedPrevAlbumIds = [];
 
+  // Getting users recently mostly played popularAlbums
   const recentlyPlayedSongs1 = await recentlyPlayed
     .find({ user: req.userInfo._id })
     .populate("song")
     .sort({ createdAt: -1 })
-    .limit(30);
-
+    .limit(100);
   const recentlyPlayedSongs2 = await recentlyPlayed.populate(
     recentlyPlayedSongs1,
     {
@@ -24,7 +39,6 @@ router.post("/load/home", auth.verifyUser, async (req, res) => {
       select: "title artist album_image",
     }
   );
-
   const recentlyPlayedSongs = await recentlyPlayed.populate(
     recentlyPlayedSongs2,
     {
@@ -32,66 +46,135 @@ router.post("/load/home", auth.verifyUser, async (req, res) => {
       select: "profile_name profile_picture biography follower verified",
     }
   );
+  for (let i = 0; i < recentlyPlayedSongs.length; i++) {
+    // recently played albums
+    if (albumIds.includes(recentlyPlayedSongs[i].song.album._id) === false) {
+      albumIds.push(recentlyPlayedSongs[i].song.album._id);
+      albumIdsCount.push(1);
+    } else {
+      const albumIndex = albumIds.indexOf(
+        recentlyPlayedSongs[i].song.album._id
+      );
+      albumIdsCount[albumIndex] = albumIdsCount[albumIndex] + 1;
+    }
 
-  const recentlyPlayedSongs3 = await recentlyPlayed
-    .find({ user: req.userInfo._id })
+    // favorite artist
+    if (
+      artistIds.includes(recentlyPlayedSongs[i].song.album.artist._id) === false
+    ) {
+      artistIds.push(recentlyPlayedSongs[i].song.album.artist._id);
+      artistIdsCount.push(1);
+    } else {
+      const artistIndex = artistIds.indexOf(
+        recentlyPlayedSongs[i].song.album.artist._id
+      );
+      artistIdsCount[artistIndex] = artistIdsCount[artistIndex] + 1;
+    }
+
+    // favorite genres
+    if (genres.includes(recentlyPlayedSongs[i].song.genre) === false) {
+      genres.push(recentlyPlayedSongs[i].song.genre);
+      genresCount.push(1);
+    } else {
+      const genreIndex = genres.indexOf(recentlyPlayedSongs[i].song.genre);
+      genresCount[genreIndex] = genresCount[genreIndex] + 1;
+    }
+  }
+  for (let i = 0; i < albumIds.length; i++) {
+    sortedAlbumIdsAndCount.push({ id: albumIds[i], count: albumIdsCount[i] });
+  }
+  sortedAlbumIdsAndCount.sort((a, b) => b.count - a.count); // Sorting according to the count
+  for (let i = 0; i < sortedAlbumIdsAndCount.length; i++) {
+    if (sortedAlbumIds.length <= 6) {
+      sortedAlbumIds.push(sortedAlbumIdsAndCount[i].id.toString());
+    }
+  }
+  const recentAlbums = await album
+    .find({ _id: sortedAlbumIds })
+    .populate("artist");
+
+  // Getting users recent favorite artists
+  for (let i = 0; i < artistIds.length; i++) {
+    if (artistIds[i].toString() != req.userInfo._id.toString()) {
+      sortedArtistIdsAndCount.push({
+        id: artistIds[i],
+        count: artistIdsCount[i],
+      });
+    }
+  }
+  sortedArtistIdsAndCount.sort((a, b) => b.count - a.count);
+  for (let i = 0; i < sortedArtistIdsAndCount.length; i++) {
+    if (sortedArtistIds.length <= 6) {
+      sortedArtistIds.push(sortedArtistIdsAndCount[i].id.toString());
+    }
+  }
+  const recentFavoriteArtists = await user.find({ _id: sortedArtistIds });
+
+  // Getting users recent favorite song genres
+  for (let i = 0; i < genres.length; i++) {
+    sortedGenresAndCount.push({
+      id: genres[i],
+      count: genresCount[i],
+    });
+  }
+  sortedGenresAndCount.sort((a, b) => b.count - a.count);
+  for (let i = 0; i < sortedGenresAndCount.length; i++) {
+    if (sortedGenres.length <= 6) {
+      sortedGenres.push(sortedGenresAndCount[i].id.toString());
+    }
+  }
+
+  // Getting users previously played albums
+  const previouslyPlayedSongs1 = await recentlyPlayed
+    .find({ user: req.userInfo._id, _id: { $nin: recentlyPlayedSongs1 } })
     .populate("song")
-    .sort({ createdAt: -1 })
-    .limit(100);
-
-  const recentlyPlayedSongs4 = await recentlyPlayed.populate(
-    recentlyPlayedSongs3,
+    .sort({ createdAt: -1 });
+  const previouslyPlayedSongs2 = await recentlyPlayed.populate(
+    previouslyPlayedSongs1,
     {
       path: "song.album",
       select: "title artist album_image",
     }
   );
-
-  const recentlyPlayedSong5 = await recentlyPlayed.populate(
-    recentlyPlayedSongs4,
+  const previouslyPlayedSongs = await recentlyPlayed.populate(
+    previouslyPlayedSongs2,
     {
       path: "song.album.artist",
       select: "profile_name profile_picture biography follower verified",
     }
   );
-
-  const albumIds = [];
-  const albumIdsCount = [];
-
-  for (let i = 0; i < recentlyPlayedSong5.length; i++) {
-    if (albumIds.includes(recentlyPlayedSong5[i].song.album._id) === false) {
-      albumIds.push(recentlyPlayedSong5[i].song.album._id);
-      albumIdsCount.push(1);
+  for (let i = 0; i < previouslyPlayedSongs.length; i++) {
+    if (
+      prevAlbumIds.includes(previouslyPlayedSongs[i].song.album._id) === false
+    ) {
+      prevAlbumIds.push(previouslyPlayedSongs[i].song.album._id);
+      prevAlbumIdsCount.push(1);
     } else {
-      const albumIndex = albumIds.indexOf(
-        recentlyPlayedSong5[i].song.album._id
+      const albumIndex = prevAlbumIds.indexOf(
+        previouslyPlayedSongs[i].song.album._id
       );
-      albumIdsCount[albumIndex] = albumIdsCount[albumIndex] + 1;
+      prevAlbumIdsCount[albumIndex] = prevAlbumIdsCount[albumIndex] + 1;
     }
   }
-  const sortedAlbumsIdsCount = albumIdsCount.sort();
-  const sortedAlbumIds = []
-
-  for (let i = 0; i < albumIds.length; i++) {
-    if (sortedAlbumIds.length <= 6){
-      const albumIndex = albumIds.indexOf(sortedAlbumsIdsCount[i]);
-      sortedAlbumIds.push(albumIds[albumIndex]);
+  for (let i = 0; i < prevAlbumIds.length; i++) {
+    if (sortedAlbumIds.includes(prevAlbumIds[i].toString()) === false) {
+      sortedPrevAlbumIdsAndCount.push({
+        id: prevAlbumIds[i],
+        count: prevAlbumIdsCount[i],
+      });
     }
   }
+  sortedPrevAlbumIdsAndCount.sort((a, b) => b.count - a.count); // Sorting according to the count
+  for (let i = 0; i < sortedPrevAlbumIdsAndCount.length; i++) {
+    if (sortedAlbumIds.length <= 6) {
+      sortedPrevAlbumIds.push(sortedPrevAlbumIdsAndCount[i].id);
+    }
+  }
+  const jumpBackIn = await album
+    .find({ _id: sortedPrevAlbumIds })
+    .populate("artist");
 
-
-  console.log(albumIds);
-  console.log(albumIdsCount);
-  console.log(sortedAlbumIds);
-  console.log(sortedAlbumsIdsCount);
-
-  const featuredplaylists = await featuredPlaylist
-    .find()
-    .sort({ like: -1 })
-    .limit(10);
-  const albums = await album.find().sort({ like: -1 }).limit(10);
-  const artist = await user.find().sort({ follower: -1 }).limit(10);
-
+  // Getting new releases from followed artists
   const followedArtist = [];
   const followings = await follow.find({ user: req.userInfo._id });
   for (let i = 0; i < followings.length; i++) {
@@ -102,14 +185,40 @@ router.post("/load/home", auth.verifyUser, async (req, res) => {
       artist: followedArtist,
       createdAt: { $gte: new Date(Date.now() - 2592000000) },
     })
+    .populate("artist")
     .sort({ createdAt: -1 });
 
+  // Getting popular music contents
+  const popularFeaturedPlaylists = await featuredPlaylist
+    .find()
+    .sort({ like: -1 })
+    .limit(10);
+  const popularAlbums = await album
+    .find()
+    .populate("artist")
+    .sort({ like: -1 })
+    .limit(10);
+  const popularArtist = await user.find({admin: false}).sort({ follower: -1 }).limit(10);
+
+  // Getting smooth Player featured
+  const popularFeaturedPlaylistIds = [];
+  for (let i = 0; i < popularFeaturedPlaylists.length; i++) {
+    popularFeaturedPlaylistIds.push(popularFeaturedPlaylists[i]._id.toString());
+  }
+  const smoothPlayerFeaturedPlaylists = await featuredPlaylist.find({
+    _id: { $nin: popularFeaturedPlaylistIds },
+  });
+
   res.send({
-    rPs: recentlyPlayedSongs,
-    nR: newReleases,
-    pF: featuredplaylists,
-    pA: albums,
-    pAr: artist,
+    recentAlbums: recentAlbums,
+    recentFavoriteArtists: recentFavoriteArtists,
+    recentFavoriteGenres: sortedGenres,
+    jumpBackIn: jumpBackIn,
+    newReleases: newReleases,
+    popularFeaturedPlaylists: popularFeaturedPlaylists,
+    popularAlbums: popularAlbums,
+    popularArtists: popularArtist,
+    smoothPlayerFeaturedPlaylists: smoothPlayerFeaturedPlaylists,
   });
 });
 

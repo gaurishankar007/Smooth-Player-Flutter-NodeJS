@@ -45,7 +45,7 @@ class _ViewFeaturedPlaylistState extends State<ViewFeaturedPlaylist> {
 
   Future<List<FeaturedSong>> viewSongs() async {
     List<FeaturedSong> resData =
-        await FeaturedSongHttp().getFeaturedSongs(widget.featuredPlaylistId!);
+        await FeaturedSongHttp().viewFeaturedSongs(widget.featuredPlaylistId!);
     return resData;
   }
 
@@ -60,7 +60,7 @@ class _ViewFeaturedPlaylistState extends State<ViewFeaturedPlaylist> {
     });
 
     featuredPlaylistSongs =
-        FeaturedSongHttp().getFeaturedSongs(widget.featuredPlaylistId!);
+        FeaturedSongHttp().viewFeaturedSongs(widget.featuredPlaylistId!);
 
     stateSub = player.onPlayerStateChanged.listen((state) {
       setState(() {

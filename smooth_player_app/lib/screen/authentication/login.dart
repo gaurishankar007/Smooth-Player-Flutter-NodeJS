@@ -179,6 +179,8 @@ class _LoginState extends State<Login> {
                           LogStatus().setToken(resData["body"]["token"],
                               resData["body"]["userData"]["admin"]);
                           LogStatus.token = resData["body"]["token"];
+                          LogStatus.admin =
+                              resData["body"]["userData"]["admin"];
                           Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
@@ -190,6 +192,8 @@ class _LoginState extends State<Login> {
                           LogStatus().setToken(resData["body"]["token"],
                               resData["body"]["userData"]["admin"]);
                           LogStatus.token = resData["body"]["token"];
+                          LogStatus.admin =
+                              resData["body"]["userData"]["admin"];
                           Navigator.pushNamedAndRemoveUntil(
                             context,
                             "home",

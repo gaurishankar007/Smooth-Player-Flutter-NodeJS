@@ -489,6 +489,7 @@ class _SettingState extends State<Setting> {
               onTap: () {
                 LogStatus().removeToken();
                 LogStatus.token = "";
+                LogStatus.admin = false;
                 Navigator.pushNamedAndRemoveUntil(
                   context,
                   "login",
