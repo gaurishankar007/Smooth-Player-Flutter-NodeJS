@@ -12,7 +12,7 @@ router.post("/load/home", auth.verifyUser, async (req, res) => {
   const userId = req.body.userId;
 
   const recentlyPlayedSongs1 = await recentlyPlayed
-    .find({ user: userId })
+    .find({ user: req.userInfo._id })
     .populate("song")
     .sort({ createdAt: -1 })
     .limit(30);
@@ -34,10 +34,56 @@ router.post("/load/home", auth.verifyUser, async (req, res) => {
   );
 
   const recentlyPlayedSongs3 = await recentlyPlayed
-    .find({ user: userId })
+    .find({ user: req.userInfo._id })
     .populate("song")
     .sort({ createdAt: -1 })
     .limit(100);
+
+  const recentlyPlayedSongs4 = await recentlyPlayed.populate(
+    recentlyPlayedSongs3,
+    {
+      path: "song.album",
+      select: "title artist album_image",
+    }
+  );
+
+  const recentlyPlayedSong5 = await recentlyPlayed.populate(
+    recentlyPlayedSongs4,
+    {
+      path: "song.album.artist",
+      select: "profile_name profile_picture biography follower verified",
+    }
+  );
+
+  const albumIds = [];
+  const albumIdsCount = [];
+
+  for (let i = 0; i < recentlyPlayedSong5.length; i++) {
+    if (albumIds.includes(recentlyPlayedSong5[i].song.album._id) === false) {
+      albumIds.push(recentlyPlayedSong5[i].song.album._id);
+      albumIdsCount.push(1);
+    } else {
+      const albumIndex = albumIds.indexOf(
+        recentlyPlayedSong5[i].song.album._id
+      );
+      albumIdsCount[albumIndex] = albumIdsCount[albumIndex] + 1;
+    }
+  }
+  const sortedAlbumsIdsCount = albumIdsCount.sort();
+  const sortedAlbumIds = []
+
+  for (let i = 0; i < albumIds.length; i++) {
+    if (sortedAlbumIds.length <= 6){
+      const albumIndex = albumIds.indexOf(sortedAlbumsIdsCount[i]);
+      sortedAlbumIds.push(albumIds[albumIndex]);
+    }
+  }
+
+
+  console.log(albumIds);
+  console.log(albumIdsCount);
+  console.log(sortedAlbumIds);
+  console.log(sortedAlbumsIdsCount);
 
   const featuredplaylists = await featuredPlaylist
     .find()
@@ -60,10 +106,10 @@ router.post("/load/home", auth.verifyUser, async (req, res) => {
 
   res.send({
     rPs: recentlyPlayedSongs,
+    nR: newReleases,
     pF: featuredplaylists,
     pA: albums,
     pAr: artist,
-    nR: newReleases,
   });
 });
 
