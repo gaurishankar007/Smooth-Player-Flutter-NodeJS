@@ -7,7 +7,7 @@ const recentlyPlayed = require("../model/RecentlyPlayedModel");
 router.post("/add/recentSong", auth.verifyUser, async (req, res)=> {
 
     const recentCount = await recentlyPlayed.count({user: req.userInfo._id});
-    if(recentCount >= 100){
+    if(recentCount >= 200){
         recentlyPlayed.findOneAndDelete({user: req.userInfo._id},{"sort": { "_id": 1 }}).then();
     }
 

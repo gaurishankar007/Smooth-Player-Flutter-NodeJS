@@ -2,6 +2,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class LogStatus {
   static String token = "";
+  static bool admin = false;
 
   void setToken(String token, bool admin) async {
     final shPref = await SharedPreferences.getInstance();

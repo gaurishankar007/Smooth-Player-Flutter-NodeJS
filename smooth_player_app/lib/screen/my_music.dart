@@ -2,11 +2,9 @@ import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:smooth_player_app/api/urls.dart';
 import 'package:smooth_player_app/resource/colors.dart';
 import 'package:smooth_player_app/screen/albums.dart';
-import 'package:smooth_player_app/screen/upload/edit_album.dart';
 import 'package:smooth_player_app/screen/upload/upload_album.dart';
 import 'package:smooth_player_app/screen/upload/upload_song.dart';
 
@@ -126,12 +124,6 @@ class _MyMusicState extends State<MyMusic> {
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     return GridView.count(
-                      padding: EdgeInsets.only(
-                        top: sHeight * .01,
-                        left: sWidth * .03,
-                        right: sWidth * .03,
-                        bottom: 80,
-                      ),
                       physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       crossAxisSpacing: 10,
@@ -140,132 +132,6 @@ class _MyMusicState extends State<MyMusic> {
                         snapshot.data!.length,
                         (index) {
                           return GestureDetector(
-                            onLongPress: () {
-                              showDialog(
-                                context: context,
-                                builder: (ctx) => SimpleDialog(
-                                  children: [
-                                    SimpleDialogOption(
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: 75,
-                                      ),
-                                      child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          primary: AppColors.primary,
-                                          elevation: 10,
-                                          shadowColor: Colors.black,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(15),
-                                          ),
-                                        ),
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (builder) => EditAlbum(
-                                                albumId:
-                                                    snapshot.data![index].id,
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                        child: Text("Edit"),
-                                      ),
-                                    ),
-                                    SimpleDialogOption(
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: 75,
-                                      ),
-                                      child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          primary: Colors.red,
-                                          elevation: 10,
-                                          shadowColor: Colors.black,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(15),
-                                          ),
-                                        ),
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                          showDialog(
-                                            context: context,
-                                            builder: (ctx) => AlertDialog(
-                                              title: Text("Delete " +
-                                                  snapshot.data![index].title!),
-                                              content: Text(
-                                                  "Are you sure you want to delete this album? All the songs in this album will be also deleted."),
-                                              actions: <Widget>[
-                                                ElevatedButton(
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                    primary: Colors.red,
-                                                    elevation: 10,
-                                                    shadowColor: Colors.black,
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              15),
-                                                    ),
-                                                  ),
-                                                  onPressed: () async {
-                                                    await AlbumHttp()
-                                                        .deleteAlbum(snapshot
-                                                            .data![index].id!);
-                                                    Navigator.pop(context);
-                                                    setState(() {
-                                                      albums = AlbumHttp()
-                                                          .getAlbums();
-                                                    });
-                                                    Fluttertoast.showToast(
-                                                      msg: snapshot.data![index]
-                                                              .title! +
-                                                          " album has been deleted",
-                                                      toastLength:
-                                                          Toast.LENGTH_SHORT,
-                                                      gravity:
-                                                          ToastGravity.BOTTOM,
-                                                      timeInSecForIosWeb: 3,
-                                                      backgroundColor:
-                                                          Colors.red,
-                                                      textColor: Colors.white,
-                                                      fontSize: 16.0,
-                                                    );
-                                                  },
-                                                  child: Text("Delete"),
-                                                ),
-                                                ElevatedButton(
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                    primary: AppColors.primary,
-                                                    elevation: 10,
-                                                    shadowColor: Colors.black,
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              15),
-                                                    ),
-                                                  ),
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                  child: Text("Cancel"),
-                                                ),
-                                              ],
-                                            ),
-                                          );
-                                        },
-                                        child: Text("Delete"),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
                             onTap: () {
                               Navigator.push(
                                 context,

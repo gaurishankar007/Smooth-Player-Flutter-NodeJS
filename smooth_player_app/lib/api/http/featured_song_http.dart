@@ -11,6 +11,24 @@ class FeaturedSongHttp {
 
   Future<List<FeaturedSong>> getFeaturedSongs(String featuredPlaylistId) async {
     final response = await post(
+      Uri.parse(routeUrl + "view/featuredSong"),
+      body: {"featuredPlaylistId": featuredPlaylistId},
+      headers: {
+        HttpHeaders.authorizationHeader: "Bearer $token",
+      },
+    );
+
+    List resFeaturedSongs = jsonDecode(response.body);
+
+    if (resFeaturedSongs.isEmpty) {
+      return List.empty();
+    }
+
+    return resFeaturedSongs.map((e) => FeaturedSong.fromJson(e)).toList();
+  }
+
+  Future<List<FeaturedSong>> viewFeaturedSongs(String featuredPlaylistId) async {
+    final response = await post(
       Uri.parse(routeUrl + "view/featuredSongs"),
       body: {"featuredPlaylistId": featuredPlaylistId},
       headers: {
@@ -26,6 +44,7 @@ class FeaturedSongHttp {
 
     return resFeaturedSongs.map((e) => FeaturedSong.fromJson(e)).toList();
   }
+
 
   Future<Map> addFeaturedSongs(
       String featuredPlaylistId, List<String> songs) async {

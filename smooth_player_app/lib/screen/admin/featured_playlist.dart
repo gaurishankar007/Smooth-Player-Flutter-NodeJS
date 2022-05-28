@@ -106,6 +106,7 @@ class _FeaturedPlaylistViewState extends State<FeaturedPlaylistView> {
                           onPressed: () {
                             LogStatus().removeToken();
                             LogStatus.token = "";
+                            LogStatus.admin = false;
                             Navigator.pushNamedAndRemoveUntil(
                               context,
                               "login",
@@ -271,61 +272,46 @@ class _FeaturedPlaylistViewState extends State<FeaturedPlaylistView> {
                                 ),
                               );
                             },
-                            child: Stack(
-                              alignment: Alignment.center,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        boxShadow: const [
-                                          BoxShadow(
-                                            color: Colors.black26,
-                                            spreadRadius: 1,
-                                            blurRadius: 5,
-                                            offset: Offset(2, 2),
-                                          )
-                                        ],
-                                      ),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(10),
-                                        child: Image(
-                                          height: sHeight * 0.2,
-                                          width: sWidth * 0.44,
-                                          fit: BoxFit.cover,
-                                          image: NetworkImage(
-                                            featuredPlaylistImage +
-                                                snapshot.data![index]
-                                                    .featured_playlist_image!,
-                                          ),
-                                        ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: Colors.black26,
+                                        spreadRadius: 1,
+                                        blurRadius: 5,
+                                        offset: Offset(2, 2),
+                                      )
+                                    ],
+                                  ),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: Image(
+                                      height: sHeight * 0.2,
+                                      width: sWidth * 0.44,
+                                      fit: BoxFit.cover,
+                                      image: NetworkImage(
+                                        featuredPlaylistImage +
+                                            snapshot.data![index]
+                                                .featured_playlist_image!,
                                       ),
                                     ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text(
-                                      snapshot.data![index].title!,
-                                      overflow: TextOverflow.fade,
-                                      softWrap: false,
-                                      style: TextStyle(
-                                        color: Colors.black87,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
+                                  ),
                                 ),
-                                Player.playingSong != null
-                                    ? Player.playingSong!.album!.id ==
-                                            snapshot.data![index].id
-                                        ? Icon(
-                                            Icons.bar_chart_rounded,
-                                            color: AppColors.primary,
-                                            size: 80,
-                                          )
-                                        : SizedBox()
-                                    : SizedBox(),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  snapshot.data![index].title!,
+                                  overflow: TextOverflow.fade,
+                                  softWrap: false,
+                                  style: TextStyle(
+                                    color: Colors.black87,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ],
                             ),
                           );

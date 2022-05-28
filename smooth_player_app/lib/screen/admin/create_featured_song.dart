@@ -14,12 +14,14 @@ class CreateFeaturedSong extends StatefulWidget {
   final String? featuredPlaylistId;
   final String? title;
   final String? featuredPlaylistImage;
+  final int? like;
   final int? pageIndex;
   const CreateFeaturedSong({
     Key? key,
     @required this.featuredPlaylistId,
     @required this.title,
     @required this.featuredPlaylistImage,
+    @required this.like,
     @required this.pageIndex,
   }) : super(key: key);
 
@@ -477,6 +479,7 @@ class _CreateFeaturedSongState extends State<CreateFeaturedSong> {
                                       title: widget.title,
                                       featuredPlaylistImage:
                                           widget.featuredPlaylistImage,
+                                      like: widget.like,
                                       pageIndex: widget.pageIndex,
                                     ),
                                   ),
