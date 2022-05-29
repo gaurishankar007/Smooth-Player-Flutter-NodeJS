@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../api/http/artist_http.dart';
 import '../../api/res/song_res.dart';
@@ -300,7 +301,7 @@ class _ViewArtistState extends State<ViewArtist> {
                                               ),
                                               child: ClipRRect(
                                                 borderRadius:
-                                                    BorderRadius.circular(10),
+                                                    BorderRadius.circular(8),
                                                 child: Image(
                                                   fit: BoxFit.cover,
                                                   image: NetworkImage(
@@ -449,36 +450,57 @@ class _ViewArtistState extends State<ViewArtist> {
                                                             Navigator.of(ctx)
                                                                 .pop();
 
-                                                            // Player.songQueue.add(
-                                                            //   Song(
-                                                            //     id: snapshot
-                                                            //         .data!.popularSong![index].id!,
-                                                            //     title: snapshot
-                                                            //         .data!.popularSong![index]
-                                                            //         .title!,
-                                                            //     album: snapshot
-                                                            //         .data!.popularSong![index]
-                                                            //         .album!,
-                                                            //     music_file: snapshot
-                                                            //         .data!.popularSong![index]
-                                                            //         .music_file!,
-                                                            //     cover_image: snapshot
-                                                            //         .data!.popularSong![index]
-                                                            //         .cover_image!,
-                                                            //     like: snapshot
-                                                            //         .data!.popularSong![index].like!,
-                                                            //   ),
-                                                            // );
-                                                            // Fluttertoast.showToast(
-                                                            //   msg: snapshot.data!.popularSong![index]
-                                                            //           .title! +
-                                                            //       " is added to the queue.",
-                                                            //   toastLength:
-                                                            //       Toast.LENGTH_SHORT,
-                                                            //   gravity:
-                                                            //       ToastGravity.BOTTOM,
-                                                            //   timeInSecForIosWeb: 3,
-                                                            // );
+                                                            Player.songQueue
+                                                                .add(
+                                                              Song(
+                                                                id: snapshot
+                                                                    .data!
+                                                                    .popularSong![
+                                                                        index]
+                                                                    .id!,
+                                                                title: snapshot
+                                                                    .data!
+                                                                    .popularSong![
+                                                                        index]
+                                                                    .title!,
+                                                                album: snapshot
+                                                                    .data!
+                                                                    .popularSong![
+                                                                        index]
+                                                                    .album!,
+                                                                music_file: snapshot
+                                                                    .data!
+                                                                    .popularSong![
+                                                                        index]
+                                                                    .music_file!,
+                                                                cover_image: snapshot
+                                                                    .data!
+                                                                    .popularSong![
+                                                                        index]
+                                                                    .cover_image!,
+                                                                like: snapshot
+                                                                    .data!
+                                                                    .popularSong![
+                                                                        index]
+                                                                    .like!,
+                                                              ),
+                                                            );
+                                                            Fluttertoast
+                                                                .showToast(
+                                                              msg: snapshot
+                                                                      .data!
+                                                                      .popularSong![
+                                                                          index]
+                                                                      .title! +
+                                                                  " is added to the queue.",
+                                                              toastLength: Toast
+                                                                  .LENGTH_SHORT,
+                                                              gravity:
+                                                                  ToastGravity
+                                                                      .BOTTOM,
+                                                              timeInSecForIosWeb:
+                                                                  3,
+                                                            );
                                                           },
                                                           child: Text(
                                                               "Add to queue"),
@@ -553,7 +575,6 @@ class _ViewArtistState extends State<ViewArtist> {
                       snapshot.data!.newAlbum!.isNotEmpty
                           ? GridView.count(
                               padding: EdgeInsets.only(
-                                top: sHeight * .01,
                                 left: sWidth * .03,
                                 right: sWidth * .03,
                               ),
@@ -603,10 +624,10 @@ class _ViewArtistState extends State<ViewArtist> {
                                               ),
                                               child: ClipRRect(
                                                 borderRadius:
-                                                    BorderRadius.circular(10),
+                                                    BorderRadius.circular(8),
                                                 child: Image(
                                                   height: sHeight * 0.2,
-                                                  width: sWidth * 0.44,
+                                                  width: sWidth * 0.46,
                                                   fit: BoxFit.cover,
                                                   image: NetworkImage(
                                                     coverImage +
@@ -675,7 +696,6 @@ class _ViewArtistState extends State<ViewArtist> {
                       snapshot.data!.oldAlbum!.isNotEmpty
                           ? GridView.count(
                               padding: EdgeInsets.only(
-                                top: sHeight * .01,
                                 left: sWidth * .03,
                                 right: sWidth * .03,
                               ),
@@ -725,10 +745,10 @@ class _ViewArtistState extends State<ViewArtist> {
                                               ),
                                               child: ClipRRect(
                                                 borderRadius:
-                                                    BorderRadius.circular(10),
+                                                    BorderRadius.circular(8),
                                                 child: Image(
                                                   height: sHeight * 0.2,
-                                                  width: sWidth * 0.44,
+                                                  width: sWidth * 0.46,
                                                   fit: BoxFit.cover,
                                                   image: NetworkImage(
                                                     coverImage +
@@ -761,8 +781,8 @@ class _ViewArtistState extends State<ViewArtist> {
                                                         .oldAlbum![index].id
                                                 ? Icon(
                                                     Icons.bar_chart_rounded,
-                                                    color: AppColors.primary,
-                                                    size: 80,
+                                                    color: Colors.white,
+                                                    size: 30,
                                                   )
                                                 : SizedBox()
                                             : SizedBox(),
@@ -773,154 +793,163 @@ class _ViewArtistState extends State<ViewArtist> {
                               ),
                             )
                           : SizedBox(),
-                      Padding(
-                        padding: EdgeInsets.only(
-                          left: sWidth * 0.03,
-                          top: 10,
-                          bottom: 10,
-                        ),
-                        child: Row(
-                          children: [
-                            Text(
-                              "About",
-                              style: TextStyle(
-                                color: AppColors.text,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
+                      snapshot.data!.artist!.biography!.trim().isNotEmpty
+                          ? Padding(
+                              padding: EdgeInsets.only(
+                                left: sWidth * 0.03,
+                                top: 10,
+                                bottom: 10,
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Stack(
-                        alignment: Alignment.bottomCenter,
-                        children: [
-                          Stack(
-                            alignment: Alignment.topCenter,
-                            children: [
-                              Stack(
-                                alignment: Alignment.center,
+                              child: Row(
                                 children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(5),
-                                    child: Image(
-                                      width: sWidth * .95,
-                                      height: sHeight * .4,
-                                      fit: BoxFit.cover,
-                                      image: NetworkImage(
-                                        profileImage +
-                                            snapshot
-                                                .data!.artist!.profile_picture!,
-                                      ),
+                                  Text(
+                                    "About",
+                                    style: TextStyle(
+                                      color: AppColors.text,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
                                     ),
                                   ),
-                                  Container(
-                                    width: sWidth * .95,
-                                    height: sHeight * .4,
-                                    decoration: BoxDecoration(
-                                      boxShadow: const [
-                                        BoxShadow(
-                                          color: Colors.black54,
-                                          spreadRadius: 1,
-                                          blurRadius: 5,
+                                ],
+                              ),
+                            )
+                          : SizedBox(),
+                      snapshot.data!.artist!.biography!.trim().isNotEmpty
+                          ? Stack(
+                              alignment: Alignment.bottomCenter,
+                              children: [
+                                Stack(
+                                  alignment: Alignment.topCenter,
+                                  children: [
+                                    Stack(
+                                      alignment: Alignment.center,
+                                      children: [
+                                        ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          child: Image(
+                                            width: sWidth * .95,
+                                            height: sHeight * .4,
+                                            fit: BoxFit.cover,
+                                            image: NetworkImage(
+                                              profileImage +
+                                                  snapshot.data!.artist!
+                                                      .profile_picture!,
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                          width: sWidth * .95,
+                                          height: sHeight * .4,
+                                          decoration: BoxDecoration(
+                                            boxShadow: const [
+                                              BoxShadow(
+                                                color: Colors.black54,
+                                                spreadRadius: 1,
+                                                blurRadius: 5,
+                                              )
+                                            ],
+                                          ),
                                         )
                                       ],
                                     ),
-                                  )
-                                ],
-                              ),
-                              Container(
-                                width: sWidth * .95,
-                                padding: EdgeInsets.all(5),
-                                child: Row(
-                                  children: const [
-                                    Icon(
-                                      Icons.verified_rounded,
-                                      color: Colors.white,
-                                    ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Text(
-                                      "Verified Artist",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
+                                    snapshot.data!.artist!.verified!
+                                        ? Container(
+                                            width: sWidth * .95,
+                                            padding: EdgeInsets.all(5),
+                                            child: Row(
+                                              children: const [
+                                                Icon(
+                                                  Icons.verified_rounded,
+                                                  color: Colors.white,
+                                                ),
+                                                SizedBox(
+                                                  width: 5,
+                                                ),
+                                                Text(
+                                                  "Verified Artist",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                        : SizedBox(),
                                   ],
                                 ),
-                              ),
-                            ],
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              showDialog(
-                                context: context,
-                                builder: (builder) => AlertDialog(
-                                  contentPadding: EdgeInsets.symmetric(
-                                    vertical: 5,
-                                    horizontal: 10,
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                  content: SizedBox(
-                                    height: sHeight * .5,
-                                    child: SingleChildScrollView(
-                                      child: Column(
-                                        children: [
-                                          ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                            child: Image(
-                                              height: 100,
-                                              fit: BoxFit.cover,
-                                              image: NetworkImage(
-                                                profileImage +
-                                                    snapshot.data!.artist!
-                                                        .profile_picture!,
-                                              ),
+                                GestureDetector(
+                                  onTap: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (builder) => AlertDialog(
+                                        contentPadding: EdgeInsets.symmetric(
+                                          vertical: 5,
+                                          horizontal: 10,
+                                        ),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                        ),
+                                        content: SizedBox(
+                                          height: sHeight * .5,
+                                          child: SingleChildScrollView(
+                                            child: Column(
+                                              children: [
+                                                ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
+                                                  child: Image(
+                                                    height: 100,
+                                                    fit: BoxFit.cover,
+                                                    image: NetworkImage(
+                                                      profileImage +
+                                                          snapshot.data!.artist!
+                                                              .profile_picture!,
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 5,
+                                                ),
+                                                Text(
+                                                  snapshot
+                                                      .data!.artist!.biography!,
+                                                  textAlign: TextAlign.justify,
+                                                  style: TextStyle(
+                                                    color: AppColors.text,
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 5,
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                          SizedBox(
-                                            height: 5,
-                                          ),
-                                          Text(
-                                            snapshot.data!.artist!.biography!,
-                                            textAlign: TextAlign.justify,
-                                            style: TextStyle(
-                                              color: AppColors.text,
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 5,
-                                          ),
-                                        ],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    alignment: Alignment.bottomCenter,
+                                    width: sWidth * .95,
+                                    height: 100,
+                                    padding: EdgeInsets.all(5),
+                                    child: Text(
+                                      snapshot.data!.artist!.biography!,
+                                      textAlign: TextAlign.justify,
+                                      overflow: TextOverflow.fade,
+                                      softWrap: true,
+                                      style: TextStyle(
+                                        color: Colors.white,
                                       ),
                                     ),
                                   ),
                                 ),
-                              );
-                            },
-                            child: Container(
-                              alignment: Alignment.bottomCenter,
-                              width: sWidth * .95,
-                              height: 100,
-                              padding: EdgeInsets.all(5),
-                              child: Text(
-                                snapshot.data!.artist!.biography!,
-                                textAlign: TextAlign.justify,
-                                overflow: TextOverflow.fade,
-                                softWrap: true,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                              ],
+                            )
+                          : SizedBox(),
                       SizedBox(
                         height: 80,
                       ),

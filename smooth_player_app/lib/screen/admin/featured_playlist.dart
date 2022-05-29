@@ -287,10 +287,10 @@ class _FeaturedPlaylistViewState extends State<FeaturedPlaylistView> {
                                     ],
                                   ),
                                   child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(10),
+                                    borderRadius: BorderRadius.circular(8),
                                     child: Image(
                                       height: sHeight * 0.2,
-                                      width: sWidth * 0.44,
+                                      width: sWidth * 0.46,
                                       fit: BoxFit.cover,
                                       image: NetworkImage(
                                         featuredPlaylistImage +
