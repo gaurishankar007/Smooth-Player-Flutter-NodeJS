@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../api/http/song_http.dart';
 import '../../api/res/song_res.dart';
@@ -388,36 +389,39 @@ class _ViewAlbumState extends State<ViewAlbum> {
                                                       onPressed: () {
                                                         Navigator.of(ctx).pop();
 
-                                                        // Player.songQueue.add(
-                                                        //   Song(
-                                                        //     id: snapshot
-                                                        //         .data![index].id!,
-                                                        //     title: snapshot
-                                                        //         .data![index]
-                                                        //         .title!,
-                                                        //     album: snapshot
-                                                        //         .data![index]
-                                                        //         .album!,
-                                                        //     music_file: snapshot
-                                                        //         .data![index]
-                                                        //         .music_file!,
-                                                        //     cover_image: snapshot
-                                                        //         .data![index]
-                                                        //         .cover_image!,
-                                                        //     like: snapshot
-                                                        //         .data![index].like!,
-                                                        //   ),
-                                                        // );
-                                                        // Fluttertoast.showToast(
-                                                        //   msg: snapshot.data![index]
-                                                        //           .title! +
-                                                        //       " is added to the queue.",
-                                                        //   toastLength:
-                                                        //       Toast.LENGTH_SHORT,
-                                                        //   gravity:
-                                                        //       ToastGravity.BOTTOM,
-                                                        //   timeInSecForIosWeb: 3,
-                                                        // );
+                                                        Player.songQueue.add(
+                                                          Song(
+                                                            id: snapshot
+                                                                .data![index]
+                                                                .id!,
+                                                            title: snapshot
+                                                                .data![index]
+                                                                .title!,
+                                                            album: snapshot
+                                                                .data![index]
+                                                                .album!,
+                                                            music_file: snapshot
+                                                                .data![index]
+                                                                .music_file!,
+                                                            cover_image: snapshot
+                                                                .data![index]
+                                                                .cover_image!,
+                                                            like: snapshot
+                                                                .data![index]
+                                                                .like!,
+                                                          ),
+                                                        );
+                                                        Fluttertoast.showToast(
+                                                          msg: snapshot
+                                                                  .data![index]
+                                                                  .title! +
+                                                              " is added to the queue.",
+                                                          toastLength: Toast
+                                                              .LENGTH_SHORT,
+                                                          gravity: ToastGravity
+                                                              .BOTTOM,
+                                                          timeInSecForIosWeb: 3,
+                                                        );
                                                       },
                                                       child:
                                                           Text("Add to queue"),

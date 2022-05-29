@@ -58,66 +58,65 @@ class _MyMusicState extends State<MyMusic> {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
+          padding: EdgeInsets.only(
+            left: sWidth * 0.03,
+            right: sWidth * 0.03,
+            top: 10,
+            bottom: 80,
+          ),
           child: Column(
             children: [
-              SizedBox(
-                height: sHeight * .01,
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: sWidth * 0.03, vertical: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        primary: AppColors.primary,
-                        elevation: 10,
-                        shadowColor: Colors.black,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => UploadAlbum()));
-                      },
-                      child: Text(
-                        "Upload Album",
-                        style: TextStyle(
-                          fontSize: 15,
-                        ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: AppColors.primary,
+                      elevation: 10,
+                      shadowColor: Colors.black,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        primary: AppColors.primary,
-                        elevation: 10,
-                        shadowColor: Colors.black,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => UploadSong()));
-                      },
-                      child: Text(
-                        "Upload Song",
-                        style: TextStyle(
-                          fontSize: 15,
-                        ),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => UploadAlbum()));
+                    },
+                    child: Text(
+                      "Upload Album",
+                      style: TextStyle(
+                        fontSize: 15,
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: AppColors.primary,
+                      elevation: 10,
+                      shadowColor: Colors.black,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => UploadSong()));
+                    },
+                    child: Text(
+                      "Upload Song",
+                      style: TextStyle(
+                        fontSize: 15,
+                      ),
+                    ),
+                  ),
+                ],
               ),
               SizedBox(
-                height: sHeight * .01,
+                height: 20,
               ),
               FutureBuilder<List<Album>>(
                 future: albums,
@@ -148,7 +147,7 @@ class _MyMusicState extends State<MyMusic> {
                               );
                             },
                             child: Stack(
-                              alignment: Alignment.center,
+                              alignment: Alignment.topRight,
                               children: [
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -165,10 +164,10 @@ class _MyMusicState extends State<MyMusic> {
                                         ],
                                       ),
                                       child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(10),
+                                        borderRadius: BorderRadius.circular(8),
                                         child: Image(
                                           height: sHeight * 0.2,
-                                          width: sWidth * 0.44,
+                                          width: sWidth * 0.46,
                                           fit: BoxFit.cover,
                                           image: NetworkImage(
                                             coverImage +
@@ -198,7 +197,7 @@ class _MyMusicState extends State<MyMusic> {
                                         ? Icon(
                                             Icons.bar_chart_rounded,
                                             color: AppColors.primary,
-                                            size: 80,
+                                            size: 40,
                                           )
                                         : SizedBox()
                                     : SizedBox(),
