@@ -2,8 +2,10 @@ const express = require('express');
 const router = new express.Router();
 const auth = require('../authentication/auth');
 const musicFile = require('../setting/songSetting');
+const user = require("../model/userModel");
 const album = require('../model/albumModel');
 const song = require('../model/songModel');
+const featuredPlaylist = require("../model/featurePlaylistModel");
 const mongoose = require('mongoose');
 const fs = require("fs");
 
@@ -130,7 +132,7 @@ router.put("/edit/song/image", auth.verifyUser, musicFile.single('song_file'), (
 });
 
 router.post("/search/songByTitle", auth.verifyAdmin, async (req, res)=> {
-    if(req.body.title==="") {
+    if(req.body.title.trim()==="") {
         return res.send([]);
     }
     const songTitle =  {title: { $regex: req.body.title, $options: "i" }}; 
@@ -141,6 +143,31 @@ router.post("/search/songByTitle", auth.verifyAdmin, async (req, res)=> {
         select: "profile_name profile_picture biography verified"
     });
     res.send(songs1); 
+});
+
+router.post("/search/song", auth.verifyUser, async (req, res)=> {
+    if(req.body.title.trim()==="") {
+        return res.send([]);
+    }
+
+    const songTitle =  {title: { $regex: req.body.title, $options: "i" }}; 
+    const albumTitle = {title: { $regex: req.body.title, $options: "i" }}; 
+    const featuredPlaylistTitle = {title: { $regex: req.body.title, $options: "i" }}; 
+    const artistName = {profile_name: { $regex: req.body.title, $options: "i" }, verified: true}; 
+
+    const songs1 = await song.find(songTitle).populate("album").limit(6)
+    const songs = await song.populate(songs1, {
+        path: "album.artist",
+        select: "profile_name profile_picture biography verified"
+    });
+
+    const albums = await album.find(albumTitle);
+
+    const featuredPlaylists = await featuredPlaylist.find(featuredPlaylistTitle);
+
+    const artists = await user.find(artistName);
+
+    res.send({songs: songs, albums: albums, featuredPlaylists: featuredPlaylists, artists: artists}); 
 });
 
 module.exports = router;
