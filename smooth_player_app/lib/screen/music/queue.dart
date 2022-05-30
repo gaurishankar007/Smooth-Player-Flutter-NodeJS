@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:smooth_player_app/screen/music/recently_played.dart';
 
 import '../../api/res/song_res.dart';
 import '../../api/urls.dart';
@@ -65,6 +66,9 @@ class _SongQueueState extends State<SongQueue> {
             color: AppColors.text,
           ),
         ),
+        actions: [TextButton(onPressed:(){
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>RecentlyPlayed()));
+        }, child: Text("Recently played"))],
         elevation: 0,
         backgroundColor: Colors.transparent,
       ),
