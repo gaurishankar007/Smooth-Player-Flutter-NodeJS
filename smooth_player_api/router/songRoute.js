@@ -93,6 +93,18 @@ router.post("/view/song", auth.verifyUser, async (req, res)=> {
     res.send(songs);
 });
 
+router.post("/adminView/song", auth.verifyAdmin, async (req, res)=> {
+    const songs1 = await song.find({album: req.body.albumId})
+    .populate("album", "title artist album_image like")
+    .sort({createdAt: -1});
+
+    const songs = await song.populate(songs1, {
+        path: "album.artist",
+        select: "profile_name profile_picture biography follower verified"
+    });
+    res.send(songs);
+});
+
 router.delete("/delete/song", auth.verifyUser, (req, res)=> {
     song.findOne({_id: req.body.songId}).then((songData)=>{
         album.findOne({_id: songData.album}).then((albumData)=> {
