@@ -127,6 +127,24 @@ class SongHttp {
     return resSongs.map((e) => Song.fromJson(e)).toList();
   }
 
+  Future<List<Song>> getSongsAdmin(String albumId) async {
+    final response = await post(
+      Uri.parse(routeUrl + "adminView/song"),
+      body: {"albumId": albumId},
+      headers: {
+        HttpHeaders.authorizationHeader: "Bearer $token",
+      },
+    );
+
+    List resSongs = jsonDecode(response.body);
+
+    if (resSongs.isEmpty) {
+      return List.empty();
+    }
+
+    return resSongs.map((e) => Song.fromJson(e)).toList();
+  }
+
   Future<Map> deleteSong(String songId) async {
     final bearerToken = {
       HttpHeaders.authorizationHeader: 'Bearer $token',
