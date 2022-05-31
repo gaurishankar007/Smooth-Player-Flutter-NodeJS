@@ -6,7 +6,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:smooth_player_app/api/http/album_http.dart';
 import 'package:smooth_player_app/api/model/album_model.dart';
 import 'package:smooth_player_app/resource/colors.dart';
-import 'package:smooth_player_app/screen/home.dart';
 import 'package:smooth_player_app/screen/my_music.dart';
 
 import '../../resource/player.dart';
@@ -153,6 +152,7 @@ class _UploadAlbumState extends State<UploadAlbum> {
                           if (value == null || value.isEmpty) {
                             return "Album name is required";
                           }
+                          return null;
                         },
                         onSaved: ((value) {
                           albumTitle = value!;

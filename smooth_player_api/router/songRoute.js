@@ -128,7 +128,7 @@ router.put("/edit/song/image", auth.verifyUser, musicFile.single('song_file'), (
         song.updateOne( { _id: songData._id }, { cover_image: req.file.filename } ).then( () =>{
             res.send({resM: "Song Edited."});
         });
-    });
+    }); 
 });
 
 router.post("/search/songByTitle", auth.verifyAdmin, async (req, res)=> {
@@ -145,6 +145,66 @@ router.post("/search/songByTitle", auth.verifyAdmin, async (req, res)=> {
     res.send(songs1); 
 });
 
+router.get("/search/genre", auth.verifyUser, async (req, res)=> {
+    const songGenres = [
+        "Select song genre",
+        "Adult contemporary music",
+        "Alternative country",
+        "Alternative hip hop",
+        "Alternative rock",
+        "Beach Music",
+        "Blues",
+        "Children's music",
+        "Christian/Gospel",
+        "Classic music",
+        "Contemporary Christian music",
+        "Country music",
+        "Dance music",
+        "Easy listening",
+        "Electronic dance music",
+        "Electronic music",
+        "Experimental music",
+        "Folk music",
+        "Funk",
+        "Hard rock",
+        "Heavy Metal",
+        "Hip hop music",
+        "Indie rock",
+        "Instrumental",
+        "J-pop",
+        "Japanese rock",
+        "Jazz",
+        "Jingle",
+        "Latin alternative",
+        "Latin music",
+        "Metal, Musical theater",
+        "New-age music",
+        "Pop",
+        "Popular music",
+        "Post-disco",
+        "Progressive rock",
+        "Psychedelic rock",
+        "Reggae",
+        "Rhythm and blues",
+        "Rock",
+        "Singing",
+        "Soul music",
+        "Soundtrack",
+        "Vocal music"
+      ];
+       
+    const genres = [];
+
+    for (let i = 0; i < songGenres.length; i++) {
+        const singleSong = await song.findOne({genre: songGenres[i]});
+        if(singleSong!==null) {            
+            genres.push(songGenres[i]);
+        }
+    }
+
+    res.send(genres);
+});
+
 router.post("/search/song", auth.verifyUser, async (req, res)=> {
     if(req.body.title.trim()==="") {
         return res.send([]);
@@ -152,13 +212,14 @@ router.post("/search/song", auth.verifyUser, async (req, res)=> {
 
     const songTitle =  {title: { $regex: req.body.title, $options: "i" }}; 
     const albumTitle = {title: { $regex: req.body.title, $options: "i" }}; 
-    const featuredPlaylistTitle = {title: { $regex: req.body.title, $options: "i" }}; 
-    const artistName = {profile_name: { $regex: req.body.title, $options: "i" }, verified: true}; 
+    const featuredPlaylistTitle = {title: { $regex: req.body.title, $options: "i" }};
+    const artistName = {profile_name: { $regex: req.body.title, $options: "i" }, verified: true, admin: false}; 
+    const userName = {profile_name: { $regex: req.body.title, $options: "i" }, verified: false, admin: false}; 
 
     const songs1 = await song.find(songTitle).populate("album").limit(6)
     const songs = await song.populate(songs1, {
         path: "album.artist",
-        select: "profile_name profile_picture biography verified"
+        select: "profile_name profile_picture biography follower verified"
     });
 
     const albums = await album.find(albumTitle);
@@ -167,7 +228,15 @@ router.post("/search/song", auth.verifyUser, async (req, res)=> {
 
     const artists = await user.find(artistName);
 
-    res.send({songs: songs, albums: albums, featuredPlaylists: featuredPlaylists, artists: artists}); 
+    const users = await user.find(userName);
+
+    res.send({
+        songs: songs, 
+        albums: albums, 
+        featuredPlaylists: featuredPlaylists, 
+        artists: artists, 
+        users: users,
+    }); 
 });
 
 module.exports = router;

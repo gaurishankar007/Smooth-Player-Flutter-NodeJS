@@ -145,6 +145,7 @@ class _CreateFeaturedPlaylistState extends State<CreateFeaturedPlaylist> {
                       if (value == null || value.isEmpty) {
                         return "Playlist name is required";
                       }
+                      return null;
                     },
                     onSaved: ((value) {
                       playlistTitle = value!;
@@ -183,7 +184,7 @@ class _CreateFeaturedPlaylistState extends State<CreateFeaturedPlaylist> {
                       );
                     } else if (_fromPlaylist.currentState!.validate()) {
                       _fromPlaylist.currentState!.save();
-                      final res_data =
+                      final resData =
                           await FeaturedPlaylistHttp().createFeaturedPlaylist(
                         FeaturedPlaylistModel(
                           playlistTitle: playlistTitle,
@@ -191,7 +192,7 @@ class _CreateFeaturedPlaylistState extends State<CreateFeaturedPlaylist> {
                         ),
                       );
 
-                      if (res_data["statusCode"] == 201) {
+                      if (resData["statusCode"] == 201) {
                         Navigator.pop(context);
                         Navigator.pop(context);
                         Navigator.push(
@@ -204,17 +205,16 @@ class _CreateFeaturedPlaylistState extends State<CreateFeaturedPlaylist> {
                           timeInSecForIosWeb: 3,
                           backgroundColor: Colors.green,
                           textColor: Colors.white,
-                          msg: res_data["body"]["resM"],
+                          msg: resData["body"]["resM"],
                         );
                       } else {
-                        // print(res_data);
                         Fluttertoast.showToast(
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.BOTTOM,
                           timeInSecForIosWeb: 3,
                           backgroundColor: Colors.red,
                           textColor: Colors.white,
-                          msg: res_data["body"]["resM"],
+                          msg: resData["body"]["resM"],
                         );
                       }
                     } else {

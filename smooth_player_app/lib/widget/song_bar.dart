@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:smooth_player_app/api/urls.dart';
 
 import '../api/res/song_res.dart';
+import '../resource/colors.dart';
 import '../resource/player.dart';
 import '../screen/music/playing.dart';
 
@@ -61,116 +62,143 @@ class _SongBarState extends State<SongBar> {
       padding: EdgeInsets.symmetric(
         horizontal: 5,
       ),
-      child: GestureDetector(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (builder) => PlayingSong(),
-            ),
-          );
-        },
-        child: Container(
-          padding: EdgeInsets.all(4),
-          height: 60,
-          decoration: BoxDecoration(
-            color: Color(0XFF5B86E5),
-            borderRadius: BorderRadius.circular(8),
-            boxShadow: const [
-              BoxShadow(
-                color: Colors.black12,
-                spreadRadius: 2,
-                blurRadius: 5,
-                offset: Offset(0, -5),
-              )
-            ],
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Container(
-                    width: 50,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Colors.black26,
-                          spreadRadius: 1,
-                          blurRadius: 5,
-                          offset: Offset(2, 2),
-                        )
-                      ],
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(5),
-                      child: Image(
-                        fit: BoxFit.cover,
-                        image: NetworkImage(
-                          coverImage + Player.playingSong!.cover_image!,
+      child: Player.playingSong == null
+          ? SizedBox()
+          : GestureDetector(
+              onLongPress: () {
+                showDialog(
+                  context: context,
+                  builder: (ctx) => AlertDialog(
+                    title: Text("Stop Playing"),
+                    actions: <Widget>[
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.red,
+                          elevation: 10,
+                          shadowColor: Colors.black,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
                         ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                          setState(() {
+                            Player().stopSong();
+                          });
+                        },
+                        child: Text("Stop"),
                       ),
-                    ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: AppColors.primary,
+                          elevation: 10,
+                          shadowColor: Colors.black,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text("Cancel"),
+                      ),
+                    ],
                   ),
-                  SizedBox(
-                    width: 10,
+                );
+              },
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (builder) => PlayingSong(),
                   ),
-                  SizedBox(
-                    height: 40,
-                    width: sWidth * .45,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                );
+              },
+              child: Container(
+                padding: EdgeInsets.all(4),
+                height: 60,
+                decoration: BoxDecoration(
+                  color: Color(0XFF5B86E5),
+                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.black12,
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                      offset: Offset(0, -5),
+                    )
+                  ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
                       children: [
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Text(
-                            songData!.title!,
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
+                        Container(
+                          width: 50,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Colors.black26,
+                                spreadRadius: 1,
+                                blurRadius: 5,
+                                offset: Offset(2, 2),
+                              )
+                            ],
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(5),
+                            child: Image(
+                              fit: BoxFit.cover,
+                              image: NetworkImage(
+                                coverImage + songData!.cover_image!,
+                              ),
                             ),
                           ),
                         ),
                         SizedBox(
-                          height: 5,
+                          width: 10,
                         ),
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Text(
-                            songData!.album!.artist!.profile_name!,
+                        SizedBox(
+                          height: 40,
+                          width: sWidth * .45,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Text(
+                                  songData!.title!,
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Text(
+                                  songData!.album!.artist!.profile_name!,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
                     ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      Player().previousSong();
-                      setState(() {
-                        songData = Player.playingSong;
-                      });
-                    },
-                    style: TextButton.styleFrom(
-                      padding: EdgeInsets.zero,
-                      minimumSize: Size.zero,
-                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    ),
-                    child: Icon(
-                      Icons.skip_previous,
-                      size: 35,
-                      color: Colors.black,
-                    ),
-                  ),
-                  Player.isPaused
-                      ? TextButton(
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        TextButton(
                           onPressed: () {
-                            Player().resumeSong();
+                            Player().previousSong();
+                            setState(() {
+                              songData = Player.playingSong;
+                            });
                           },
                           style: TextButton.styleFrom(
                             padding: EdgeInsets.zero,
@@ -178,50 +206,68 @@ class _SongBarState extends State<SongBar> {
                             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           ),
                           child: Icon(
-                            Icons.play_arrow_sharp,
-                            size: 40,
-                            color: Colors.black,
-                          ),
-                        )
-                      : TextButton(
-                          onPressed: () {
-                            Player().pauseSong();
-                          },
-                          style: TextButton.styleFrom(
-                            padding: EdgeInsets.zero,
-                            minimumSize: Size.zero,
-                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          ),
-                          child: Icon(
-                            Icons.pause_sharp,
-                            size: 40,
+                            Icons.skip_previous,
+                            size: 35,
                             color: Colors.black,
                           ),
                         ),
-                  TextButton(
-                    onPressed: () {
-                      Player().nextSong();
-                      setState(() {
-                        songData = Player.playingSong;
-                      });
-                    },
-                    style: TextButton.styleFrom(
-                      padding: EdgeInsets.zero,
-                      minimumSize: Size.zero,
-                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    ),
-                    child: Icon(
-                      Icons.skip_next,
-                      size: 35,
-                      color: Colors.black,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ),
-      ),
+                        Player.isPaused
+                            ? TextButton(
+                                onPressed: () {
+                                  Player().resumeSong();
+                                },
+                                style: TextButton.styleFrom(
+                                  padding: EdgeInsets.zero,
+                                  minimumSize: Size.zero,
+                                  tapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                ),
+                                child: Icon(
+                                  Icons.play_arrow_sharp,
+                                  size: 40,
+                                  color: Colors.black,
+                                ),
+                              )
+                            : TextButton(
+                                onPressed: () {
+                                  Player().pauseSong();
+                                },
+                                style: TextButton.styleFrom(
+                                  padding: EdgeInsets.zero,
+                                  minimumSize: Size.zero,
+                                  tapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                ),
+                                child: Icon(
+                                  Icons.pause_sharp,
+                                  size: 40,
+                                  color: Colors.black,
+                                ),
+                              ),
+                        TextButton(
+                          onPressed: () {
+                            Player().nextSong();
+                            setState(() {
+                              songData = Player.playingSong;
+                            });
+                          },
+                          style: TextButton.styleFrom(
+                            padding: EdgeInsets.zero,
+                            minimumSize: Size.zero,
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          ),
+                          child: Icon(
+                            Icons.skip_next,
+                            size: 35,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
     );
   }
 }

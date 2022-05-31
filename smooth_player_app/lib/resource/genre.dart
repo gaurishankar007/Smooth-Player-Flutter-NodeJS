@@ -32,7 +32,7 @@ class MusicGenre {
     "Latin music",
     "Metal, Musical theater",
     "New-age music",
-    "Pop music",
+    "Pop",
     "Popular music",
     "Post-disco",
     "Progressive rock",
