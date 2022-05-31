@@ -4,7 +4,8 @@ import 'package:smooth_player_app/screen/admin/featured_playlist.dart';
 
 class AdminPageNavigator extends StatelessWidget {
   final int? pageIndex;
-  const AdminPageNavigator({Key? key, @required this.pageIndex}) : super(key: key);
+  const AdminPageNavigator({Key? key, @required this.pageIndex})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +29,17 @@ class AdminPageNavigator extends StatelessWidget {
           ),
           selectedIcon: Icon(
             Icons.manage_accounts_rounded,
+            color: Color(0XFF5B86E5),
+          ),
+          label: "",
+        ),
+        NavigationDestination(
+          icon: Icon(
+            Icons.report,
+            color: Colors.black,
+          ),
+          selectedIcon: Icon(
+            Icons.report,
             color: Color(0XFF5B86E5),
           ),
           label: "",

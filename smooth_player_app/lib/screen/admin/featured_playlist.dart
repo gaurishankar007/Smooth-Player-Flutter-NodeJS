@@ -6,6 +6,7 @@ import 'package:smooth_player_app/api/http/featured_playlist_http.dart';
 import 'package:smooth_player_app/api/res/featured_playlist_res.dart';
 import 'package:smooth_player_app/screen/admin/create_featured_playlist.dart';
 import 'package:smooth_player_app/screen/admin/featured_playlist_song.dart';
+import 'package:smooth_player_app/screen/authentication/login.dart';
 import 'package:smooth_player_app/widget/admin_navigator.dart';
 
 import '../../api/log_status.dart';
@@ -107,9 +108,11 @@ class _FeaturedPlaylistViewState extends State<FeaturedPlaylistView> {
                             LogStatus().removeToken();
                             LogStatus.token = "";
                             LogStatus.admin = false;
-                            Navigator.pushNamedAndRemoveUntil(
+                            Navigator.pushAndRemoveUntil(
                               context,
-                              "login",
+                              MaterialPageRoute(
+                                builder: (builder) => Login(),
+                              ),
                               (route) => false,
                             );
                             Player().stopSong();
@@ -190,6 +193,8 @@ class _FeaturedPlaylistViewState extends State<FeaturedPlaylistView> {
                       ),
                       physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
+                      childAspectRatio:
+                          (sWidth - (sWidth * .55)) / (sHeight * .25),
                       crossAxisSpacing: 10,
                       crossAxisCount: 2,
                       children: List.generate(

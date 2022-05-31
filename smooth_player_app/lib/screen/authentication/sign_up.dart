@@ -22,8 +22,8 @@ class _SignUpState extends State<SignUp> {
   String username = "",
       email = "",
       password = "",
-      confirm_password = "",
-      profile_name = "",
+      confirmPassword = "",
+      profileName = "",
       birthDate = "",
       biography = "";
   String? gender = "";
@@ -160,6 +160,7 @@ class _SignUpState extends State<SignUp> {
                     MultiValidator([
                       RequiredValidator(errorText: "Username is required!"),
                     ]);
+                    return null;
                   },
                   decoration: InputDecoration(
                     filled: true,
@@ -184,6 +185,7 @@ class _SignUpState extends State<SignUp> {
                     MultiValidator([
                       RequiredValidator(errorText: "Email is required!"),
                     ]);
+                    return null;
                   },
                   decoration: InputDecoration(
                     filled: true,
@@ -201,13 +203,14 @@ class _SignUpState extends State<SignUp> {
                 TextFormField(
                   key: Key("profile_name"),
                   onSaved: (value) {
-                    profile_name = value!;
+                    profileName = value!;
                   },
                   textCapitalization: TextCapitalization.words,
                   validator: (value) {
                     MultiValidator([
                       RequiredValidator(errorText: "Profile name is required!"),
                     ]);
+                    return null;
                   },
                   decoration: InputDecoration(
                     filled: true,
@@ -235,6 +238,7 @@ class _SignUpState extends State<SignUp> {
                         MultiValidator([
                           RequiredValidator(errorText: "Password is required!"),
                         ]);
+                        return null;
                       },
                       obscureText: hidePass,
                       decoration: InputDecoration(
@@ -269,7 +273,7 @@ class _SignUpState extends State<SignUp> {
                     TextFormField(
                       key: Key("confirm_password"),
                       onSaved: (value) {
-                        confirm_password = value!;
+                        confirmPassword = value!;
                       },
                       textCapitalization: TextCapitalization.words,
                       validator: (value) {
@@ -277,6 +281,7 @@ class _SignUpState extends State<SignUp> {
                           RequiredValidator(
                               errorText: "Password confirmation is required!"),
                         ]);
+                        return null;
                       },
                       obscureText: hideCPass,
                       decoration: InputDecoration(
@@ -312,7 +317,6 @@ class _SignUpState extends State<SignUp> {
                       "Gender:",
                       style: TextStyle(
                         fontSize: 17,
-                        fontFamily: "Laila-Bold",
                       ),
                     ),
                     Row(
@@ -373,8 +377,10 @@ class _SignUpState extends State<SignUp> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Birthdate:",
-                      style: TextStyle(fontSize: 17, fontFamily: "Laila-Bold"),
+                      "Birth Date:",
+                      style: TextStyle(
+                        fontSize: 17,
+                      ),
                     ),
                     DatePickerWidget(
                       dateFormat: "yyyy-MMMM-dd",
@@ -449,10 +455,10 @@ class _SignUpState extends State<SignUp> {
                         UploadUser(
                           username: username,
                           email: email,
-                          profile_name: profile_name,
+                          profile_name: profileName,
                           profile_picture: _image,
                           password: password,
-                          confirm_password: confirm_password,
+                          confirm_password: confirmPassword,
                           biography: biography,
                           birth_date: birthDate,
                           gender: gender,
@@ -529,6 +535,5 @@ class _SignUpState extends State<SignUp> {
         ),
       ),
     );
-    ;
   }
 }

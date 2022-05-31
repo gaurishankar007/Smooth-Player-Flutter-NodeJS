@@ -135,7 +135,7 @@ class _ViewArtistState extends State<ViewArtist> {
                           ),
                           Padding(
                             padding: EdgeInsets.symmetric(
-                              horizontal: 8,
+                              horizontal: sWidth * 0.01,
                             ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -201,356 +201,385 @@ class _ViewArtistState extends State<ViewArtist> {
                           ),
                         ],
                       ),
-                      Padding(
-                        padding: EdgeInsets.only(
-                          left: sWidth * 0.03,
-                          top: 20,
-                          bottom: 10,
-                        ),
-                        child: Row(
-                          children: [
-                            Text(
-                              "Popular",
-                              style: TextStyle(
-                                color: AppColors.text,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
+                      snapshot.data!.popularSong!.isNotEmpty
+                          ? Padding(
+                              padding: EdgeInsets.only(
+                                left: sWidth * 0.03,
+                                top: 20,
+                                bottom: 10,
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(
-                          left: sWidth * 0.03,
-                          right: sWidth * 0.03,
-                        ),
-                        child: ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: snapshot.data!.popularSong!.length,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.only(bottom: 15),
-                              child: GestureDetector(
-                                onDoubleTap: () async {
-                                  Song newSong = Song(
-                                    id: snapshot.data!.popularSong![index].id!,
-                                    title: snapshot
-                                        .data!.popularSong![index].title!,
-                                    album: snapshot
-                                        .data!.popularSong![index].album!,
-                                    music_file: snapshot
-                                        .data!.popularSong![index].music_file!,
-                                    cover_image: snapshot
-                                        .data!.popularSong![index].cover_image!,
-                                    like: snapshot
-                                        .data!.popularSong![index].like!,
-                                  );
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "Popular",
+                                    style: TextStyle(
+                                      color: AppColors.text,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : SizedBox(),
+                      snapshot.data!.popularSong!.isNotEmpty
+                          ? Padding(
+                              padding: EdgeInsets.only(
+                                left: sWidth * 0.03,
+                                right: sWidth * 0.03,
+                              ),
+                              child: ListView.builder(
+                                physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: snapshot.data!.popularSong!.length,
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(bottom: 15),
+                                    child: GestureDetector(
+                                      onDoubleTap: () async {
+                                        Song newSong = Song(
+                                          id: snapshot
+                                              .data!.popularSong![index].id!,
+                                          title: snapshot
+                                              .data!.popularSong![index].title!,
+                                          album: snapshot
+                                              .data!.popularSong![index].album!,
+                                          music_file: snapshot.data!
+                                              .popularSong![index].music_file!,
+                                          cover_image: snapshot.data!
+                                              .popularSong![index].cover_image!,
+                                          like: snapshot
+                                              .data!.popularSong![index].like!,
+                                        );
 
-                                  Player().playSong(newSong, songs);
+                                        Player().playSong(newSong, songs);
 
-                                  setState(() {
-                                    song = newSong;
-                                  });
-                                },
-                                child: Stack(
-                                  alignment: Alignment.centerLeft,
-                                  children: [
-                                    Player.playingSong != null
-                                        ? Player.playingSong!.id ==
-                                                snapshot.data!
-                                                    .popularSong![index].id!
-                                            ? Icon(
-                                                Icons.bar_chart_rounded,
-                                                color: AppColors.primary,
-                                              )
-                                            : Text(
-                                                "${index + 1}",
-                                                style: TextStyle(
-                                                  fontSize: 15,
-                                                ),
-                                              )
-                                        : Text(
-                                            "${index + 1}",
-                                            style: TextStyle(
-                                              fontSize: 15,
-                                            ),
-                                          ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            SizedBox(
-                                              width: 30,
-                                            ),
-                                            Container(
-                                              width: 50,
-                                              height: 50,
-                                              decoration: BoxDecoration(
-                                                boxShadow: const [
-                                                  BoxShadow(
-                                                    color: Colors.black26,
-                                                    spreadRadius: 1,
-                                                    blurRadius: 5,
-                                                    offset: Offset(2, 2),
-                                                  )
-                                                ],
-                                              ),
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
-                                                child: Image(
-                                                  fit: BoxFit.cover,
-                                                  image: NetworkImage(
-                                                    coverImage +
-                                                        snapshot
-                                                            .data!
-                                                            .popularSong![index]
-                                                            .cover_image!,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            SizedBox(
-                                              width: sWidth * .35,
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  SingleChildScrollView(
-                                                    scrollDirection:
-                                                        Axis.horizontal,
-                                                    child: Text(
+                                        setState(() {
+                                          song = newSong;
+                                        });
+                                      },
+                                      child: Stack(
+                                        alignment: Alignment.centerLeft,
+                                        children: [
+                                          Player.playingSong != null
+                                              ? Player.playingSong!.id ==
                                                       snapshot
                                                           .data!
                                                           .popularSong![index]
-                                                          .title!,
-                                                      overflow:
-                                                          TextOverflow.fade,
-                                                      softWrap: false,
+                                                          .id!
+                                                  ? Icon(
+                                                      Icons.bar_chart_rounded,
+                                                      color: AppColors.primary,
+                                                    )
+                                                  : Text(
+                                                      "${index + 1}",
                                                       style: TextStyle(
                                                         fontSize: 15,
-                                                        color: Player
-                                                                    .playingSong !=
-                                                                null
-                                                            ? Player.playingSong!
-                                                                        .id ==
-                                                                    snapshot
-                                                                        .data!
-                                                                        .popularSong![
-                                                                            index]
-                                                                        .id!
-                                                                ? AppColors
-                                                                    .primary
-                                                                : AppColors.text
-                                                            : AppColors.text,
-                                                        fontWeight:
-                                                            FontWeight.bold,
+                                                      ),
+                                                    )
+                                              : Text(
+                                                  "${index + 1}",
+                                                  style: TextStyle(
+                                                    fontSize: 15,
+                                                  ),
+                                                ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  SizedBox(
+                                                    width: 30,
+                                                  ),
+                                                  Container(
+                                                    width: 50,
+                                                    height: 50,
+                                                    decoration: BoxDecoration(
+                                                      boxShadow: const [
+                                                        BoxShadow(
+                                                          color: Colors.black26,
+                                                          spreadRadius: 1,
+                                                          blurRadius: 5,
+                                                          offset: Offset(2, 2),
+                                                        )
+                                                      ],
+                                                    ),
+                                                    child: ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8),
+                                                      child: Image(
+                                                        fit: BoxFit.cover,
+                                                        image: NetworkImage(
+                                                          coverImage +
+                                                              snapshot
+                                                                  .data!
+                                                                  .popularSong![
+                                                                      index]
+                                                                  .cover_image!,
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
                                                   SizedBox(
-                                                    height: 5,
+                                                    width: 10,
                                                   ),
-                                                  SingleChildScrollView(
-                                                    scrollDirection:
-                                                        Axis.horizontal,
-                                                    child: Text(
-                                                      snapshot
-                                                          .data!
-                                                          .popularSong![index]
-                                                          .album!
-                                                          .title!,
-                                                      overflow:
-                                                          TextOverflow.fade,
-                                                      softWrap: false,
-                                                      style: TextStyle(
-                                                        color: Player
-                                                                    .playingSong !=
-                                                                null
-                                                            ? Player.playingSong!
-                                                                        .id ==
-                                                                    snapshot
-                                                                        .data!
-                                                                        .popularSong![
-                                                                            index]
-                                                                        .id!
-                                                                ? AppColors
-                                                                    .primary
-                                                                : AppColors.text
-                                                            : AppColors.text,
-                                                      ),
+                                                  SizedBox(
+                                                    width: sWidth * .35,
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        SingleChildScrollView(
+                                                          scrollDirection:
+                                                              Axis.horizontal,
+                                                          child: Text(
+                                                            snapshot
+                                                                .data!
+                                                                .popularSong![
+                                                                    index]
+                                                                .title!,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .fade,
+                                                            softWrap: false,
+                                                            style: TextStyle(
+                                                              fontSize: 15,
+                                                              color: Player
+                                                                          .playingSong !=
+                                                                      null
+                                                                  ? Player.playingSong!
+                                                                              .id ==
+                                                                          snapshot
+                                                                              .data!
+                                                                              .popularSong![
+                                                                                  index]
+                                                                              .id!
+                                                                      ? AppColors
+                                                                          .primary
+                                                                      : AppColors
+                                                                          .text
+                                                                  : AppColors
+                                                                      .text,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          height: 5,
+                                                        ),
+                                                        SingleChildScrollView(
+                                                          scrollDirection:
+                                                              Axis.horizontal,
+                                                          child: Text(
+                                                            snapshot
+                                                                .data!
+                                                                .popularSong![
+                                                                    index]
+                                                                .album!
+                                                                .title!,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .fade,
+                                                            softWrap: false,
+                                                            style: TextStyle(
+                                                              color: Player
+                                                                          .playingSong !=
+                                                                      null
+                                                                  ? Player.playingSong!
+                                                                              .id ==
+                                                                          snapshot
+                                                                              .data!
+                                                                              .popularSong![
+                                                                                  index]
+                                                                              .id!
+                                                                      ? AppColors
+                                                                          .primary
+                                                                      : AppColors
+                                                                          .text
+                                                                  : AppColors
+                                                                      .text,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
                                                   ),
                                                 ],
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              snapshot.data!.popularSong![index]
-                                                  .like!
-                                                  .toString(),
-                                              overflow: TextOverflow.fade,
-                                              softWrap: false,
-                                              style: TextStyle(
-                                                color: AppColors.text,
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: 5,
-                                            ),
-                                            Icon(
-                                              Icons.favorite,
-                                              color: AppColors.primary,
-                                              size: 18,
-                                            ),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            IconButton(
-                                              constraints: BoxConstraints(),
-                                              padding: EdgeInsets.zero,
-                                              onPressed: () {
-                                                showDialog(
-                                                  context: context,
-                                                  builder: (ctx) =>
-                                                      SimpleDialog(
-                                                    children: [
-                                                      SimpleDialogOption(
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                          horizontal: 75,
-                                                        ),
-                                                        child: ElevatedButton(
-                                                          style: ElevatedButton
-                                                              .styleFrom(
-                                                            primary: AppColors
-                                                                .primary,
-                                                            elevation: 10,
-                                                            shadowColor:
-                                                                Colors.black,
-                                                            shape:
-                                                                RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          15),
-                                                            ),
-                                                          ),
-                                                          onPressed: () {
-                                                            Navigator.of(ctx)
-                                                                .pop();
-
-                                                            Player.songQueue
-                                                                .add(
-                                                              Song(
-                                                                id: snapshot
-                                                                    .data!
-                                                                    .popularSong![
-                                                                        index]
-                                                                    .id!,
-                                                                title: snapshot
-                                                                    .data!
-                                                                    .popularSong![
-                                                                        index]
-                                                                    .title!,
-                                                                album: snapshot
-                                                                    .data!
-                                                                    .popularSong![
-                                                                        index]
-                                                                    .album!,
-                                                                music_file: snapshot
-                                                                    .data!
-                                                                    .popularSong![
-                                                                        index]
-                                                                    .music_file!,
-                                                                cover_image: snapshot
-                                                                    .data!
-                                                                    .popularSong![
-                                                                        index]
-                                                                    .cover_image!,
-                                                                like: snapshot
-                                                                    .data!
-                                                                    .popularSong![
-                                                                        index]
-                                                                    .like!,
-                                                              ),
-                                                            );
-                                                            Fluttertoast
-                                                                .showToast(
-                                                              msg: snapshot
-                                                                      .data!
-                                                                      .popularSong![
-                                                                          index]
-                                                                      .title! +
-                                                                  " is added to the queue.",
-                                                              toastLength: Toast
-                                                                  .LENGTH_SHORT,
-                                                              gravity:
-                                                                  ToastGravity
-                                                                      .BOTTOM,
-                                                              timeInSecForIosWeb:
-                                                                  3,
-                                                            );
-                                                          },
-                                                          child: Text(
-                                                              "Add to queue"),
-                                                        ),
-                                                      ),
-                                                      SimpleDialogOption(
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                          horizontal: 75,
-                                                        ),
-                                                        child: ElevatedButton(
-                                                          style: ElevatedButton
-                                                              .styleFrom(
-                                                            primary: AppColors
-                                                                .primary,
-                                                            elevation: 10,
-                                                            shadowColor:
-                                                                Colors.black,
-                                                            shape:
-                                                                RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          15),
-                                                            ),
-                                                          ),
-                                                          onPressed: () {},
-                                                          child: Text(
-                                                              "Add to playlist"),
-                                                        ),
-                                                      ),
-                                                    ],
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    snapshot
+                                                        .data!
+                                                        .popularSong![index]
+                                                        .like!
+                                                        .toString(),
+                                                    overflow: TextOverflow.fade,
+                                                    softWrap: false,
+                                                    style: TextStyle(
+                                                      color: AppColors.text,
+                                                    ),
                                                   ),
-                                                );
-                                              },
-                                              icon: Icon(
-                                                Icons.more_vert,
+                                                  SizedBox(
+                                                    width: 5,
+                                                  ),
+                                                  Icon(
+                                                    Icons.favorite,
+                                                    color: AppColors.primary,
+                                                    size: 18,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  IconButton(
+                                                    constraints:
+                                                        BoxConstraints(),
+                                                    padding: EdgeInsets.zero,
+                                                    onPressed: () {
+                                                      showDialog(
+                                                        context: context,
+                                                        builder: (ctx) =>
+                                                            SimpleDialog(
+                                                          children: [
+                                                            SimpleDialogOption(
+                                                              padding: EdgeInsets
+                                                                  .symmetric(
+                                                                horizontal: 75,
+                                                              ),
+                                                              child:
+                                                                  ElevatedButton(
+                                                                style: ElevatedButton
+                                                                    .styleFrom(
+                                                                  primary:
+                                                                      AppColors
+                                                                          .primary,
+                                                                  elevation: 10,
+                                                                  shadowColor:
+                                                                      Colors
+                                                                          .black,
+                                                                  shape:
+                                                                      RoundedRectangleBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            15),
+                                                                  ),
+                                                                ),
+                                                                onPressed: () {
+                                                                  Navigator.of(
+                                                                          ctx)
+                                                                      .pop();
+
+                                                                  Player
+                                                                      .songQueue
+                                                                      .add(
+                                                                    Song(
+                                                                      id: snapshot
+                                                                          .data!
+                                                                          .popularSong![
+                                                                              index]
+                                                                          .id!,
+                                                                      title: snapshot
+                                                                          .data!
+                                                                          .popularSong![
+                                                                              index]
+                                                                          .title!,
+                                                                      album: snapshot
+                                                                          .data!
+                                                                          .popularSong![
+                                                                              index]
+                                                                          .album!,
+                                                                      music_file: snapshot
+                                                                          .data!
+                                                                          .popularSong![
+                                                                              index]
+                                                                          .music_file!,
+                                                                      cover_image: snapshot
+                                                                          .data!
+                                                                          .popularSong![
+                                                                              index]
+                                                                          .cover_image!,
+                                                                      like: snapshot
+                                                                          .data!
+                                                                          .popularSong![
+                                                                              index]
+                                                                          .like!,
+                                                                    ),
+                                                                  );
+                                                                  Fluttertoast
+                                                                      .showToast(
+                                                                    msg: snapshot
+                                                                            .data!
+                                                                            .popularSong![index]
+                                                                            .title! +
+                                                                        " is added to the queue.",
+                                                                    toastLength:
+                                                                        Toast
+                                                                            .LENGTH_SHORT,
+                                                                    gravity:
+                                                                        ToastGravity
+                                                                            .BOTTOM,
+                                                                    timeInSecForIosWeb:
+                                                                        3,
+                                                                  );
+                                                                },
+                                                                child: Text(
+                                                                    "Add to queue"),
+                                                              ),
+                                                            ),
+                                                            SimpleDialogOption(
+                                                              padding: EdgeInsets
+                                                                  .symmetric(
+                                                                horizontal: 75,
+                                                              ),
+                                                              child:
+                                                                  ElevatedButton(
+                                                                style: ElevatedButton
+                                                                    .styleFrom(
+                                                                  primary:
+                                                                      AppColors
+                                                                          .primary,
+                                                                  elevation: 10,
+                                                                  shadowColor:
+                                                                      Colors
+                                                                          .black,
+                                                                  shape:
+                                                                      RoundedRectangleBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            15),
+                                                                  ),
+                                                                ),
+                                                                onPressed:
+                                                                    () {},
+                                                                child: Text(
+                                                                    "Add to playlist"),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      );
+                                                    },
+                                                    icon: Icon(
+                                                      Icons.more_vert,
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ],
-                                ),
+                                  );
+                                },
                               ),
-                            );
-                          },
-                        ),
-                      ),
+                            )
+                          : SizedBox(),
                       snapshot.data!.newAlbum!.isNotEmpty
                           ? Padding(
                               padding: EdgeInsets.only(
@@ -580,6 +609,8 @@ class _ViewArtistState extends State<ViewArtist> {
                               ),
                               physics: NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
+                              childAspectRatio:
+                                  (sWidth - (sWidth * .55)) / (sHeight * .25),
                               crossAxisSpacing: 10,
                               crossAxisCount: 2,
                               children: List.generate(
@@ -701,6 +732,8 @@ class _ViewArtistState extends State<ViewArtist> {
                               ),
                               physics: NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
+                              childAspectRatio:
+                                  (sWidth - (sWidth * .55)) / (sHeight * .25),
                               crossAxisSpacing: 10,
                               crossAxisCount: 2,
                               children: List.generate(

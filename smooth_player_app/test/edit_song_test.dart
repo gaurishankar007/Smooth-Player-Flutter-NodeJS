@@ -8,9 +8,20 @@ void main() {
     final songTitle = find.byKey(ValueKey("songTitle"));
 
     // Executing the actual test
-    await tester.pumpWidget(MaterialApp(home: EditSong(songId: "627cb473e397402203368334",),),);
+    await tester.pumpWidget(
+      MaterialApp(
+        home: EditSong(
+          songId: "627cb473e397402203368334",
+          albumId: "627cb473e397402203368356",
+          title: "Apple",
+          albumImage: "Apple Image",
+          like: 25,
+          pageIndex: 0,
+        ),
+      ),
+    );
     await tester.enterText(songTitle, "Imagine");
-    final eleBtn = find.byType(ElevatedButton);  
+    final eleBtn = find.byType(ElevatedButton);
     await tester.pump();
 
     // Checking outputs
@@ -18,7 +29,7 @@ void main() {
     expect(find.text("Imagine"), findsOneWidget);
     expect(find.text("Edit Song Title"), findsOneWidget);
     expect(find.byIcon(Icons.upload), findsOneWidget);
-    expect(find.text("Asfdsfsf"), findsNothing);
+    expect(find.text("Hero Honda"), findsNothing);
     expect(find.byType(Form), findsOneWidget);
   });
 }

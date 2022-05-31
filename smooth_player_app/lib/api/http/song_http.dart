@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:http/http.dart';
 import 'package:smooth_player_app/api/log_status.dart';
 import 'package:http/http.dart' as http;
+import 'package:smooth_player_app/api/res/search_song_res.dart';
 import '../model/song_model.dart';
 import '../res/song_res.dart';
 import '../urls.dart';
@@ -225,5 +226,29 @@ class SongHttp {
     );
     List resSearch = jsonDecode(response.body);
     return resSearch.map((e) => Song.fromJson(e)).toList();
+  }
+
+  Future<List<String>> searchGenre(String title) async {
+    final response = await post(
+      Uri.parse(routeUrl + "search/genre"),
+      body: {"title": title},
+      headers: {
+        HttpHeaders.authorizationHeader: "Bearer $token",
+      },
+    );
+
+    return jsonDecode(response.body);
+  }
+
+  Future<SearchData> searchSong(String title) async {
+    final response = await post(
+      Uri.parse(routeUrl + "search/song"),
+      body: {"title": title},
+      headers: {
+        HttpHeaders.authorizationHeader: "Bearer $token",
+      },
+    );
+
+    return SearchData.fromJson(jsonDecode(response.body));
   }
 }

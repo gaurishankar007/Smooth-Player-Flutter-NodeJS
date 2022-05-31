@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +12,7 @@ import 'package:smooth_player_app/widget/navigator.dart';
 
 import '../api/urls.dart';
 import '../resource/colors.dart';
+import '../resource/genre.dart';
 import '../resource/player.dart';
 import '../widget/song_bar.dart';
 
@@ -119,7 +119,8 @@ class _HomeState extends State<Home> {
                             ? GridView.count(
                                 physics: NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
-                                childAspectRatio: 2 / 1,
+                                childAspectRatio:
+                                    (sWidth - (sWidth * .60)) / 70,
                                 crossAxisSpacing: 10,
                                 crossAxisCount: 2,
                                 children: List.generate(
@@ -397,7 +398,9 @@ class _HomeState extends State<Home> {
                                 height: sHeight * 0.2,
                                 child: ListView.builder(
                                   scrollDirection: Axis.horizontal,
-                                  itemCount: snapshot.data!.newReleases!.length,
+                                  shrinkWrap: true,
+                                  itemCount: snapshot
+                                      .data!.recentFavoriteGenres!.length,
                                   itemBuilder: (context, index) {
                                     return GestureDetector(
                                       onTap: () {},
@@ -407,15 +410,15 @@ class _HomeState extends State<Home> {
                                           alignment: Alignment.topLeft,
                                           children: [
                                             Container(
-                                              height: sHeight * 0.2,
+                                              height: sHeight * 0.25,
                                               width: sWidth * 0.46,
                                               decoration: BoxDecoration(
-                                                color:
-                                                    SongGenreColors.colorList[
-                                                        Random().nextInt(
-                                                            SongGenreColors
-                                                                .colorList
-                                                                .length)],
+                                                color: SongGenreColors
+                                                        .colorList[
+                                                    MusicGenre.musicGenres
+                                                        .indexOf(snapshot.data!
+                                                                .recentFavoriteGenres![
+                                                            index])],
                                                 borderRadius:
                                                     BorderRadius.circular(8),
                                                 boxShadow: const [
@@ -430,7 +433,7 @@ class _HomeState extends State<Home> {
                                             ),
                                             Container(
                                               padding: EdgeInsets.all(8),
-                                              width: sWidth * .43,
+                                              width: sHeight * 0.25,
                                               child: Text(
                                                 snapshot.data!
                                                         .recentFavoriteGenres![
@@ -520,7 +523,7 @@ class _HomeState extends State<Home> {
                                                         BorderRadius.circular(
                                                             8),
                                                     child: Image(
-                                                      height: sHeight * 0.2,
+                                                      height: sHeight * 0.25,
                                                       width: sWidth * 0.46,
                                                       fit: BoxFit.cover,
                                                       image: NetworkImage(
@@ -1045,6 +1048,8 @@ class _HomeState extends State<Home> {
                                 shrinkWrap: true,
                                 crossAxisSpacing: 10,
                                 crossAxisCount: 2,
+                                childAspectRatio:
+                                    (sWidth - (sWidth * .55)) / 70,
                                 children: List.generate(
                                   snapshot.data!.smoothPlayerFeaturedPlaylists!
                                       .length,

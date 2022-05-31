@@ -91,7 +91,7 @@ router.get("/load/home", auth.verifyUser, async (req, res) => {
   }
   const recentAlbums = await album
     .find({ _id: sortedAlbumIds })
-    .populate("artist");
+    .populate("artist", "profile_name profile_picture biography follower verified");
 
   // Getting users recent favorite artists
   for (let i = 0; i < artistIds.length; i++) {
@@ -172,7 +172,7 @@ router.get("/load/home", auth.verifyUser, async (req, res) => {
   }
   const jumpBackIn = await album
     .find({ _id: sortedPrevAlbumIds })
-    .populate("artist");
+    .populate("artist", "profile_name profile_picture biography follower verified");
 
   // Getting new releases from followed artists
   const followedArtist = [];
@@ -185,7 +185,7 @@ router.get("/load/home", auth.verifyUser, async (req, res) => {
       artist: followedArtist,
       createdAt: { $gte: new Date(Date.now() - 2592000000) },
     })
-    .populate("artist")
+    .populate("artist", "profile_name profile_picture biography follower verified")
     .sort({ createdAt: -1 });
 
   // Getting popular music contents
@@ -195,10 +195,10 @@ router.get("/load/home", auth.verifyUser, async (req, res) => {
     .limit(10);
   const popularAlbums = await album
     .find()
-    .populate("artist")
+    .populate("artist", "profile_name profile_picture biography follower verified")
     .sort({ like: -1 })
     .limit(10);
-  const popularArtist = await user.find({admin: false}).sort({ follower: -1 }).limit(10);
+  const popularArtist = await user.find({admin: false, verified: true}).sort({ follower: -1 }).limit(10);
 
   // Getting smooth Player featured
   const popularFeaturedPlaylistIds = [];

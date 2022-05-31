@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:smooth_player_app/screen/upload/edit_album.dart';
-import 'package:smooth_player_app/screen/upload/edit_album.dart';
 
 void main() {
   testWidgets("Album Form", (WidgetTester tester) async {

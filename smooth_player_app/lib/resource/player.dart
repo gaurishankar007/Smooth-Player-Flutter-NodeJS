@@ -1,7 +1,6 @@
 import 'dart:collection';
 import "dart:math";
 import 'package:audioplayers/audioplayers.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_player_app/api/http/recently_played_http.dart';
 import 'package:smooth_player_app/api/log_status.dart';
 
@@ -100,7 +99,7 @@ class Player {
 
     if (!LogStatus.admin) {
       await RecentlyPlayedHttp().addRecentSong(song.id!);
-    } 
+    }
   }
 
   void pauseSong() async {
@@ -300,6 +299,7 @@ class Player {
   void stopSong() async {
     int result = await player.stop();
     if (result == 1) {
+      Player.playingSong = null;
       isPlaying = false;
       isPaused = false;
       isShuffle = false;

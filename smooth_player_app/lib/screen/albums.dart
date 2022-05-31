@@ -454,6 +454,7 @@ class _AlbumViewState extends State<AlbumView> {
                                                                   widget.title,
                                                               albumImage: widget
                                                                   .albumImage,
+                                                                  like: widget.like,
                                                               pageIndex: widget
                                                                   .pageIndex,
                                                             ),

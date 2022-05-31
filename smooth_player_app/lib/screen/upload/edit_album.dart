@@ -149,6 +149,7 @@ class _EditAlbumState extends State<EditAlbum> {
                     if (value == null || value.isEmpty) {
                       return "Album title is required";
                     }
+                    return null;
                   },
                   onSaved: ((value) {
                     title = value!;
