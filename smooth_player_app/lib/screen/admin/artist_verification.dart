@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_player_app/api/http/artist_http.dart';
+import 'package:smooth_player_app/screen/admin/artist_profile.dart';
 
 import '../../api/res/artist_res.dart';
 import '../../resource/player.dart';
@@ -52,8 +53,18 @@ class _VerifyArtistState extends State<VerifyArtist> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
-            children: const [
+            children: [
               Text("Artist Verification"),
+              IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (builder) => ArtistPage(
+                                artistId: "627a119656d62261f186405c",
+                                pageIndex: 1)));
+                  },
+                  icon: Icon(Icons.person))
             ],
           ),
         ),

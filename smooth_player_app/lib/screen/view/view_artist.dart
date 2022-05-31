@@ -135,7 +135,8 @@ class _ViewArtistState extends State<ViewArtist> {
                           ),
                           Padding(
                             padding: EdgeInsets.symmetric(
-                              horizontal: sWidth * 0.01,
+                              horizontal: sWidth * 0.015,
+                              vertical: 5,
                             ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -174,7 +175,7 @@ class _ViewArtistState extends State<ViewArtist> {
                                     ],
                                   ),
                                 ),
-                                ElevatedButton(
+                                OutlinedButton(
                                   onPressed: () {},
                                   child: Text(
                                     "Follow",
@@ -182,15 +183,17 @@ class _ViewArtistState extends State<ViewArtist> {
                                       fontSize: 15,
                                     ),
                                   ),
-                                  style: ElevatedButton.styleFrom(
+                                  style: OutlinedButton.styleFrom(
                                     minimumSize: Size.zero,
                                     padding: EdgeInsets.symmetric(
                                       horizontal: 8,
                                       vertical: 4,
                                     ),
-                                    primary: AppColors.primary,
-                                    elevation: 10,
-                                    shadowColor: Colors.black,
+                                    primary: Colors.white,
+                                    side: BorderSide(
+                                      width: 2,
+                                      color: Colors.white,
+                                    ),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(5),
                                     ),

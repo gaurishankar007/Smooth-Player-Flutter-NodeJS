@@ -32,14 +32,16 @@ router.post("/view/artistProfile", auth.verifyUser, async (req, res) => {
       artist: req.body.artistId,
       createdAt: { $gte: new Date(Date.now() - 2592000000) },
     })
-    .populate("artist", "profile_name");
+    .populate("artist", "profile_name")
+    .sort({createdAt: -1});
 
   const oldReleases = await album
     .find({
       artist: req.body.artistId,
       createdAt: { $lt: new Date(Date.now() - 2592000000) },
     })
-    .populate("artist", "profile_name");
+    .populate("artist", "profile_name")
+    .sort({createdAt: -1});
 
   res.send({
     artist: userDetail,
@@ -94,14 +96,16 @@ router.post("/admin/artistProfile", auth.verifyAdmin, async (req, res) => {
       artist: req.body.artistId,
       createdAt: { $gte: new Date(Date.now() - 2592000000) },
     })
-    .populate("artist", "profile_name");
+    .populate("artist", "profile_name")
+    .sort({createdAt: -1});
 
   const oldReleases = await album
     .find({
       artist: req.body.artistId,
       createdAt: { $lt: new Date(Date.now() - 2592000000) },
     })
-    .populate("artist", "profile_name");
+    .populate("artist", "profile_name")
+    .sort({createdAt: -1});
 
   res.send({
     artist: userDetail,

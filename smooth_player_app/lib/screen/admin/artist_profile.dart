@@ -29,7 +29,7 @@ class _ArtistPageState extends State<ArtistPage> {
   Song? song = Player.playingSong;
   final coverImage = ApiUrls.coverImageUrl;
   final profileImage = ApiUrls.profileUrl;
-  bool isverified = true;
+  bool isVerified = true;
 
   late Future<ArtistData> artistData;
 
@@ -119,7 +119,8 @@ class _ArtistPageState extends State<ArtistPage> {
                           ),
                           Padding(
                             padding: EdgeInsets.symmetric(
-                              horizontal: 8,
+                              horizontal: sWidth * 0.015,
+                              vertical: 5,
                             ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -167,7 +168,7 @@ class _ArtistPageState extends State<ArtistPage> {
                         padding: EdgeInsets.only(
                           left: sWidth * 0.03,
                           right: sWidth * 0.03,
-                          top: 10,
+                          top: 5,
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -184,10 +185,10 @@ class _ArtistPageState extends State<ArtistPage> {
                               width: 25,
                               child: Switch(
                                 activeColor: AppColors.primary,
-                                value: isverified,
+                                value: isVerified,
                                 onChanged: (value) {
                                   setState(() {
-                                    isverified = value;
+                                    isVerified = value;
                                   });
                                 },
                               ),
@@ -199,7 +200,7 @@ class _ArtistPageState extends State<ArtistPage> {
                           ? Padding(
                               padding: EdgeInsets.only(
                                 left: sWidth * 0.03,
-                                top: 20,
+                                top: 10,
                                 bottom: 10,
                               ),
                               child: Row(
@@ -435,131 +436,58 @@ class _ArtistPageState extends State<ArtistPage> {
                                                         BoxConstraints(),
                                                     padding: EdgeInsets.zero,
                                                     onPressed: () {
-                                                      showDialog(
-                                                        context: context,
-                                                        builder: (ctx) =>
-                                                            SimpleDialog(
-                                                          children: [
-                                                            SimpleDialogOption(
-                                                              padding: EdgeInsets
-                                                                  .symmetric(
-                                                                horizontal: 75,
-                                                              ),
-                                                              child:
-                                                                  ElevatedButton(
-                                                                style: ElevatedButton
-                                                                    .styleFrom(
-                                                                  primary:
-                                                                      AppColors
-                                                                          .primary,
-                                                                  elevation: 10,
-                                                                  shadowColor:
-                                                                      Colors
-                                                                          .black,
-                                                                  shape:
-                                                                      RoundedRectangleBorder(
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            15),
-                                                                  ),
-                                                                ),
-                                                                onPressed: () {
-                                                                  Navigator.of(
-                                                                          ctx)
-                                                                      .pop();
-
-                                                                  Player
-                                                                      .songQueue
-                                                                      .add(
-                                                                    Song(
-                                                                      id: snapshot
-                                                                          .data!
-                                                                          .popularSong![
-                                                                              index]
-                                                                          .id!,
-                                                                      title: snapshot
-                                                                          .data!
-                                                                          .popularSong![
-                                                                              index]
-                                                                          .title!,
-                                                                      album: snapshot
-                                                                          .data!
-                                                                          .popularSong![
-                                                                              index]
-                                                                          .album!,
-                                                                      music_file: snapshot
-                                                                          .data!
-                                                                          .popularSong![
-                                                                              index]
-                                                                          .music_file!,
-                                                                      cover_image: snapshot
-                                                                          .data!
-                                                                          .popularSong![
-                                                                              index]
-                                                                          .cover_image!,
-                                                                      like: snapshot
-                                                                          .data!
-                                                                          .popularSong![
-                                                                              index]
-                                                                          .like!,
-                                                                    ),
-                                                                  );
-                                                                  Fluttertoast
-                                                                      .showToast(
-                                                                    msg: snapshot
-                                                                            .data!
-                                                                            .popularSong![index]
-                                                                            .title! +
-                                                                        " is added to the queue.",
-                                                                    toastLength:
-                                                                        Toast
-                                                                            .LENGTH_SHORT,
-                                                                    gravity:
-                                                                        ToastGravity
-                                                                            .BOTTOM,
-                                                                    timeInSecForIosWeb:
-                                                                        3,
-                                                                  );
-                                                                },
-                                                                child: Text(
-                                                                    "Add to queue"),
-                                                              ),
-                                                            ),
-                                                            SimpleDialogOption(
-                                                              padding: EdgeInsets
-                                                                  .symmetric(
-                                                                horizontal: 75,
-                                                              ),
-                                                              child:
-                                                                  ElevatedButton(
-                                                                style: ElevatedButton
-                                                                    .styleFrom(
-                                                                  primary:
-                                                                      AppColors
-                                                                          .primary,
-                                                                  elevation: 10,
-                                                                  shadowColor:
-                                                                      Colors
-                                                                          .black,
-                                                                  shape:
-                                                                      RoundedRectangleBorder(
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            15),
-                                                                  ),
-                                                                ),
-                                                                onPressed:
-                                                                    () {},
-                                                                child: Text(
-                                                                    "Add to playlist"),
-                                                              ),
-                                                            ),
-                                                          ],
+                                                      Player.songQueue.add(
+                                                        Song(
+                                                          id: snapshot
+                                                              .data!
+                                                              .popularSong![
+                                                                  index]
+                                                              .id!,
+                                                          title: snapshot
+                                                              .data!
+                                                              .popularSong![
+                                                                  index]
+                                                              .title!,
+                                                          album: snapshot
+                                                              .data!
+                                                              .popularSong![
+                                                                  index]
+                                                              .album!,
+                                                          music_file: snapshot
+                                                              .data!
+                                                              .popularSong![
+                                                                  index]
+                                                              .music_file!,
+                                                          cover_image: snapshot
+                                                              .data!
+                                                              .popularSong![
+                                                                  index]
+                                                              .cover_image!,
+                                                          like: snapshot
+                                                              .data!
+                                                              .popularSong![
+                                                                  index]
+                                                              .like!,
                                                         ),
+                                                      );
+                                                      Fluttertoast.showToast(
+                                                        msg: snapshot
+                                                                .data!
+                                                                .popularSong![
+                                                                    index]
+                                                                .title! +
+                                                            " is added to the queue.",
+                                                        toastLength:
+                                                            Toast.LENGTH_SHORT,
+                                                        gravity:
+                                                            ToastGravity.BOTTOM,
+                                                        timeInSecForIosWeb: 3,
                                                       );
                                                     },
                                                     icon: Icon(
-                                                      Icons.more_vert,
+                                                      Icons
+                                                          .add_to_queue_rounded,
+                                                      color: AppColors.primary,
                                                     ),
                                                   ),
                                                 ],
@@ -603,6 +531,8 @@ class _ArtistPageState extends State<ArtistPage> {
                               ),
                               physics: NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
+                              childAspectRatio:
+                                  (sWidth - (sWidth * .55)) / (sHeight * .25),
                               crossAxisSpacing: 10,
                               crossAxisCount: 2,
                               children: List.generate(
@@ -724,6 +654,8 @@ class _ArtistPageState extends State<ArtistPage> {
                               ),
                               physics: NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
+                              childAspectRatio:
+                                  (sWidth - (sWidth * .55)) / (sHeight * .25),
                               crossAxisSpacing: 10,
                               crossAxisCount: 2,
                               children: List.generate(
