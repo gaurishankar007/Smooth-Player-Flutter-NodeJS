@@ -29,6 +29,7 @@ class _ViewRecentlyPlayedState extends State<ViewRecentlyPlayed> {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: unused_local_variable
     final sHeight = MediaQuery.of(context).size.height;
     final sWidth = MediaQuery.of(context).size.width;
     return Scaffold(
