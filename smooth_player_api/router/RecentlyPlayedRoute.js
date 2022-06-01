@@ -21,7 +21,7 @@ router.post("/add/recentSong", auth.verifyUser, async (req, res)=> {
 
 router.get("/view/recentSong", auth.verifyUser, async (req, res)=> {
     const recentSongs1 = await recentlyPlayed.find({user: req.userInfo._id})
-    .populate("user", "profile_name")
+    .populate("user", "profile_name profile_picture biography follower verified")
     .populate("song")
     .sort({createdAt: -1})
     .limit(30);
