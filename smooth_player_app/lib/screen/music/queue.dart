@@ -67,7 +67,7 @@ class _SongQueueState extends State<SongQueue> {
           ),
         ),
         actions: [TextButton(onPressed:(){
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>RecentlyPlayed()));
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>ViewRecentlyPlayed()));
         }, child: Text("Recently played"))],
         elevation: 0,
         backgroundColor: Colors.transparent,
