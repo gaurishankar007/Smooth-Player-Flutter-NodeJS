@@ -15,7 +15,6 @@ class HomeData {
   List<FeaturedPlaylist>? popularFeaturedPlaylists;
   List<Album>? popularAlbums;
   List<Artist>? popularArtists;
-  List<FeaturedPlaylist>? smoothPlayerFeaturedPlaylists;
 
   HomeData({
     this.recentAlbums,
@@ -26,7 +25,6 @@ class HomeData {
     this.popularFeaturedPlaylists,
     this.popularAlbums,
     this.popularArtists,
-    this.smoothPlayerFeaturedPlaylists
   });
 
   factory HomeData.fromJson(Map<String, dynamic> json) =>

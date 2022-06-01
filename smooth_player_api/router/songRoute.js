@@ -251,4 +251,24 @@ router.post("/search/song", auth.verifyUser, async (req, res)=> {
     }); 
 });
 
+router.post("/genre/songs", auth.verifyUser, async (req, res)=> {
+    const songIds = req.body.songIds;
+    const songGenre = req.body.genre;
+
+    if(songIds === undefined) {
+        const songs = await song.find({genre: songGenre})
+        .sort({createdAt: -1})
+        .limit(10);
+
+        res.send(songs);
+    } else {
+        const songs = await song.find({ _id: {$nin: songIds}, genre: songGenre})
+        .sort({createdAt: -1})
+        .limit(10);
+
+        res.send(songs);
+    }
+});
+
+
 module.exports = router;
