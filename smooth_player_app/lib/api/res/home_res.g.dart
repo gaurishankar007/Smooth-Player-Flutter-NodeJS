@@ -32,10 +32,6 @@ HomeData _$HomeDataFromJson(Map<String, dynamic> json) => HomeData(
       popularArtists: (json['popularArtists'] as List<dynamic>?)
           ?.map((e) => Artist.fromJson(e as Map<String, dynamic>))
           .toList(),
-      smoothPlayerFeaturedPlaylists:
-          (json['smoothPlayerFeaturedPlaylists'] as List<dynamic>?)
-              ?.map((e) => FeaturedPlaylist.fromJson(e as Map<String, dynamic>))
-              .toList(),
     );
 
 Map<String, dynamic> _$HomeDataToJson(HomeData instance) => <String, dynamic>{
@@ -50,7 +46,4 @@ Map<String, dynamic> _$HomeDataToJson(HomeData instance) => <String, dynamic>{
       'popularAlbums': instance.popularAlbums?.map((e) => e.toJson()).toList(),
       'popularArtists':
           instance.popularArtists?.map((e) => e.toJson()).toList(),
-      'smoothPlayerFeaturedPlaylists': instance.smoothPlayerFeaturedPlaylists
-          ?.map((e) => e.toJson())
-          .toList(),
     };

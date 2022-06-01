@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart';
+import 'package:smooth_player_app/api/res/featured_playlist_res.dart';
 import 'package:smooth_player_app/api/res/home_res.dart';
 
 import '../log_status.dart';
@@ -17,5 +18,19 @@ class HomeHttp {
     });
 
     return HomeData.fromJson(jsonDecode(response.body));
+  }
+
+  Future<List<FeaturedPlaylist>> getFeaturedPlaylists(
+      int featuredPlaylistNum) async {
+    final response =
+        await post(Uri.parse(routeUrl + "get/featuredPlaylists"), body: {
+      "featuredPlaylistNum": featuredPlaylistNum.toString()
+    }, headers: {
+      HttpHeaders.authorizationHeader: "Bearer $token",
+    });
+
+    List resData = jsonDecode(response.body);
+
+    return resData.map((e) => FeaturedPlaylist.fromJson(e)).toList();
   }
 }

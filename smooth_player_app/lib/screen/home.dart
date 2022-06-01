@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_player_app/api/http/home_http.dart';
+import 'package:smooth_player_app/api/res/featured_playlist_res.dart';
 import 'package:smooth_player_app/api/res/home_res.dart';
 import 'package:smooth_player_app/screen/setting.dart';
 import 'package:smooth_player_app/screen/view/view_album.dart';
@@ -36,6 +37,10 @@ class _HomeState extends State<Home> {
 
   bool songBarVisibility = Player.isPlaying;
 
+  bool more = true;
+  int featuredPlaylistNum = 10;
+  late Future<List<FeaturedPlaylist>> featuredPlaylists;
+
   @override
   void initState() {
     super.initState();
@@ -52,6 +57,8 @@ class _HomeState extends State<Home> {
         songBarVisibility = Player.isPlaying;
       });
     });
+
+    featuredPlaylists = HomeHttp().getFeaturedPlaylists(featuredPlaylistNum);
   }
 
   @override
@@ -272,7 +279,7 @@ class _HomeState extends State<Home> {
                             : SizedBox(),
                         snapshot.data!.recentFavoriteArtists!.isNotEmpty
                             ? SizedBox(
-                                height: sHeight * 0.3,
+                                height: sHeight * 0.25,
                                 child: ListView.builder(
                                   scrollDirection: Axis.horizontal,
                                   itemCount: snapshot
@@ -306,7 +313,7 @@ class _HomeState extends State<Home> {
                                                   decoration: BoxDecoration(
                                                     borderRadius:
                                                         BorderRadius.circular(
-                                                            sHeight * .125),
+                                                            sHeight * .1),
                                                     boxShadow: const [
                                                       BoxShadow(
                                                         color: Colors.black26,
@@ -319,10 +326,10 @@ class _HomeState extends State<Home> {
                                                   child: ClipRRect(
                                                     borderRadius:
                                                         BorderRadius.circular(
-                                                            sHeight * .125),
+                                                            sHeight * .1),
                                                     child: Image(
-                                                      height: sHeight * 0.25,
-                                                      width: sHeight * 0.25,
+                                                      height: sHeight * 0.2,
+                                                      width: sHeight * 0.2,
                                                       fit: BoxFit.cover,
                                                       image: NetworkImage(
                                                         profileUrl +
@@ -407,43 +414,61 @@ class _HomeState extends State<Home> {
                                       child: Padding(
                                         padding: EdgeInsets.only(right: 20),
                                         child: Stack(
-                                          alignment: Alignment.topLeft,
+                                          alignment: Alignment.bottomRight,
                                           children: [
-                                            Container(
-                                              height: sHeight * 0.25,
-                                              width: sWidth * 0.46,
-                                              decoration: BoxDecoration(
-                                                color: SongGenreColors
-                                                        .colorList[
-                                                    MusicGenre.musicGenres
-                                                        .indexOf(snapshot.data!
-                                                                .recentFavoriteGenres![
-                                                            index])],
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
-                                                boxShadow: const [
-                                                  BoxShadow(
-                                                    color: Colors.black26,
-                                                    spreadRadius: 1,
-                                                    blurRadius: 5,
-                                                    offset: Offset(2, 2),
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                            Container(
-                                              padding: EdgeInsets.all(8),
-                                              width: sHeight * 0.25,
-                                              child: Text(
-                                                snapshot.data!
-                                                        .recentFavoriteGenres![
-                                                    index],
-                                                textAlign: TextAlign.justify,
-                                                style: TextStyle(
-                                                  color: AppColors.text,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold,
+                                            Stack(
+                                              alignment: Alignment.topLeft,
+                                              children: [
+                                                Container(
+                                                  height: sHeight * 0.2,
+                                                  width: sWidth * 0.46,
+                                                  decoration: BoxDecoration(
+                                                    color: SongGenreColors
+                                                            .colorList[
+                                                        MusicGenre.musicGenres
+                                                            .indexOf(snapshot
+                                                                    .data!
+                                                                    .recentFavoriteGenres![
+                                                                index])],
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8),
+                                                    boxShadow: const [
+                                                      BoxShadow(
+                                                        color: Colors.black26,
+                                                        spreadRadius: 1,
+                                                        blurRadius: 5,
+                                                        offset: Offset(2, 2),
+                                                      )
+                                                    ],
+                                                  ),
                                                 ),
+                                                Container(
+                                                  padding: EdgeInsets.all(8),
+                                                  width: sHeight * 0.25,
+                                                  child: Text(
+                                                    snapshot.data!
+                                                            .recentFavoriteGenres![
+                                                        index],
+                                                    textAlign:
+                                                        TextAlign.justify,
+                                                    style: TextStyle(
+                                                      color: AppColors.text,
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            ClipRRect(
+                                              child: Image(
+                                                height: sHeight * 0.13,
+                                                width: sHeight * 0.13,
+                                                fit: BoxFit.cover,
+                                                image: NetworkImage(
+                                                    "https://www.cnet.com/a/img/resize/46cf22829afea321c902097ee78065f8d44a99d9/2021/11/10/ab5e2d3b-9a4a-41f0-b2cd-6cee804ce823/genre-charts-covers.png?auto=webp&fit=crop&height=630&width=1200"),
                                               ),
                                             ),
                                           ],
@@ -472,7 +497,7 @@ class _HomeState extends State<Home> {
                             : SizedBox(),
                         snapshot.data!.jumpBackIn!.isNotEmpty
                             ? SizedBox(
-                                height: sHeight * 0.25,
+                                height: sHeight * 0.2,
                                 child: ListView.builder(
                                   scrollDirection: Axis.horizontal,
                                   itemCount: snapshot.data!.jumpBackIn!.length,
@@ -523,7 +548,7 @@ class _HomeState extends State<Home> {
                                                         BorderRadius.circular(
                                                             8),
                                                     child: Image(
-                                                      height: sHeight * 0.25,
+                                                      height: sHeight * 0.2,
                                                       width: sWidth * 0.46,
                                                       fit: BoxFit.cover,
                                                       image: NetworkImage(
@@ -559,7 +584,7 @@ class _HomeState extends State<Home> {
                                                             .id ==
                                                         snapshot
                                                             .data!
-                                                            .newReleases![index]
+                                                            .jumpBackIn![index]
                                                             .id
                                                     ? Icon(
                                                         Icons.bar_chart_rounded,
@@ -930,7 +955,7 @@ class _HomeState extends State<Home> {
                           ),
                         ),
                         SizedBox(
-                          height: sHeight * 0.3,
+                          height: sHeight * 0.25,
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
                             itemCount: snapshot.data!.popularArtists!.length,
@@ -961,7 +986,7 @@ class _HomeState extends State<Home> {
                                             decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(
-                                                      sHeight * .125),
+                                                      sHeight * .1),
                                               boxShadow: const [
                                                 BoxShadow(
                                                   color: Colors.black26,
@@ -974,10 +999,10 @@ class _HomeState extends State<Home> {
                                             child: ClipRRect(
                                               borderRadius:
                                                   BorderRadius.circular(
-                                                      sHeight * .125),
+                                                      sHeight * .1),
                                               child: Image(
-                                                height: sHeight * 0.25,
-                                                width: sHeight * 0.25,
+                                                height: sHeight * 0.2,
+                                                width: sHeight * 0.2,
                                                 fit: BoxFit.cover,
                                                 image: NetworkImage(
                                                   profileUrl +
@@ -1026,122 +1051,6 @@ class _HomeState extends State<Home> {
                             },
                           ),
                         ),
-                        snapshot.data!.smoothPlayerFeaturedPlaylists!.isNotEmpty
-                            ? Padding(
-                                padding: EdgeInsets.only(
-                                  top: 20,
-                                  bottom: 10,
-                                ),
-                                child: Text(
-                                  "Featured Playlist",
-                                  style: TextStyle(
-                                    fontSize: 17,
-                                    color: AppColors.text,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              )
-                            : SizedBox(),
-                        snapshot.data!.smoothPlayerFeaturedPlaylists!.isNotEmpty
-                            ? GridView.count(
-                                physics: NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                crossAxisSpacing: 10,
-                                crossAxisCount: 2,
-                                childAspectRatio:
-                                    (sWidth - (sWidth * .55)) / 70,
-                                children: List.generate(
-                                  snapshot.data!.smoothPlayerFeaturedPlaylists!
-                                      .length,
-                                  (index) {
-                                    return GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (builder) =>
-                                                ViewFeaturedPlaylist(
-                                              featuredPlaylistId: snapshot
-                                                  .data!
-                                                  .smoothPlayerFeaturedPlaylists![
-                                                      index]
-                                                  .id,
-                                              title: snapshot
-                                                  .data!
-                                                  .smoothPlayerFeaturedPlaylists![
-                                                      index]
-                                                  .title!,
-                                              featuredPlaylistImage: snapshot
-                                                  .data!
-                                                  .smoothPlayerFeaturedPlaylists![
-                                                      index]
-                                                  .featured_playlist_image,
-                                              like: snapshot
-                                                  .data!
-                                                  .smoothPlayerFeaturedPlaylists![
-                                                      index]
-                                                  .like,
-                                              pageIndex: 0,
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              boxShadow: const [
-                                                BoxShadow(
-                                                  color: Colors.black26,
-                                                  spreadRadius: 1,
-                                                  blurRadius: 5,
-                                                  offset: Offset(2, 2),
-                                                )
-                                              ],
-                                            ),
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                              child: Image(
-                                                height: sHeight * 0.2,
-                                                width: sWidth * 0.46,
-                                                fit: BoxFit.cover,
-                                                image: NetworkImage(
-                                                  featuredPlaylistImage +
-                                                      snapshot
-                                                          .data!
-                                                          .smoothPlayerFeaturedPlaylists![
-                                                              index]
-                                                          .featured_playlist_image!,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                          Text(
-                                            snapshot
-                                                .data!
-                                                .smoothPlayerFeaturedPlaylists![
-                                                    index]
-                                                .title!,
-                                            overflow: TextOverflow.fade,
-                                            softWrap: false,
-                                            style: TextStyle(
-                                              color: Colors.black87,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                ),
-                              )
-                            : SizedBox(),
                       ],
                     );
                   } else if (snapshot.hasError) {
@@ -1162,6 +1071,160 @@ class _HomeState extends State<Home> {
                   );
                 }),
               ),
+              Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: 20,
+                      bottom: 10,
+                    ),
+                    child: Text(
+                      "Featured Playlist",
+                      style: TextStyle(
+                        fontSize: 17,
+                        color: AppColors.text,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              FutureBuilder<List<FeaturedPlaylist>>(
+                future: featuredPlaylists,
+                builder: ((context, snapshot) {
+                  if (snapshot.hasData) {
+                    return GridView.count(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      crossAxisSpacing: 10,
+                      crossAxisCount: 2,
+                      childAspectRatio:
+                          (sWidth - (sWidth * .55)) / (sHeight * .25),
+                      children: List.generate(
+                        snapshot.data!.length,
+                        (index) {
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (builder) => ViewFeaturedPlaylist(
+                                    featuredPlaylistId:
+                                        snapshot.data![index].id,
+                                    title: snapshot.data![index].title!,
+                                    featuredPlaylistImage: snapshot
+                                        .data![index].featured_playlist_image,
+                                    like: snapshot.data![index].like,
+                                    pageIndex: 0,
+                                  ),
+                                ),
+                              );
+                            },
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: Colors.black26,
+                                        spreadRadius: 1,
+                                        blurRadius: 5,
+                                        offset: Offset(2, 2),
+                                      )
+                                    ],
+                                  ),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(8),
+                                    child: Image(
+                                      height: sHeight * 0.2,
+                                      width: sWidth * 0.46,
+                                      fit: BoxFit.cover,
+                                      image: NetworkImage(
+                                        featuredPlaylistImage +
+                                            snapshot.data![index]
+                                                .featured_playlist_image!,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  snapshot.data![index].title!,
+                                  overflow: TextOverflow.fade,
+                                  softWrap: false,
+                                  style: TextStyle(
+                                    color: Colors.black87,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  } else if (snapshot.hasError) {
+                    return Center(
+                      child: Text(
+                        "${snapshot.error}",
+                        style: TextStyle(
+                          fontSize: 15,
+                        ),
+                      ),
+                    );
+                  }
+                  return Center(
+                    child: CircularProgressIndicator(
+                      strokeWidth: 5,
+                      color: AppColors.primary,
+                    ),
+                  );
+                }),
+              ),
+              more
+                  ? OutlinedButton(
+                      onPressed: () async {
+                        final resData = await HomeHttp()
+                            .getFeaturedPlaylists(featuredPlaylistNum + 10);
+                        if (resData.length == featuredPlaylistNum) {
+                          setState(() {
+                            more = false;
+                          });
+                          return;
+                        } else {
+                          featuredPlaylistNum = featuredPlaylistNum + 10;
+                          setState(() {
+                            featuredPlaylists = HomeHttp()
+                                .getFeaturedPlaylists(featuredPlaylistNum);
+                          });
+                        }
+                      },
+                      child: Text(
+                        "More",
+                        style: TextStyle(
+                          fontSize: 15,
+                        ),
+                      ),
+                      style: OutlinedButton.styleFrom(
+                        minimumSize: Size.zero,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
+                        primary: AppColors.primary,
+                        side: BorderSide(
+                          width: 2,
+                          color: AppColors.primary,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ),
+                    )
+                  : SizedBox(),
             ],
           ),
         ),

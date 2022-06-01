@@ -28,15 +28,19 @@ router.post("/upload/featuredPlaylist", auth.verifyAdmin, featuredPlaylistUpload
     
 });
 
-router.get("/view/featuredPlaylist", auth.verifyAdmin, async (req, res)=> {
+router.post("/view/featuredPlaylist", auth.verifyAdmin, async (req, res)=> {
+    const featuredPlaylistNum = req.body.featuredPlaylistNum;
+
     const featuredPlaylists = await featuredPlaylist.find()
-    .sort({createdAt: -1});
+    .sort({createdAt: -1})
+    .limit(featuredPlaylistNum);
+
     res.send(featuredPlaylists);
 });
 
 router.post("/search/featuredPlaylist", auth.verifyAdmin, async (req, res)=> {
     const playlistTitle =   {title: { $regex: req.body.title, $options: "i" }}; 
-    const playlists = await featuredPlaylist.find(playlistTitle)     
+    const playlists = await featuredPlaylist.find(playlistTitle).limit(10);   
     res.send(playlists); 
 });
 

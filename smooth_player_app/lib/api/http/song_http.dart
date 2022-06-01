@@ -228,16 +228,16 @@ class SongHttp {
     return resSearch.map((e) => Song.fromJson(e)).toList();
   }
 
-  Future<List<String>> searchGenre(String title) async {
-    final response = await post(
+  Future<List> searchGenre() async {
+    final response = await get(
       Uri.parse(routeUrl + "search/genre"),
-      body: {"title": title},
       headers: {
         HttpHeaders.authorizationHeader: "Bearer $token",
       },
     );
-
-    return jsonDecode(response.body);
+    
+    List songGenres = jsonDecode(response.body);
+    return songGenres;
   }
 
   Future<SearchData> searchSong(String title) async {

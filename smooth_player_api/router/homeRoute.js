@@ -200,15 +200,6 @@ router.get("/load/home", auth.verifyUser, async (req, res) => {
     .limit(10);
   const popularArtist = await user.find({admin: false, verified: true}).sort({ follower: -1 }).limit(10);
 
-  // Getting smooth Player featured
-  const popularFeaturedPlaylistIds = [];
-  for (let i = 0; i < popularFeaturedPlaylists.length; i++) {
-    popularFeaturedPlaylistIds.push(popularFeaturedPlaylists[i]._id.toString());
-  }
-  const smoothPlayerFeaturedPlaylists = await featuredPlaylist.find({
-    _id: { $nin: popularFeaturedPlaylistIds },
-  });
-
   res.send({
     recentAlbums: recentAlbums,
     recentFavoriteArtists: recentFavoriteArtists,
@@ -218,8 +209,17 @@ router.get("/load/home", auth.verifyUser, async (req, res) => {
     popularFeaturedPlaylists: popularFeaturedPlaylists,
     popularAlbums: popularAlbums,
     popularArtists: popularArtist,
-    smoothPlayerFeaturedPlaylists: smoothPlayerFeaturedPlaylists,
   });
+});
+
+router.post("/get/featuredPlaylists", auth.verifyUser, async(req, res)=> {
+  const featuredPlaylistNum = req.body.featuredPlaylistNum;
+
+  const featuredPlaylists = await featuredPlaylist.find()
+  .sort({createdAt: -1})
+  .limit(featuredPlaylistNum);
+
+  res.send(featuredPlaylists);
 });
 
 module.exports = router;

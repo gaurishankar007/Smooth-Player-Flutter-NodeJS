@@ -149,7 +149,7 @@ router.post("/search/songByTitle", auth.verifyAdmin, async (req, res)=> {
     }
     const songTitle =  {title: { $regex: req.body.title, $options: "i" }}; 
 
-    const songs = await song.find(songTitle).populate("album")  
+    const songs = await song.find(songTitle).populate("album").limit(20)
     const songs1 = await song.populate(songs, {
         path: "album.artist",
         select: "profile_name profile_picture biography verified"
@@ -228,19 +228,19 @@ router.post("/search/song", auth.verifyUser, async (req, res)=> {
     const artistName = {profile_name: { $regex: req.body.title, $options: "i" }, verified: true, admin: false}; 
     const userName = {profile_name: { $regex: req.body.title, $options: "i" }, verified: false, admin: false}; 
 
-    const songs1 = await song.find(songTitle).populate("album").limit(6)
+    const songs1 = await song.find(songTitle).populate("album").limit(10);
     const songs = await song.populate(songs1, {
         path: "album.artist",
         select: "profile_name profile_picture biography follower verified"
     });
 
-    const albums = await album.find(albumTitle);
+    const albums = await album.find(albumTitle).populate("artist", "profile_name profile_picture biography follower verified").limit(10);
 
-    const featuredPlaylists = await featuredPlaylist.find(featuredPlaylistTitle);
+    const featuredPlaylists = await featuredPlaylist.find(featuredPlaylistTitle).limit(10);
 
-    const artists = await user.find(artistName);
+    const artists = await user.find(artistName).limit(10);
 
-    const users = await user.find(userName);
+    const users = await user.find(userName).limit(10);
 
     res.send({
         songs: songs, 
@@ -250,5 +250,17 @@ router.post("/search/song", auth.verifyUser, async (req, res)=> {
         users: users,
     }); 
 });
+
+router.post("/genre/songs", auth.verifyUser, async (req, res)=> {
+    const songNum = req.body.songNum;
+    const songGenre = req.body.genre;
+
+    const songs = await song.find({genre: songGenre})
+    .sort({createdAt: -1})
+    .limit(songNum);
+
+    res.send(songs);
+});
+
 
 module.exports = router;

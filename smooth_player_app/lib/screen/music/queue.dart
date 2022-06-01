@@ -40,7 +40,13 @@ class _SongQueueState extends State<SongQueue> {
     });
 
     completionSub = player.onPlayerCompletion.listen((state) {
-      // Player().autoNextSong();
+      Player().autoNextSong();
+      setState(() {
+        song = Player.playingSong;
+        nextSongs = Player.nextSongs.toList();
+        songQueue =
+            Player.songQueue.isNotEmpty ? Player.songQueue.toList() : [];
+      });
     });
   }
 
@@ -66,9 +72,38 @@ class _SongQueueState extends State<SongQueue> {
             color: AppColors.text,
           ),
         ),
-        actions: [TextButton(onPressed:(){
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>ViewRecentlyPlayed()));
-        }, child: Text("Recently played"))],
+        actions: [
+          Container(
+            padding: EdgeInsets.symmetric(
+              vertical: 12,
+              horizontal: 5,
+            ),
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ViewRecentlyPlayed(),
+                  ),
+                );
+              },
+              child: Text(
+                "Recently played",
+                style: TextStyle(
+                  fontSize: 15,
+                ),
+              ),
+              style: ElevatedButton.styleFrom(
+                primary: AppColors.primary,
+                elevation: 5,
+                shadowColor: Colors.black,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(6),
+                ),
+              ),
+            ),
+          ),
+        ],
         elevation: 0,
         backgroundColor: Colors.transparent,
       ),
@@ -92,89 +127,72 @@ class _SongQueueState extends State<SongQueue> {
                 height: 10,
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.bar_chart_rounded,
-                        color: AppColors.primary,
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Container(
-                        width: 50,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Colors.black26,
-                              spreadRadius: 1,
-                              blurRadius: 5,
-                              offset: Offset(2, 2),
-                            )
-                          ],
+                  Icon(
+                    Icons.bar_chart_rounded,
+                    color: AppColors.primary,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Container(
+                    width: 50,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.black26,
+                          spreadRadius: 1,
+                          blurRadius: 5,
+                          offset: Offset(2, 2),
+                        )
+                      ],
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(5),
+                      child: Image(
+                        fit: BoxFit.cover,
+                        image: NetworkImage(
+                          coverImage + song!.cover_image!,
                         ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(5),
-                          child: Image(
-                            fit: BoxFit.cover,
-                            image: NetworkImage(
-                              coverImage + song!.cover_image!,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  SizedBox(
+                    width: sWidth * .5,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Text(
+                            song!.title!,
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: AppColors.primary,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      SizedBox(
-                        width: sWidth * .5,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Text(
-                                song!.title!,
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: AppColors.primary,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Text(
-                                song!.album!.artist!.profile_name!,
-                                style: TextStyle(
-                                  color: AppColors.primary,
-                                ),
-                              ),
-                            ),
-                          ],
+                        SizedBox(
+                          height: 5,
                         ),
-                      ),
-                    ],
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      Player().nextSong();
-                    },
-                    icon: Icon(
-                      Icons.delete,
-                      color: Colors.red,
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Text(
+                            song!.album!.artist!.profile_name!,
+                            style: TextStyle(
+                              color: AppColors.primary,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
-              ),
-              SizedBox(
-                height: 25,
               ),
               songQueue.isNotEmpty
                   ? Column(
@@ -183,12 +201,18 @@ class _SongQueueState extends State<SongQueue> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              "Next in Queue",
-                              style: TextStyle(
-                                fontSize: 17,
-                                color: AppColors.text,
-                                fontWeight: FontWeight.bold,
+                            Padding(
+                              padding: EdgeInsets.only(
+                                top: 25,
+                                bottom: 5,
+                              ),
+                              child: Text(
+                                "Next in Queue",
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  color: AppColors.text,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                             ElevatedButton(
@@ -216,7 +240,7 @@ class _SongQueueState extends State<SongQueue> {
                           itemCount: songQueue.length,
                           itemBuilder: (context, index) {
                             return Padding(
-                              padding: const EdgeInsets.symmetric(
+                              padding: EdgeInsets.symmetric(
                                 vertical: 5,
                               ),
                               child: Row(
@@ -316,19 +340,19 @@ class _SongQueueState extends State<SongQueue> {
                   : SizedBox(
                       height: 0,
                     ),
-              SizedBox(
-                height: 30,
-              ),
-              Text(
-                "Next From: " + song!.album!.title!,
-                style: TextStyle(
-                  fontSize: 17,
-                  color: AppColors.text,
-                  fontWeight: FontWeight.bold,
+              Padding(
+                padding: EdgeInsets.only(
+                  top: 25,
+                  bottom: 5,
                 ),
-              ),
-              SizedBox(
-                height: 10,
+                child: Text(
+                  "Next From: " + song!.album!.title!,
+                  style: TextStyle(
+                    fontSize: 17,
+                    color: AppColors.text,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
               ListView.builder(
                 physics: NeverScrollableScrollPhysics(),

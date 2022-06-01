@@ -14,7 +14,7 @@ void main() {
     // Executing the actual test
     await tester.pumpWidget(MaterialApp(home: SignUp()));
     await tester.enterText(emailTxt, "nishan@gmail.com");
-    await tester.enterText(usernameTxt, "nishan");
+    await tester.enterText(usernameTxt, "john");
     await tester.enterText(profileNameTxt, "nrb");
     await tester.enterText(pwTxt, "12345678");
     await tester.enterText(confirmPwTxt, "12345678");
@@ -22,7 +22,7 @@ void main() {
 
     // Checking outputs
     expect(find.text("nishan@gmail.com"), findsOneWidget);
-    expect(find.text("nishan"), findsOneWidget);
+    expect(find.text("john"), findsOneWidget);
     expect(find.text("nrb"), findsOneWidget);
     expect(find.text("12345678"), findsNWidgets(2));
     expect(find.byType(TextFormField), findsNWidgets(6));

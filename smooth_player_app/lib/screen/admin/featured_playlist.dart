@@ -28,7 +28,9 @@ class _FeaturedPlaylistViewState extends State<FeaturedPlaylistView> {
   int curTime = DateTime.now().hour;
   String greeting = "Smooth Player";
 
-  late Future<List<FeaturedPlaylist>> featuredPlaylist;
+  bool more = true;
+  int featuredPlaylistNum = 10;
+  late Future<List<FeaturedPlaylist>> featuredPlaylists;
 
   late StreamSubscription stateSub;
 
@@ -45,7 +47,8 @@ class _FeaturedPlaylistViewState extends State<FeaturedPlaylistView> {
       greeting = "Good Evening";
     }
 
-    featuredPlaylist = FeaturedPlaylistHttp().getFeaturedPlaylist();
+    featuredPlaylists =
+        FeaturedPlaylistHttp().getFeaturedPlaylist(featuredPlaylistNum);
 
     stateSub = player.onAudioPositionChanged.listen((state) {
       setState(() {
@@ -130,28 +133,31 @@ class _FeaturedPlaylistViewState extends State<FeaturedPlaylistView> {
                           width: sWidth * .75,
                           height: 50,
                           child: TextFormField(
-                              onChanged: ((value) {
-                                if (value.trim().isEmpty) {
-                                  setState(() {
-                                    featuredPlaylist = FeaturedPlaylistHttp()
-                                        .getFeaturedPlaylist();
-                                  });
-                                } else {
-                                  setState(() {
-                                    featuredPlaylist = FeaturedPlaylistHttp()
-                                        .searchPlaylist(value);
-                                  });
-                                }
-                              }),
-                              decoration: InputDecoration(
-                                filled: true,
-                                fillColor: AppColors.form,
-                                hintText: "Search Playlist",
-                                enabledBorder: formBorder,
-                                focusedBorder: formBorder,
-                                errorBorder: formBorder,
-                                focusedErrorBorder: formBorder,
-                              )),
+                            onChanged: ((value) {
+                              if (value.trim().isEmpty) {
+                                setState(() {
+                                  more = true;
+                                  featuredPlaylists = FeaturedPlaylistHttp()
+                                      .getFeaturedPlaylist(featuredPlaylistNum);
+                                });
+                              } else {
+                                setState(() {
+                                  more = false;
+                                  featuredPlaylists = FeaturedPlaylistHttp()
+                                      .searchPlaylist(value);
+                                });
+                              }
+                            }),
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: AppColors.form,
+                              hintText: "Search Playlist",
+                              enabledBorder: formBorder,
+                              focusedBorder: formBorder,
+                              errorBorder: formBorder,
+                              focusedErrorBorder: formBorder,
+                            ),
+                          ),
                         ),
                         ElevatedButton(
                             style: ElevatedButton.styleFrom(
@@ -181,7 +187,7 @@ class _FeaturedPlaylistViewState extends State<FeaturedPlaylistView> {
                 ),
               ),
               FutureBuilder<List<FeaturedPlaylist>>(
-                future: featuredPlaylist,
+                future: featuredPlaylists,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     return GridView.count(
@@ -189,7 +195,6 @@ class _FeaturedPlaylistViewState extends State<FeaturedPlaylistView> {
                         top: sHeight * .01,
                         left: sWidth * .03,
                         right: sWidth * .03,
-                        bottom: 80,
                       ),
                       physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
@@ -225,9 +230,10 @@ class _FeaturedPlaylistViewState extends State<FeaturedPlaylistView> {
                                                 snapshot.data![index].id!);
                                         Navigator.pop(context);
                                         setState(() {
-                                          featuredPlaylist =
+                                          featuredPlaylists =
                                               FeaturedPlaylistHttp()
-                                                  .getFeaturedPlaylist();
+                                                  .getFeaturedPlaylist(
+                                                      featuredPlaylistNum);
                                         });
                                         Fluttertoast.showToast(
                                           msg: snapshot.data![index].title! +
@@ -341,6 +347,50 @@ class _FeaturedPlaylistViewState extends State<FeaturedPlaylistView> {
                   );
                 },
               ),
+              more
+                  ? OutlinedButton(
+                      onPressed: () async {
+                        final resData = await FeaturedPlaylistHttp()
+                            .getFeaturedPlaylist(featuredPlaylistNum + 10);
+                        if (resData.length == featuredPlaylistNum) {
+                          setState(() {
+                            more = false;
+                          });
+                          return;
+                        } else {
+                          featuredPlaylistNum = featuredPlaylistNum + 10;
+                          setState(() {
+                            featuredPlaylists = FeaturedPlaylistHttp()
+                                .getFeaturedPlaylist(featuredPlaylistNum);
+                          });
+                        }
+                      },
+                      child: Text(
+                        "More",
+                        style: TextStyle(
+                          fontSize: 15,
+                        ),
+                      ),
+                      style: OutlinedButton.styleFrom(
+                        minimumSize: Size.zero,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
+                        primary: AppColors.primary,
+                        side: BorderSide(
+                          width: 2,
+                          color: AppColors.primary,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ),
+                    )
+                  : SizedBox(),
+              SizedBox(
+                height: 80,
+              )
             ],
           ),
         ),
