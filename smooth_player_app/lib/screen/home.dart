@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_player_app/api/http/home_http.dart';
+import 'package:smooth_player_app/api/res/featured_playlist_res.dart';
 import 'package:smooth_player_app/api/res/home_res.dart';
 import 'package:smooth_player_app/screen/setting.dart';
 import 'package:smooth_player_app/screen/view/view_album.dart';
@@ -36,6 +37,16 @@ class _HomeState extends State<Home> {
 
   bool songBarVisibility = Player.isPlaying;
 
+  List<String> featuredPlaylistIds = [];
+
+  Future<List<FeaturedPlaylist>> viewFeaturedPlaylists() async {
+    final resData = await HomeHttp().getFeaturedPlaylists();
+    for (int i = 0; i < resData.length; i++) {
+      featuredPlaylistIds.add(resData[i].id!);
+    }
+    return resData;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -52,6 +63,8 @@ class _HomeState extends State<Home> {
         songBarVisibility = Player.isPlaying;
       });
     });
+
+    viewFeaturedPlaylists();
   }
 
   @override
@@ -1026,122 +1039,6 @@ class _HomeState extends State<Home> {
                             },
                           ),
                         ),
-                        snapshot.data!.smoothPlayerFeaturedPlaylists!.isNotEmpty
-                            ? Padding(
-                                padding: EdgeInsets.only(
-                                  top: 20,
-                                  bottom: 10,
-                                ),
-                                child: Text(
-                                  "Featured Playlist",
-                                  style: TextStyle(
-                                    fontSize: 17,
-                                    color: AppColors.text,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              )
-                            : SizedBox(),
-                        snapshot.data!.smoothPlayerFeaturedPlaylists!.isNotEmpty
-                            ? GridView.count(
-                                physics: NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                crossAxisSpacing: 10,
-                                crossAxisCount: 2,
-                                childAspectRatio:
-                                    (sWidth - (sWidth * .55)) / 70,
-                                children: List.generate(
-                                  snapshot.data!.smoothPlayerFeaturedPlaylists!
-                                      .length,
-                                  (index) {
-                                    return GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (builder) =>
-                                                ViewFeaturedPlaylist(
-                                              featuredPlaylistId: snapshot
-                                                  .data!
-                                                  .smoothPlayerFeaturedPlaylists![
-                                                      index]
-                                                  .id,
-                                              title: snapshot
-                                                  .data!
-                                                  .smoothPlayerFeaturedPlaylists![
-                                                      index]
-                                                  .title!,
-                                              featuredPlaylistImage: snapshot
-                                                  .data!
-                                                  .smoothPlayerFeaturedPlaylists![
-                                                      index]
-                                                  .featured_playlist_image,
-                                              like: snapshot
-                                                  .data!
-                                                  .smoothPlayerFeaturedPlaylists![
-                                                      index]
-                                                  .like,
-                                              pageIndex: 0,
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              boxShadow: const [
-                                                BoxShadow(
-                                                  color: Colors.black26,
-                                                  spreadRadius: 1,
-                                                  blurRadius: 5,
-                                                  offset: Offset(2, 2),
-                                                )
-                                              ],
-                                            ),
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                              child: Image(
-                                                height: sHeight * 0.2,
-                                                width: sWidth * 0.46,
-                                                fit: BoxFit.cover,
-                                                image: NetworkImage(
-                                                  featuredPlaylistImage +
-                                                      snapshot
-                                                          .data!
-                                                          .smoothPlayerFeaturedPlaylists![
-                                                              index]
-                                                          .featured_playlist_image!,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                          Text(
-                                            snapshot
-                                                .data!
-                                                .smoothPlayerFeaturedPlaylists![
-                                                    index]
-                                                .title!,
-                                            overflow: TextOverflow.fade,
-                                            softWrap: false,
-                                            style: TextStyle(
-                                              color: Colors.black87,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                ),
-                              )
-                            : SizedBox(),
                       ],
                     );
                   } else if (snapshot.hasError) {
@@ -1161,6 +1058,143 @@ class _HomeState extends State<Home> {
                     ),
                   );
                 }),
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: 20,
+                      bottom: 10,
+                    ),
+                    child: Text(
+                      "Featured Playlist",
+                      style: TextStyle(
+                        fontSize: 17,
+                        color: AppColors.text,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              FutureBuilder<List<FeaturedPlaylist>>(
+                future: viewFeaturedPlaylists(),
+                builder: ((context, snapshot) {
+                  if (snapshot.hasData) {
+                    return GridView.count(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      crossAxisSpacing: 10,
+                      crossAxisCount: 2,
+                      childAspectRatio:
+                          (sWidth - (sWidth * .55)) / (sHeight * .25),
+                      children: List.generate(
+                        snapshot.data!.length,
+                        (index) {
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (builder) => ViewFeaturedPlaylist(
+                                    featuredPlaylistId:
+                                        snapshot.data![index].id,
+                                    title: snapshot.data![index].title!,
+                                    featuredPlaylistImage: snapshot
+                                        .data![index].featured_playlist_image,
+                                    like: snapshot.data![index].like,
+                                    pageIndex: 0,
+                                  ),
+                                ),
+                              );
+                            },
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: Colors.black26,
+                                        spreadRadius: 1,
+                                        blurRadius: 5,
+                                        offset: Offset(2, 2),
+                                      )
+                                    ],
+                                  ),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(8),
+                                    child: Image(
+                                      height: sHeight * 0.2,
+                                      width: sWidth * 0.46,
+                                      fit: BoxFit.cover,
+                                      image: NetworkImage(
+                                        featuredPlaylistImage +
+                                            snapshot.data![index]
+                                                .featured_playlist_image!,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  snapshot.data![index].title!,
+                                  overflow: TextOverflow.fade,
+                                  softWrap: false,
+                                  style: TextStyle(
+                                    color: Colors.black87,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  } else if (snapshot.hasError) {
+                    return Center(
+                      child: Text(
+                        "${snapshot.error}",
+                        style: TextStyle(
+                          fontSize: 15,
+                        ),
+                      ),
+                    );
+                  }
+                  return Center(
+                    child: CircularProgressIndicator(
+                      strokeWidth: 5,
+                      color: AppColors.primary,
+                    ),
+                  );
+                }),
+              ),
+              OutlinedButton(
+                onPressed: () {},
+                child: Text(
+                  "More",
+                  style: TextStyle(
+                    fontSize: 15,
+                  ),
+                ),
+                style: OutlinedButton.styleFrom(
+                  minimumSize: Size.zero,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
+                  primary: AppColors.primary,
+                  side: BorderSide(
+                    width: 2,
+                    color: AppColors.primary,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                ),
               ),
             ],
           ),

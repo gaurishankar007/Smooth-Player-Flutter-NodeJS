@@ -36,7 +36,7 @@ router.get("/view/featuredPlaylist", auth.verifyAdmin, async (req, res)=> {
 
 router.post("/search/featuredPlaylist", auth.verifyAdmin, async (req, res)=> {
     const playlistTitle =   {title: { $regex: req.body.title, $options: "i" }}; 
-    const playlists = await featuredPlaylist.find(playlistTitle)     
+    const playlists = await featuredPlaylist.find(playlistTitle).limit(20);   
     res.send(playlists); 
 });
 

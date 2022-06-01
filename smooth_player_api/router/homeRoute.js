@@ -212,7 +212,7 @@ router.get("/load/home", auth.verifyUser, async (req, res) => {
   });
 });
 
-router.post("/view/featuredPlaylists", auth.verifyUser, async(req, res)=> {
+router.post("/get/featuredPlaylists", auth.verifyUser, async(req, res)=> {
   const featuredPlaylistIds = req.body.featuredPlaylistIds;
 
   if(featuredPlaylistIds === undefined) {

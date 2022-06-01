@@ -60,7 +60,7 @@ router.post("/search/artist", auth.verifyAdmin, async (req, res) => {
     admin: false,
     verified: true,
   };
-  const artists = await user.find(artistName);
+  const artists = await user.find(artistName).limit(20);
   res.send(artists);
 });
 
