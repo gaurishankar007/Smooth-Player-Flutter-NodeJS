@@ -6,7 +6,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:smooth_player_app/api/http/song_http.dart';
 import 'package:smooth_player_app/resource/colors.dart';
 import 'package:smooth_player_app/resource/genre.dart';
-import 'package:smooth_player_app/api/model/album_model.dart';
 import 'package:smooth_player_app/screen/my_music.dart';
 
 import '../../api/model/song_model.dart';
@@ -171,6 +170,7 @@ class _UploadSongState extends State<UploadSong> {
                     if (value == null || value.isEmpty) {
                       return "Song title is required";
                     }
+                    return null;
                   },
                   onSaved: ((value) {
                     title = value!;

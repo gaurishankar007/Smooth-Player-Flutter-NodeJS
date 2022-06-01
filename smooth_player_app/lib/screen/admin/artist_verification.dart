@@ -2,7 +2,10 @@ import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:smooth_player_app/api/http/artist_http.dart';
+import 'package:smooth_player_app/screen/admin/artist_profile.dart';
 
+import '../../api/res/artist_res.dart';
 import '../../resource/player.dart';
 import '../../widget/admin_navigator.dart';
 import '../../widget/song_bar.dart';
@@ -21,9 +24,15 @@ class _VerifyArtistState extends State<VerifyArtist> {
 
   bool songBarVisibility = Player.isPlaying;
 
+  late Future<List<Artist>> artistList;
+  late Future<List<Artist>> popularArtistList;
+
   @override
   void initState() {
     super.initState();
+
+    artistList = ArtistHttp().searchArtist("");
+    popularArtistList = ArtistHttp().searchPopularArtist();
 
     stateSub = player.onPlayerStateChanged.listen((state) {
       setState(() {
@@ -44,8 +53,18 @@ class _VerifyArtistState extends State<VerifyArtist> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
-            children: const [
+            children: [
               Text("Artist Verification"),
+              IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (builder) => ArtistPage(
+                                artistId: "627a119656d62261f186405c",
+                                pageIndex: 1)));
+                  },
+                  icon: Icon(Icons.person))
             ],
           ),
         ),

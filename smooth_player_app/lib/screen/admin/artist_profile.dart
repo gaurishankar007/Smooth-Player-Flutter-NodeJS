@@ -1,46 +1,42 @@
-import 'dart:async';
-
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
 import '../../api/http/artist_http.dart';
 import '../../api/res/song_res.dart';
 import '../../api/res/artist_data_res.dart';
 import '../../api/urls.dart';
 import '../../resource/colors.dart';
 import '../../resource/player.dart';
-import '../../widget/navigator.dart';
+import '../../widget/admin_navigator.dart';
 import '../../widget/song_bar.dart';
-import 'view_album.dart';
+import 'admin_view_album.dart';
 
-class ViewArtist extends StatefulWidget {
+class ArtistPage extends StatefulWidget {
   final String? artistId;
   final int? pageIndex;
-  const ViewArtist({
+  const ArtistPage({
     Key? key,
     @required this.artistId,
     @required this.pageIndex,
   }) : super(key: key);
 
   @override
-  State<ViewArtist> createState() => _ViewArtistState();
+  State<ArtistPage> createState() => _ArtistPageState();
 }
 
-class _ViewArtistState extends State<ViewArtist> {
+class _ArtistPageState extends State<ArtistPage> {
   final AudioPlayer player = Player.player;
   Song? song = Player.playingSong;
   final coverImage = ApiUrls.coverImageUrl;
   final profileImage = ApiUrls.profileUrl;
+  bool isVerified = true;
 
   late Future<ArtistData> artistData;
 
   List<Song> songs = [];
 
-  late StreamSubscription stateSub;
-
   Future<ArtistData> viewSongs() async {
-    ArtistData resData = await ArtistHttp().viewArtist(widget.artistId!);
+    ArtistData resData = await ArtistHttp().adminViewArtist(widget.artistId!);
     return resData;
   }
 
@@ -52,19 +48,7 @@ class _ViewArtistState extends State<ViewArtist> {
       songs = value.popularSong!;
     });
 
-    artistData = ArtistHttp().viewArtist(widget.artistId!);
-
-    stateSub = player.onPlayerStateChanged.listen((state) {
-      setState(() {
-        song = Player.playingSong;
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    stateSub.cancel();
+    artistData = ArtistHttp().adminViewArtist(widget.artistId!);
   }
 
   @override
@@ -175,40 +159,48 @@ class _ViewArtistState extends State<ViewArtist> {
                                     ],
                                   ),
                                 ),
-                                OutlinedButton(
-                                  onPressed: () {},
-                                  child: Text(
-                                    "Follow",
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                    ),
-                                  ),
-                                  style: OutlinedButton.styleFrom(
-                                    minimumSize: Size.zero,
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 8,
-                                      vertical: 4,
-                                    ),
-                                    primary: Colors.white,
-                                    side: BorderSide(
-                                      width: 2,
-                                      color: Colors.white,
-                                    ),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                  ),
-                                ),
                               ],
                             ),
                           ),
                         ],
                       ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                          left: sWidth * 0.03,
+                          right: sWidth * 0.03,
+                          top: 5,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Verified",
+                              style: TextStyle(
+                                color: AppColors.text,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 25,
+                              child: Switch(
+                                activeColor: AppColors.primary,
+                                value: isVerified,
+                                onChanged: (value) {
+                                  setState(() {
+                                    isVerified = value;
+                                  });
+                                },
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
                       snapshot.data!.popularSong!.isNotEmpty
                           ? Padding(
                               padding: EdgeInsets.only(
                                 left: sWidth * 0.03,
-                                top: 20,
+                                top: 10,
                                 bottom: 10,
                               ),
                               child: Row(
@@ -444,131 +436,58 @@ class _ViewArtistState extends State<ViewArtist> {
                                                         BoxConstraints(),
                                                     padding: EdgeInsets.zero,
                                                     onPressed: () {
-                                                      showDialog(
-                                                        context: context,
-                                                        builder: (ctx) =>
-                                                            SimpleDialog(
-                                                          children: [
-                                                            SimpleDialogOption(
-                                                              padding: EdgeInsets
-                                                                  .symmetric(
-                                                                horizontal: 75,
-                                                              ),
-                                                              child:
-                                                                  ElevatedButton(
-                                                                style: ElevatedButton
-                                                                    .styleFrom(
-                                                                  primary:
-                                                                      AppColors
-                                                                          .primary,
-                                                                  elevation: 10,
-                                                                  shadowColor:
-                                                                      Colors
-                                                                          .black,
-                                                                  shape:
-                                                                      RoundedRectangleBorder(
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            15),
-                                                                  ),
-                                                                ),
-                                                                onPressed: () {
-                                                                  Navigator.of(
-                                                                          ctx)
-                                                                      .pop();
-
-                                                                  Player
-                                                                      .songQueue
-                                                                      .add(
-                                                                    Song(
-                                                                      id: snapshot
-                                                                          .data!
-                                                                          .popularSong![
-                                                                              index]
-                                                                          .id!,
-                                                                      title: snapshot
-                                                                          .data!
-                                                                          .popularSong![
-                                                                              index]
-                                                                          .title!,
-                                                                      album: snapshot
-                                                                          .data!
-                                                                          .popularSong![
-                                                                              index]
-                                                                          .album!,
-                                                                      music_file: snapshot
-                                                                          .data!
-                                                                          .popularSong![
-                                                                              index]
-                                                                          .music_file!,
-                                                                      cover_image: snapshot
-                                                                          .data!
-                                                                          .popularSong![
-                                                                              index]
-                                                                          .cover_image!,
-                                                                      like: snapshot
-                                                                          .data!
-                                                                          .popularSong![
-                                                                              index]
-                                                                          .like!,
-                                                                    ),
-                                                                  );
-                                                                  Fluttertoast
-                                                                      .showToast(
-                                                                    msg: snapshot
-                                                                            .data!
-                                                                            .popularSong![index]
-                                                                            .title! +
-                                                                        " is added to the queue.",
-                                                                    toastLength:
-                                                                        Toast
-                                                                            .LENGTH_SHORT,
-                                                                    gravity:
-                                                                        ToastGravity
-                                                                            .BOTTOM,
-                                                                    timeInSecForIosWeb:
-                                                                        3,
-                                                                  );
-                                                                },
-                                                                child: Text(
-                                                                    "Add to queue"),
-                                                              ),
-                                                            ),
-                                                            SimpleDialogOption(
-                                                              padding: EdgeInsets
-                                                                  .symmetric(
-                                                                horizontal: 75,
-                                                              ),
-                                                              child:
-                                                                  ElevatedButton(
-                                                                style: ElevatedButton
-                                                                    .styleFrom(
-                                                                  primary:
-                                                                      AppColors
-                                                                          .primary,
-                                                                  elevation: 10,
-                                                                  shadowColor:
-                                                                      Colors
-                                                                          .black,
-                                                                  shape:
-                                                                      RoundedRectangleBorder(
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            15),
-                                                                  ),
-                                                                ),
-                                                                onPressed:
-                                                                    () {},
-                                                                child: Text(
-                                                                    "Add to playlist"),
-                                                              ),
-                                                            ),
-                                                          ],
+                                                      Player.songQueue.add(
+                                                        Song(
+                                                          id: snapshot
+                                                              .data!
+                                                              .popularSong![
+                                                                  index]
+                                                              .id!,
+                                                          title: snapshot
+                                                              .data!
+                                                              .popularSong![
+                                                                  index]
+                                                              .title!,
+                                                          album: snapshot
+                                                              .data!
+                                                              .popularSong![
+                                                                  index]
+                                                              .album!,
+                                                          music_file: snapshot
+                                                              .data!
+                                                              .popularSong![
+                                                                  index]
+                                                              .music_file!,
+                                                          cover_image: snapshot
+                                                              .data!
+                                                              .popularSong![
+                                                                  index]
+                                                              .cover_image!,
+                                                          like: snapshot
+                                                              .data!
+                                                              .popularSong![
+                                                                  index]
+                                                              .like!,
                                                         ),
+                                                      );
+                                                      Fluttertoast.showToast(
+                                                        msg: snapshot
+                                                                .data!
+                                                                .popularSong![
+                                                                    index]
+                                                                .title! +
+                                                            " is added to the queue.",
+                                                        toastLength:
+                                                            Toast.LENGTH_SHORT,
+                                                        gravity:
+                                                            ToastGravity.BOTTOM,
+                                                        timeInSecForIosWeb: 3,
                                                       );
                                                     },
                                                     icon: Icon(
-                                                      Icons.more_vert,
+                                                      Icons
+                                                          .add_to_queue_rounded,
+                                                      color: AppColors.primary,
                                                     ),
                                                   ),
                                                 ],
@@ -624,7 +543,7 @@ class _ViewArtistState extends State<ViewArtist> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (builder) => ViewAlbum(
+                                          builder: (builder) => ViewAdminAlbum(
                                             albumId: snapshot
                                                 .data!.newAlbum![index].id,
                                             title: snapshot
@@ -747,7 +666,7 @@ class _ViewArtistState extends State<ViewArtist> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (builder) => ViewAlbum(
+                                          builder: (builder) => ViewAdminAlbum(
                                             albumId: snapshot
                                                 .data!.oldAlbum![index].id,
                                             title: snapshot
@@ -851,143 +770,23 @@ class _ViewArtistState extends State<ViewArtist> {
                             )
                           : SizedBox(),
                       snapshot.data!.artist!.biography!.trim().isNotEmpty
-                          ? Stack(
-                              alignment: Alignment.bottomCenter,
-                              children: [
-                                Stack(
-                                  alignment: Alignment.topCenter,
-                                  children: [
-                                    Stack(
-                                      alignment: Alignment.center,
-                                      children: [
-                                        ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          child: Image(
-                                            width: sWidth * .95,
-                                            height: sHeight * .4,
-                                            fit: BoxFit.cover,
-                                            image: NetworkImage(
-                                              profileImage +
-                                                  snapshot.data!.artist!
-                                                      .profile_picture!,
-                                            ),
-                                          ),
-                                        ),
-                                        Container(
-                                          width: sWidth * .95,
-                                          height: sHeight * .4,
-                                          decoration: BoxDecoration(
-                                            boxShadow: const [
-                                              BoxShadow(
-                                                color: Colors.black54,
-                                                spreadRadius: 1,
-                                                blurRadius: 5,
-                                              )
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    snapshot.data!.artist!.verified!
-                                        ? Container(
-                                            width: sWidth * .95,
-                                            padding: EdgeInsets.all(5),
-                                            child: Row(
-                                              children: const [
-                                                Icon(
-                                                  Icons.verified_rounded,
-                                                  color: Colors.white,
-                                                ),
-                                                SizedBox(
-                                                  width: 5,
-                                                ),
-                                                Text(
-                                                  "Verified Artist",
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          )
-                                        : SizedBox(),
-                                  ],
+                          ? Container(
+                              padding: EdgeInsets.only(
+                                left: sWidth * 0.03,
+                                right: sWidth * 0.03,
+                              ),
+                              child: Text(
+                                snapshot.data!.artist!.biography!,
+                                textAlign: TextAlign.justify,
+                                style: TextStyle(
+                                  color: AppColors.text,
+                                  height: 1.5,
                                 ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (builder) => AlertDialog(
-                                        contentPadding: EdgeInsets.symmetric(
-                                          vertical: 5,
-                                          horizontal: 10,
-                                        ),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                        ),
-                                        content: SizedBox(
-                                          height: sHeight * .5,
-                                          child: SingleChildScrollView(
-                                            child: Column(
-                                              children: [
-                                                ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(5),
-                                                  child: Image(
-                                                    height: 100,
-                                                    fit: BoxFit.cover,
-                                                    image: NetworkImage(
-                                                      profileImage +
-                                                          snapshot.data!.artist!
-                                                              .profile_picture!,
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  height: 5,
-                                                ),
-                                                Text(
-                                                  snapshot
-                                                      .data!.artist!.biography!,
-                                                  textAlign: TextAlign.justify,
-                                                  style: TextStyle(
-                                                    color: AppColors.text,
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  height: 5,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                  child: Container(
-                                    alignment: Alignment.bottomCenter,
-                                    width: sWidth * .95,
-                                    height: 100,
-                                    padding: EdgeInsets.all(5),
-                                    child: Text(
-                                      snapshot.data!.artist!.biography!,
-                                      textAlign: TextAlign.justify,
-                                      overflow: TextOverflow.fade,
-                                      softWrap: true,
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
+                              ),
                             )
                           : SizedBox(),
                       SizedBox(
-                        height: 80,
+                        height: 90,
                       ),
                     ],
                   );
@@ -1017,7 +816,7 @@ class _ViewArtistState extends State<ViewArtist> {
           : null,
       floatingActionButtonLocation:
           FloatingActionButtonLocation.miniCenterFloat,
-      bottomNavigationBar: PageNavigator(pageIndex: widget.pageIndex),
+      bottomNavigationBar: AdminPageNavigator(pageIndex: widget.pageIndex),
     );
   }
 }

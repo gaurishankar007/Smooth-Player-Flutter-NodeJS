@@ -15,6 +15,7 @@ class EditSong extends StatefulWidget {
   final String? albumId;
   final String? title;
   final String? albumImage;
+  final int? like;
   final int? pageIndex;
   const EditSong({
     Key? key,
@@ -22,6 +23,7 @@ class EditSong extends StatefulWidget {
     @required this.albumId,
     @required this.title,
     @required this.albumImage,
+    @required this.like,
     @required this.pageIndex,
   }) : super(key: key);
 
@@ -160,6 +162,7 @@ class _EditSongState extends State<EditSong> {
                     if (value == null || value.isEmpty) {
                       return "Song title is required";
                     }
+                    return null;
                   },
                   onSaved: ((value) {
                     title = value!;
@@ -205,6 +208,7 @@ class _EditSongState extends State<EditSong> {
                                   albumId: widget.albumId,
                                   title: widget.title,
                                   albumImage: widget.albumImage,
+                                  like: widget.like,
                                   pageIndex: widget.pageIndex,
                                 ),
                               ),
@@ -266,6 +270,7 @@ class _EditSongState extends State<EditSong> {
                                   albumId: widget.albumId,
                                   title: widget.title,
                                   albumImage: widget.albumImage,
+                                  like: widget.like,
                                   pageIndex: widget.pageIndex,
                                 ),
                               ),

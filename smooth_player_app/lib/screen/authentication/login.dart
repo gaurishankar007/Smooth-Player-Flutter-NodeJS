@@ -5,7 +5,8 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:smooth_player_app/resource/colors.dart';
 import 'package:smooth_player_app/api/http/authentication/login_http.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:smooth_player_app/resource/player.dart';
+import 'package:smooth_player_app/screen/authentication/sign_up.dart';
+import 'package:smooth_player_app/screen/home.dart';
 import '../../api/log_status.dart';
 import '../admin/featured_playlist.dart';
 
@@ -174,7 +175,6 @@ class _LoginState extends State<Login> {
                       final resData =
                           await LoginHttp().login(username_email, password);
                       if (resData["statusCode"] == 202) {
-                        Player.playingSong = null;
                         if (resData["body"]["userData"]["admin"]) {
                           LogStatus().setToken(resData["body"]["token"],
                               resData["body"]["userData"]["admin"]);
@@ -194,9 +194,11 @@ class _LoginState extends State<Login> {
                           LogStatus.token = resData["body"]["token"];
                           LogStatus.admin =
                               resData["body"]["userData"]["admin"];
-                          Navigator.pushNamedAndRemoveUntil(
+                          Navigator.pushAndRemoveUntil(
                             context,
-                            "home",
+                            MaterialPageRoute(
+                              builder: (builder) => Home(),
+                            ),
                             (route) => false,
                           );
                         }
@@ -245,7 +247,12 @@ class _LoginState extends State<Login> {
                 ElevatedButton(
                   key: Key("button"),
                   onPressed: () {
-                    Navigator.pushNamed(context, "signUp");
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (builder) => SignUp(),
+                      ),
+                    );
                   },
                   child: Text(
                     "Create an account",

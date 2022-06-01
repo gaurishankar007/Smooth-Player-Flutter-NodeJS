@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:smooth_player_app/api/http/user_http.dart';
 import 'package:smooth_player_app/api/urls.dart';
 import 'package:smooth_player_app/resource/player.dart';
+import 'package:smooth_player_app/screen/authentication/login.dart';
 import 'package:smooth_player_app/screen/setting/password_setting.dart';
 import 'package:smooth_player_app/screen/setting/user_setting.dart';
 
@@ -106,7 +107,7 @@ class _SettingState extends State<Setting> {
                           alignment: Alignment.bottomRight,
                           children: [
                             CircleAvatar(
-                              radius: 80,
+                              radius: 100,
                               backgroundImage: NetworkImage(
                                   profileUrl + snapshot.data!.profile_picture!),
                             ),
@@ -135,14 +136,52 @@ class _SettingState extends State<Setting> {
                         SizedBox(
                           height: 5,
                         ),
-                        Text(
-                          snapshot.data!.profile_name!,
-                          style: TextStyle(
-                            color: AppColors.text,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            snapshot.data!.verified!
+                                ? Icon(
+                                    Icons.verified_rounded,
+                                    size: 25,
+                                    color: AppColors.primary,
+                                  )
+                                : SizedBox(),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Text(
+                              snapshot.data!.profile_name!,
+                              style: TextStyle(
+                                color: AppColors.text,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                              ),
+                            ),
+                          ],
                         ),
+                        SizedBox(
+                          height: snapshot.data!.follower == 0 ? 0 : 5,
+                        ),
+                        snapshot.data!.follower == 0
+                            ? SizedBox()
+                            : RichText(
+                                text: TextSpan(
+                                  text: "Followers: ",
+                                  style: TextStyle(
+                                    color: AppColors.text,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                  children: [
+                                    TextSpan(
+                                      text: snapshot.data!.follower!.toString(),
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.normal,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
                       ],
                     );
                   } else if (snapshot.hasError) {
@@ -194,7 +233,7 @@ class _SettingState extends State<Setting> {
                   ),
                 ),
                 Icon(
-                  Icons.people,
+                  Icons.person,
                   color: AppColors.primary,
                 ),
               ],
@@ -490,9 +529,11 @@ class _SettingState extends State<Setting> {
                 LogStatus().removeToken();
                 LogStatus.token = "";
                 LogStatus.admin = false;
-                Navigator.pushNamedAndRemoveUntil(
+                Navigator.pushAndRemoveUntil(
                   context,
-                  "login",
+                  MaterialPageRoute(
+                    builder: (builder) => Login(),
+                  ),
                   (route) => false,
                 );
                 Player().stopSong();

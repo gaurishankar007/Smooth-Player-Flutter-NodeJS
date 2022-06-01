@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smooth_player_app/screen/home.dart';
 import 'package:smooth_player_app/screen/my_music.dart';
 
 import '../screen/library.dart';
@@ -63,9 +64,11 @@ class PageNavigator extends StatelessWidget {
       backgroundColor: Colors.transparent,
       onDestinationSelected: (int index) {
         if (index == 0) {
-          Navigator.pushNamed(
+          Navigator.push(
             context,
-            "home",
+            MaterialPageRoute(
+              builder: (builder) => Home(),
+            ),
           );
         } else if (index == 1) {
           Navigator.push(
