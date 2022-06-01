@@ -33,7 +33,7 @@ router.post("/view/artistProfile", auth.verifyUser, async (req, res) => {
       createdAt: { $gte: new Date(Date.now() - 2592000000) },
     })
     .populate("artist", "profile_name")
-    .sort({createdAt: -1});
+    .sort({ createdAt: -1 });
 
   const oldReleases = await album
     .find({
@@ -41,7 +41,7 @@ router.post("/view/artistProfile", auth.verifyUser, async (req, res) => {
       createdAt: { $lt: new Date(Date.now() - 2592000000) },
     })
     .populate("artist", "profile_name")
-    .sort({createdAt: -1});
+    .sort({ createdAt: -1 });
 
   res.send({
     artist: userDetail,
@@ -57,6 +57,7 @@ router.post("/search/artist", auth.verifyAdmin, async (req, res) => {
   }
   const artistName = {
     profile_name: { $regex: req.body.profile_name, $options: "i" },
+    admin: false,
     verified: true,
   };
   const artists = await user.find(artistName);
@@ -65,7 +66,7 @@ router.post("/search/artist", auth.verifyAdmin, async (req, res) => {
 
 router.get("/view/popularArtist", auth.verifyAdmin, async (req, res) => {
   const popularArtist = await user
-    .find({ admin: true, verified: true })
+    .find({ admin: false, verified: true })
     .sort({ follower: -1 })
     .limit(20);
   res.send(popularArtist);
@@ -97,7 +98,7 @@ router.post("/admin/artistProfile", auth.verifyAdmin, async (req, res) => {
       createdAt: { $gte: new Date(Date.now() - 2592000000) },
     })
     .populate("artist", "profile_name")
-    .sort({createdAt: -1});
+    .sort({ createdAt: -1 });
 
   const oldReleases = await album
     .find({
@@ -105,7 +106,7 @@ router.post("/admin/artistProfile", auth.verifyAdmin, async (req, res) => {
       createdAt: { $lt: new Date(Date.now() - 2592000000) },
     })
     .populate("artist", "profile_name")
-    .sort({createdAt: -1});
+    .sort({ createdAt: -1 });
 
   res.send({
     artist: userDetail,

@@ -24,7 +24,7 @@ class RecentlyPlayedHttp {
     return responseData;
   }
 
-  Future<List<RecentlyPlayed>> getRecentSong(String songId) async {
+  Future<List<RecentlyPlayed>> getRecentSong() async {
     final response = await get(
       Uri.parse(routeUrl + "view/recentSong"),
       headers: {
@@ -33,6 +33,12 @@ class RecentlyPlayedHttp {
     );
 
     final responseData = jsonDecode(response.body);
-    return responseData.map((e) => RecentlyPlayed.fromJson(e)).toList();
+
+    List<RecentlyPlayed> recentlyPlayedSongs = [];
+    for (int i = 0; i < responseData.length; i++) {
+      recentlyPlayedSongs.add(RecentlyPlayed.fromJson(responseData[i]));
+    }
+
+    return recentlyPlayedSongs;
   }
 }
