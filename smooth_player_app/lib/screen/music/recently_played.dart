@@ -46,22 +46,43 @@ class _ViewRecentlyPlayedState extends State<ViewRecentlyPlayed> {
         backgroundColor: Colors.transparent,
       ),
       body: SingleChildScrollView(
-        child: Padding(
-            padding: EdgeInsets.all(10),
-            child: FutureBuilder<List<RecentlyPlayed>>(
-                future: recentlyplayed,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return ListView.builder(
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: (context, index) {
-                          return Stack(
-                            alignment: Alignment.centerLeft,
+          padding: EdgeInsets.only(
+            left: sWidth * .04,
+            right: sWidth * .04,
+            top: 10
+          ),
+        child: FutureBuilder<List<RecentlyPlayed>>(
+            future: recentlyplayed,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 15),
+                      child: Stack(
+                        alignment: Alignment.centerLeft,
+                        children: [
+                          Text(
+                            "${index + 1}",
+                            style: TextStyle(
+                              fontSize: 15,
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
                             children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              Row(
                                 children: [
+                                  SizedBox(
+                                    width: 30,
+                                  ),
                                   Container(
+                                    width: 50,
+                                    height: 50,
                                     decoration: BoxDecoration(
                                       boxShadow: const [
                                         BoxShadow(
@@ -73,10 +94,9 @@ class _ViewRecentlyPlayedState extends State<ViewRecentlyPlayed> {
                                       ],
                                     ),
                                     child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(8),
+                                      borderRadius:
+                                          BorderRadius.circular(10),
                                       child: Image(
-                                        height: sHeight * 0.2,
-                                        width: sWidth * 0.46,
                                         fit: BoxFit.cover,
                                         image: NetworkImage(
                                           coverImage +
@@ -87,39 +107,98 @@ class _ViewRecentlyPlayedState extends State<ViewRecentlyPlayed> {
                                     ),
                                   ),
                                   SizedBox(
-                                    height: 10,
+                                    width: 10,
                                   ),
-                                  Text(
-                                    snapshot.data![index].song!.title!,
-                                    overflow: TextOverflow.fade,
-                                    softWrap: false,
-                                    style: TextStyle(
-                                      color: AppColors.text,
-                                      fontWeight: FontWeight.bold,
+                                  SizedBox(
+                                    width: sWidth * .35,
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        SingleChildScrollView(
+                                          scrollDirection: Axis.horizontal,
+                                          child: Text(
+                                            snapshot
+                                                .data![index].song!.title!,
+                                            overflow: TextOverflow.fade,
+                                            softWrap: false,
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                              color: AppColors.text,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+                                        SingleChildScrollView(
+                                          scrollDirection: Axis.horizontal,
+                                          child: Text(
+                                            snapshot
+                                                .data![index]
+                                                .song!
+                                                .album!
+                                                .artist!
+                                                .profile_name!,
+                                            overflow: TextOverflow.fade,
+                                            softWrap: false,
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                              color: AppColors.text,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ],
                               ),
+                              Row(
+                                children: [
+                                  Text(
+                                    snapshot.data![index].song!.like!
+                                        .toString(),
+                                    overflow: TextOverflow.fade,
+                                    softWrap: false,
+                                    style: TextStyle(
+                                      color: AppColors.text,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Icon(
+                                    Icons.favorite,
+                                    color: AppColors.primary,
+                                    size: 18,
+                                  ),
+                                ],
+                              ),
                             ],
-                          );
-                        });
-                  } else if (snapshot.hasError) {
-                    return Center(
-                      child: Text(
-                        "${snapshot.error}",
-                        style: TextStyle(
-                          fontSize: 15,
-                        ),
+                          ),
+                        ],
                       ),
                     );
-                  }
-                  return Center(
-                    child: CircularProgressIndicator(
-                      strokeWidth: 5,
-                      color: AppColors.primary,
+                  },
+                );
+              } else if (snapshot.hasError) {
+                return Center(
+                  child: Text(
+                    "${snapshot.error}",
+                    style: TextStyle(
+                      fontSize: 15,
                     ),
-                  );
-                })),
+                  ),
+                );
+              }
+              return Center(
+                child: CircularProgressIndicator(
+                  strokeWidth: 5,
+                  color: AppColors.primary,
+                ),
+              );
+            }),
       ),
     );
   }
