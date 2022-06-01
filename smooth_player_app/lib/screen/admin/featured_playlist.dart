@@ -131,7 +131,7 @@ class _FeaturedPlaylistViewState extends State<FeaturedPlaylistView> {
                           height: 50,
                           child: TextFormField(
                               onChanged: ((value) {
-                                if (value.isEmpty) {
+                                if (value.trim().isEmpty) {
                                   setState(() {
                                     featuredPlaylist = FeaturedPlaylistHttp()
                                         .getFeaturedPlaylist();
