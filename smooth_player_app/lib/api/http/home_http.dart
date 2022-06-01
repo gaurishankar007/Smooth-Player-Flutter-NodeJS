@@ -20,29 +20,14 @@ class HomeHttp {
     return HomeData.fromJson(jsonDecode(response.body));
   }
 
-  Future<List<FeaturedPlaylist>> getFeaturedPlaylists() async {
+  Future<List<FeaturedPlaylist>> getFeaturedPlaylists(
+      int featuredPlaylistNum) async {
     final response =
-        await post(Uri.parse(routeUrl + "get/featuredPlaylists"), headers: {
+        await post(Uri.parse(routeUrl + "get/featuredPlaylists"), body: {
+      "featuredPlaylistNum": featuredPlaylistNum.toString()
+    }, headers: {
       HttpHeaders.authorizationHeader: "Bearer $token",
     });
-
-    List resData = jsonDecode(response.body);
-
-    List<FeaturedPlaylist> a =
-        resData.map((e) => FeaturedPlaylist.fromJson(e)).toList();
-    print(a) ;
-    return a;
-  }
-
-  Future<List<FeaturedPlaylist>> getFeaturedPlaylists1(
-      List<String> featuredPlaylistIds) async {
-    Map<String, String> data = {};
-
-    final response = await post(Uri.parse(routeUrl + "get/featuredPlaylists"),
-        body: data,
-        headers: {
-          HttpHeaders.authorizationHeader: "Bearer $token",
-        });
 
     List resData = jsonDecode(response.body);
 

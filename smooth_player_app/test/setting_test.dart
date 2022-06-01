@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:smooth_player_app/screen/setting.dart';
-// import 'package:smooth_player_app/screen/admin/featured_playlist.dart';
 
 void main() {
   testWidgets("SettingPage", (WidgetTester tester) async {

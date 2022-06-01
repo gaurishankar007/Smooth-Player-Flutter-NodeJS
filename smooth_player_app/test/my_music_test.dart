@@ -14,11 +14,8 @@ void main() {
     expect(elevatedButton, findsNWidgets(2));
     expect(find.text("Upload Album"), findsOneWidget);
     expect(find.text("Upload Song"), findsOneWidget);
-    expect(find.text("sdkfja askldjf"), findsNothing);
+    expect(find.text("Japan"), findsNothing);
     expect(find.byType(Padding),findsWidgets);
     expect(find.byType(GestureDetector),findsWidgets);
-    
-    
-
   });
 }

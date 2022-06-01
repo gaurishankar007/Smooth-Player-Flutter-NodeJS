@@ -17,21 +17,19 @@ class ViewRecentlyPlayed extends StatefulWidget {
 
 class _ViewRecentlyPlayedState extends State<ViewRecentlyPlayed> {
   final coverImage = ApiUrls.coverImageUrl;
-  late Future<List<RecentlyPlayed>> recentlyplayed;
-  // List<RecentlyPlayed> recentlyplayed = [];
+  late Future<List<RecentlyPlayed>> recentlyPlayed;
 
   @override
   void initState() {
     super.initState();
 
-    recentlyplayed = RecentlyPlayedHttp().getRecentSong();
+    recentlyPlayed = RecentlyPlayedHttp().getRecentSong();
   }
 
   @override
   Widget build(BuildContext context) {
-    // ignore: unused_local_variable
-    final sHeight = MediaQuery.of(context).size.height;
     final sWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -43,17 +41,22 @@ class _ViewRecentlyPlayedState extends State<ViewRecentlyPlayed> {
             color: AppColors.text,
           ),
         ),
+        title: Text(
+          "Recently Played Songs",
+          style: TextStyle(
+            color: AppColors.text,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        centerTitle: true,
         elevation: 0,
         backgroundColor: Colors.transparent,
       ),
       body: SingleChildScrollView(
-          padding: EdgeInsets.only(
-            left: sWidth * .04,
-            right: sWidth * .04,
-            top: 10
-          ),
+        padding:
+            EdgeInsets.only(left: sWidth * .04, right: sWidth * .04, top: 10),
         child: FutureBuilder<List<RecentlyPlayed>>(
-            future: recentlyplayed,
+            future: recentlyPlayed,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return ListView.builder(
@@ -73,8 +76,7 @@ class _ViewRecentlyPlayedState extends State<ViewRecentlyPlayed> {
                             ),
                           ),
                           Row(
-                            mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Row(
                                 children: [
@@ -95,8 +97,7 @@ class _ViewRecentlyPlayedState extends State<ViewRecentlyPlayed> {
                                       ],
                                     ),
                                     child: ClipRRect(
-                                      borderRadius:
-                                          BorderRadius.circular(10),
+                                      borderRadius: BorderRadius.circular(10),
                                       child: Image(
                                         fit: BoxFit.cover,
                                         image: NetworkImage(
@@ -113,13 +114,13 @@ class _ViewRecentlyPlayedState extends State<ViewRecentlyPlayed> {
                                   SizedBox(
                                     width: sWidth * .35,
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         SingleChildScrollView(
                                           scrollDirection: Axis.horizontal,
                                           child: Text(
-                                            snapshot
-                                                .data![index].song!.title!,
+                                            snapshot.data![index].song!.title!,
                                             overflow: TextOverflow.fade,
                                             softWrap: false,
                                             style: TextStyle(
@@ -135,12 +136,8 @@ class _ViewRecentlyPlayedState extends State<ViewRecentlyPlayed> {
                                         SingleChildScrollView(
                                           scrollDirection: Axis.horizontal,
                                           child: Text(
-                                            snapshot
-                                                .data![index]
-                                                .song!
-                                                .album!
-                                                .artist!
-                                                .profile_name!,
+                                            snapshot.data![index].song!.album!
+                                                .artist!.profile_name!,
                                             overflow: TextOverflow.fade,
                                             softWrap: false,
                                             style: TextStyle(

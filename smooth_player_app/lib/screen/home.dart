@@ -37,15 +37,9 @@ class _HomeState extends State<Home> {
 
   bool songBarVisibility = Player.isPlaying;
 
-  List<String> featuredPlaylistIds = [];
-
-  Future<List<FeaturedPlaylist>> viewFeaturedPlaylists() async {
-    final resData = await HomeHttp().getFeaturedPlaylists();
-    for (int i = 0; i < resData.length; i++) {
-      featuredPlaylistIds.add(resData[i].id!);
-    }
-    return resData;
-  }
+  bool more = true;
+  int featuredPlaylistNum = 10;
+  late Future<List<FeaturedPlaylist>> featuredPlaylists;
 
   @override
   void initState() {
@@ -64,7 +58,7 @@ class _HomeState extends State<Home> {
       });
     });
 
-    viewFeaturedPlaylists();
+    featuredPlaylists = HomeHttp().getFeaturedPlaylists(featuredPlaylistNum);
   }
 
   @override
@@ -285,7 +279,7 @@ class _HomeState extends State<Home> {
                             : SizedBox(),
                         snapshot.data!.recentFavoriteArtists!.isNotEmpty
                             ? SizedBox(
-                                height: sHeight * 0.3,
+                                height: sHeight * 0.25,
                                 child: ListView.builder(
                                   scrollDirection: Axis.horizontal,
                                   itemCount: snapshot
@@ -319,7 +313,7 @@ class _HomeState extends State<Home> {
                                                   decoration: BoxDecoration(
                                                     borderRadius:
                                                         BorderRadius.circular(
-                                                            sHeight * .125),
+                                                            sHeight * .1),
                                                     boxShadow: const [
                                                       BoxShadow(
                                                         color: Colors.black26,
@@ -332,10 +326,10 @@ class _HomeState extends State<Home> {
                                                   child: ClipRRect(
                                                     borderRadius:
                                                         BorderRadius.circular(
-                                                            sHeight * .125),
+                                                            sHeight * .1),
                                                     child: Image(
-                                                      height: sHeight * 0.25,
-                                                      width: sHeight * 0.25,
+                                                      height: sHeight * 0.2,
+                                                      width: sHeight * 0.2,
                                                       fit: BoxFit.cover,
                                                       image: NetworkImage(
                                                         profileUrl +
@@ -420,43 +414,61 @@ class _HomeState extends State<Home> {
                                       child: Padding(
                                         padding: EdgeInsets.only(right: 20),
                                         child: Stack(
-                                          alignment: Alignment.topLeft,
+                                          alignment: Alignment.bottomRight,
                                           children: [
-                                            Container(
-                                              height: sHeight * 0.25,
-                                              width: sWidth * 0.46,
-                                              decoration: BoxDecoration(
-                                                color: SongGenreColors
-                                                        .colorList[
-                                                    MusicGenre.musicGenres
-                                                        .indexOf(snapshot.data!
-                                                                .recentFavoriteGenres![
-                                                            index])],
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
-                                                boxShadow: const [
-                                                  BoxShadow(
-                                                    color: Colors.black26,
-                                                    spreadRadius: 1,
-                                                    blurRadius: 5,
-                                                    offset: Offset(2, 2),
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                            Container(
-                                              padding: EdgeInsets.all(8),
-                                              width: sHeight * 0.25,
-                                              child: Text(
-                                                snapshot.data!
-                                                        .recentFavoriteGenres![
-                                                    index],
-                                                textAlign: TextAlign.justify,
-                                                style: TextStyle(
-                                                  color: AppColors.text,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold,
+                                            Stack(
+                                              alignment: Alignment.topLeft,
+                                              children: [
+                                                Container(
+                                                  height: sHeight * 0.2,
+                                                  width: sWidth * 0.46,
+                                                  decoration: BoxDecoration(
+                                                    color: SongGenreColors
+                                                            .colorList[
+                                                        MusicGenre.musicGenres
+                                                            .indexOf(snapshot
+                                                                    .data!
+                                                                    .recentFavoriteGenres![
+                                                                index])],
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8),
+                                                    boxShadow: const [
+                                                      BoxShadow(
+                                                        color: Colors.black26,
+                                                        spreadRadius: 1,
+                                                        blurRadius: 5,
+                                                        offset: Offset(2, 2),
+                                                      )
+                                                    ],
+                                                  ),
                                                 ),
+                                                Container(
+                                                  padding: EdgeInsets.all(8),
+                                                  width: sHeight * 0.25,
+                                                  child: Text(
+                                                    snapshot.data!
+                                                            .recentFavoriteGenres![
+                                                        index],
+                                                    textAlign:
+                                                        TextAlign.justify,
+                                                    style: TextStyle(
+                                                      color: AppColors.text,
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            ClipRRect(
+                                              child: Image(
+                                                height: sHeight * 0.13,
+                                                width: sHeight * 0.13,
+                                                fit: BoxFit.cover,
+                                                image: NetworkImage(
+                                                    "https://www.cnet.com/a/img/resize/46cf22829afea321c902097ee78065f8d44a99d9/2021/11/10/ab5e2d3b-9a4a-41f0-b2cd-6cee804ce823/genre-charts-covers.png?auto=webp&fit=crop&height=630&width=1200"),
                                               ),
                                             ),
                                           ],
@@ -485,7 +497,7 @@ class _HomeState extends State<Home> {
                             : SizedBox(),
                         snapshot.data!.jumpBackIn!.isNotEmpty
                             ? SizedBox(
-                                height: sHeight * 0.25,
+                                height: sHeight * 0.2,
                                 child: ListView.builder(
                                   scrollDirection: Axis.horizontal,
                                   itemCount: snapshot.data!.jumpBackIn!.length,
@@ -536,7 +548,7 @@ class _HomeState extends State<Home> {
                                                         BorderRadius.circular(
                                                             8),
                                                     child: Image(
-                                                      height: sHeight * 0.25,
+                                                      height: sHeight * 0.2,
                                                       width: sWidth * 0.46,
                                                       fit: BoxFit.cover,
                                                       image: NetworkImage(
@@ -572,7 +584,7 @@ class _HomeState extends State<Home> {
                                                             .id ==
                                                         snapshot
                                                             .data!
-                                                            .newReleases![index]
+                                                            .jumpBackIn![index]
                                                             .id
                                                     ? Icon(
                                                         Icons.bar_chart_rounded,
@@ -943,7 +955,7 @@ class _HomeState extends State<Home> {
                           ),
                         ),
                         SizedBox(
-                          height: sHeight * 0.3,
+                          height: sHeight * 0.25,
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
                             itemCount: snapshot.data!.popularArtists!.length,
@@ -974,7 +986,7 @@ class _HomeState extends State<Home> {
                                             decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(
-                                                      sHeight * .125),
+                                                      sHeight * .1),
                                               boxShadow: const [
                                                 BoxShadow(
                                                   color: Colors.black26,
@@ -987,10 +999,10 @@ class _HomeState extends State<Home> {
                                             child: ClipRRect(
                                               borderRadius:
                                                   BorderRadius.circular(
-                                                      sHeight * .125),
+                                                      sHeight * .1),
                                               child: Image(
-                                                height: sHeight * 0.25,
-                                                width: sHeight * 0.25,
+                                                height: sHeight * 0.2,
+                                                width: sHeight * 0.2,
                                                 fit: BoxFit.cover,
                                                 image: NetworkImage(
                                                   profileUrl +
@@ -1078,7 +1090,7 @@ class _HomeState extends State<Home> {
                 ],
               ),
               FutureBuilder<List<FeaturedPlaylist>>(
-                future: viewFeaturedPlaylists(),
+                future: featuredPlaylists,
                 builder: ((context, snapshot) {
                   if (snapshot.hasData) {
                     return GridView.count(
@@ -1172,30 +1184,47 @@ class _HomeState extends State<Home> {
                   );
                 }),
               ),
-              OutlinedButton(
-                onPressed: () {},
-                child: Text(
-                  "More",
-                  style: TextStyle(
-                    fontSize: 15,
-                  ),
-                ),
-                style: OutlinedButton.styleFrom(
-                  minimumSize: Size.zero,
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 4,
-                  ),
-                  primary: AppColors.primary,
-                  side: BorderSide(
-                    width: 2,
-                    color: AppColors.primary,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                ),
-              ),
+              more
+                  ? OutlinedButton(
+                      onPressed: () async {
+                        final resData = await HomeHttp()
+                            .getFeaturedPlaylists(featuredPlaylistNum + 10);
+                        if (resData.length == featuredPlaylistNum) {
+                          setState(() {
+                            more = false;
+                          });
+                          return;
+                        } else {
+                          featuredPlaylistNum = featuredPlaylistNum + 10;
+                          setState(() {
+                            featuredPlaylists = HomeHttp()
+                                .getFeaturedPlaylists(featuredPlaylistNum);
+                          });
+                        }
+                      },
+                      child: Text(
+                        "More",
+                        style: TextStyle(
+                          fontSize: 15,
+                        ),
+                      ),
+                      style: OutlinedButton.styleFrom(
+                        minimumSize: Size.zero,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
+                        primary: AppColors.primary,
+                        side: BorderSide(
+                          width: 2,
+                          color: AppColors.primary,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ),
+                    )
+                  : SizedBox(),
             ],
           ),
         ),

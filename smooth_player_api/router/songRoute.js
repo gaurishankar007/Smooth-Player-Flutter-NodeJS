@@ -228,13 +228,13 @@ router.post("/search/song", auth.verifyUser, async (req, res)=> {
     const artistName = {profile_name: { $regex: req.body.title, $options: "i" }, verified: true, admin: false}; 
     const userName = {profile_name: { $regex: req.body.title, $options: "i" }, verified: false, admin: false}; 
 
-    const songs1 = await song.find(songTitle).populate("album").limit(10)
+    const songs1 = await song.find(songTitle).populate("album").limit(10);
     const songs = await song.populate(songs1, {
         path: "album.artist",
         select: "profile_name profile_picture biography follower verified"
     });
 
-    const albums = await album.find(albumTitle).limit(10);
+    const albums = await album.find(albumTitle).populate("artist", "profile_name profile_picture biography follower verified").limit(10);
 
     const featuredPlaylists = await featuredPlaylist.find(featuredPlaylistTitle).limit(10);
 
@@ -252,22 +252,14 @@ router.post("/search/song", auth.verifyUser, async (req, res)=> {
 });
 
 router.post("/genre/songs", auth.verifyUser, async (req, res)=> {
-    const songIds = req.body.songIds;
+    const songNum = req.body.songNum;
     const songGenre = req.body.genre;
 
-    if(songIds === undefined) {
-        const songs = await song.find({genre: songGenre})
-        .sort({createdAt: -1})
-        .limit(10);
+    const songs = await song.find({genre: songGenre})
+    .sort({createdAt: -1})
+    .limit(songNum);
 
-        res.send(songs);
-    } else {
-        const songs = await song.find({ _id: {$nin: songIds}, genre: songGenre})
-        .sort({createdAt: -1})
-        .limit(10);
-
-        res.send(songs);
-    }
+    res.send(songs);
 });
 
 

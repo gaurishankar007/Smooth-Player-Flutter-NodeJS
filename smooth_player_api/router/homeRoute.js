@@ -213,21 +213,13 @@ router.get("/load/home", auth.verifyUser, async (req, res) => {
 });
 
 router.post("/get/featuredPlaylists", auth.verifyUser, async(req, res)=> {
-  const featuredPlaylistIds = req.body.featuredPlaylistIds;
+  const featuredPlaylistNum = req.body.featuredPlaylistNum;
 
-  if(featuredPlaylistIds === undefined) {
-      const featuredPlaylists = await featuredPlaylist.find()
-      .sort({createdAt: -1})
-      .limit(2);
+  const featuredPlaylists = await featuredPlaylist.find()
+  .sort({createdAt: -1})
+  .limit(featuredPlaylistNum);
 
-      res.send(featuredPlaylists);
-  } else {
-      const featuredPlaylists = await featuredPlaylist.find({ _id: {$nin: featuredPlaylistIds}})
-      .sort({createdAt: -1})
-      .limit(2);
-
-      res.send(featuredPlaylists);
-  }
+  res.send(featuredPlaylists);
 });
 
 module.exports = router;
