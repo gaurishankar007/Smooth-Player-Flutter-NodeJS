@@ -92,7 +92,7 @@ class _CreateFeaturedSongState extends State<CreateFeaturedSong> {
                   width: screenWidth * .65,
                   child: TextField(
                     onChanged: ((value) {
-                      if (value.isEmpty) {
+                      if (value.trim().isEmpty) {
                         setState(() {
                           searchedSongs = SongHttp().searchSongByTitle("");
                         });
@@ -100,7 +100,7 @@ class _CreateFeaturedSongState extends State<CreateFeaturedSong> {
                         setState(() {
                           searching = true;
                           searchedSongs =
-                              SongHttp().searchSongByTitle(value.trim());
+                              SongHttp().searchSongByTitle(value);
                         });
                       }
                     }),
