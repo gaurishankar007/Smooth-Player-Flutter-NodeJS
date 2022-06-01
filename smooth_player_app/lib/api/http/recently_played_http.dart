@@ -33,7 +33,12 @@ class RecentlyPlayedHttp {
     );
 
     final responseData = jsonDecode(response.body);
-    List<RecentlyPlayed> res = responseData.map((e) => RecentlyPlayed.fromJson(e)).toList();
-    return res;
+
+    List<RecentlyPlayed> recentlyPlayedSongs = [];
+    for (int i = 0; i < responseData.length; i++) {
+      recentlyPlayedSongs.add(RecentlyPlayed.fromJson(responseData[i]));
+    }
+
+    return recentlyPlayedSongs;
   }
 }
