@@ -69,7 +69,7 @@ class _SongBarState extends State<SongBar> {
                 showDialog(
                   context: context,
                   builder: (ctx) => AlertDialog(
-                    title: Text("Stop Playing"),
+                    title: Text("Stop Playing Song?"),
                     actions: <Widget>[
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
@@ -86,7 +86,7 @@ class _SongBarState extends State<SongBar> {
                             Player().stopSong();
                           });
                         },
-                        child: Text("Stop"),
+                        child: Text("Yes"),
                       ),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
@@ -100,7 +100,7 @@ class _SongBarState extends State<SongBar> {
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        child: Text("Cancel"),
+                        child: Text("No"),
                       ),
                     ],
                   ),

@@ -46,18 +46,15 @@ class _AlbumViewState extends State<AlbumView> {
 
   Future<List<Song>> viewSongs() async {
     List<Song> resData = await SongHttp().getSongs(widget.albumId!);
+    songs = resData;
     return resData;
   }
 
   @override
   void initState() {
     super.initState();
-
-    viewSongs().then((value) {
-      songs = value;
-    });
-
-    albumSongs = SongHttp().getSongs(widget.albumId!);
+    
+    albumSongs = viewSongs();
 
     stateSub = player.onPlayerStateChanged.listen((state) {
       setState(() {
@@ -454,7 +451,7 @@ class _AlbumViewState extends State<AlbumView> {
                                                                   widget.title,
                                                               albumImage: widget
                                                                   .albumImage,
-                                                                  like: widget.like,
+                                                              like: widget.like,
                                                               pageIndex: widget
                                                                   .pageIndex,
                                                             ),

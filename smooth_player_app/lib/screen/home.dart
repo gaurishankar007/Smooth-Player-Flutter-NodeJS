@@ -9,6 +9,7 @@ import 'package:smooth_player_app/screen/setting.dart';
 import 'package:smooth_player_app/screen/view/view_album.dart';
 import 'package:smooth_player_app/screen/view/view_artist.dart';
 import 'package:smooth_player_app/screen/view/view_featured_playlist.dart';
+import 'package:smooth_player_app/screen/view/view_genre.dart';
 import 'package:smooth_player_app/widget/navigator.dart';
 
 import '../api/urls.dart';
@@ -39,7 +40,15 @@ class _HomeState extends State<Home> {
 
   bool more = true;
   int featuredPlaylistNum = 10;
+  late int featuredPlaylistsLength;
   late Future<List<FeaturedPlaylist>> featuredPlaylists;
+
+  Future<List<FeaturedPlaylist>> featuredPlaylistView() async {
+    List<FeaturedPlaylist> resData =
+        await HomeHttp().getFeaturedPlaylists(featuredPlaylistNum);
+    featuredPlaylistsLength = resData.length;
+    return resData;
+  }
 
   @override
   void initState() {
@@ -58,7 +67,7 @@ class _HomeState extends State<Home> {
       });
     });
 
-    featuredPlaylists = HomeHttp().getFeaturedPlaylists(featuredPlaylistNum);
+    featuredPlaylists = featuredPlaylistView();
   }
 
   @override
@@ -410,7 +419,18 @@ class _HomeState extends State<Home> {
                                       .data!.recentFavoriteGenres!.length,
                                   itemBuilder: (context, index) {
                                     return GestureDetector(
-                                      onTap: () {},
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (builder) => ViewGenre(
+                                              genre: snapshot.data!
+                                                  .recentFavoriteGenres![index],
+                                              pageIndex: 0,
+                                            ),
+                                          ),
+                                        );
+                                      },
                                       child: Padding(
                                         padding: EdgeInsets.only(right: 20),
                                         child: Stack(
@@ -1189,13 +1209,14 @@ class _HomeState extends State<Home> {
                       onPressed: () async {
                         final resData = await HomeHttp()
                             .getFeaturedPlaylists(featuredPlaylistNum + 10);
-                        if (resData.length == featuredPlaylistNum) {
+                        if (resData.length == featuredPlaylistsLength) {
                           setState(() {
                             more = false;
                           });
                           return;
                         } else {
                           featuredPlaylistNum = featuredPlaylistNum + 10;
+                          featuredPlaylistsLength = resData.length;
                           setState(() {
                             featuredPlaylists = HomeHttp()
                                 .getFeaturedPlaylists(featuredPlaylistNum);
