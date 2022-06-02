@@ -235,7 +235,7 @@ class SongHttp {
         HttpHeaders.authorizationHeader: "Bearer $token",
       },
     );
-    
+
     List songGenres = jsonDecode(response.body);
     return songGenres;
   }
@@ -250,5 +250,19 @@ class SongHttp {
     );
 
     return SearchData.fromJson(jsonDecode(response.body));
+  }
+
+  Future<List<Song>> viewGenreSongs(String genre, int songNum) async {
+    final response = await post(
+      Uri.parse(routeUrl + "genre/songs"),
+      body: {"genre": genre, "songNum": songNum.toString()},
+      headers: {
+        HttpHeaders.authorizationHeader: "Bearer $token",
+      },
+    );
+
+    List resData = jsonDecode(response.body);
+
+    return resData.map((e) => Song.fromJson(e)).toList();
   }
 }

@@ -255,9 +255,15 @@ router.post("/genre/songs", auth.verifyUser, async (req, res)=> {
     const songNum = req.body.songNum;
     const songGenre = req.body.genre;
 
-    const songs = await song.find({genre: songGenre})
+    const songs1 = await song.find({genre: songGenre})
+    .populate("album")
     .sort({createdAt: -1})
     .limit(songNum);
+
+    const songs = await song.populate(songs1, {
+        path: "album.artist",
+        select: "profile_name profile_picture biography follower verified"
+    });
 
     res.send(songs);
 });

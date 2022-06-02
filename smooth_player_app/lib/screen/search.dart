@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:smooth_player_app/api/http/song_http.dart';
 import 'package:smooth_player_app/api/res/search_song_res.dart';
 
@@ -15,6 +16,7 @@ import '../widget/song_bar.dart';
 import 'view/view_album.dart';
 import 'view/view_artist.dart';
 import 'view/view_featured_playlist.dart';
+import 'view/view_genre.dart';
 
 class Search extends StatefulWidget {
   const Search({Key? key}) : super(key: key);
@@ -340,6 +342,114 @@ class _SearchState extends State<Search> {
                                                             color: AppColors
                                                                 .primary,
                                                             size: 18,
+                                                          ),
+                                                          SizedBox(
+                                                            width: 10,
+                                                          ),
+                                                          IconButton(
+                                                            constraints:
+                                                                BoxConstraints(),
+                                                            padding:
+                                                                EdgeInsets.zero,
+                                                            onPressed: () {
+                                                              showDialog(
+                                                                context:
+                                                                    context,
+                                                                builder: (ctx) =>
+                                                                    SimpleDialog(
+                                                                  children: [
+                                                                    SimpleDialogOption(
+                                                                      padding:
+                                                                          EdgeInsets
+                                                                              .symmetric(
+                                                                        horizontal:
+                                                                            75,
+                                                                      ),
+                                                                      child:
+                                                                          ElevatedButton(
+                                                                        style: ElevatedButton
+                                                                            .styleFrom(
+                                                                          primary:
+                                                                              AppColors.primary,
+                                                                          elevation:
+                                                                              10,
+                                                                          shadowColor:
+                                                                              Colors.black,
+                                                                          shape:
+                                                                              RoundedRectangleBorder(
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(15),
+                                                                          ),
+                                                                        ),
+                                                                        onPressed:
+                                                                            () {
+                                                                          Navigator.of(ctx)
+                                                                              .pop();
+
+                                                                          Player
+                                                                              .songQueue
+                                                                              .add(
+                                                                            Song(
+                                                                              id: snapshot.data!.songs![index].id!,
+                                                                              title: snapshot.data!.songs![index].title!,
+                                                                              album: snapshot.data!.songs![index].album!,
+                                                                              music_file: snapshot.data!.songs![index].music_file!,
+                                                                              cover_image: snapshot.data!.songs![index].cover_image!,
+                                                                              like: snapshot.data!.songs![index].like!,
+                                                                            ),
+                                                                          );
+                                                                          Fluttertoast
+                                                                              .showToast(
+                                                                            msg:
+                                                                                snapshot.data!.songs![index].title! + " is added to the queue.",
+                                                                            toastLength:
+                                                                                Toast.LENGTH_SHORT,
+                                                                            gravity:
+                                                                                ToastGravity.BOTTOM,
+                                                                            timeInSecForIosWeb:
+                                                                                3,
+                                                                          );
+                                                                        },
+                                                                        child: Text(
+                                                                            "Add to queue"),
+                                                                      ),
+                                                                    ),
+                                                                    SimpleDialogOption(
+                                                                      padding:
+                                                                          EdgeInsets
+                                                                              .symmetric(
+                                                                        horizontal:
+                                                                            75,
+                                                                      ),
+                                                                      child:
+                                                                          ElevatedButton(
+                                                                        style: ElevatedButton
+                                                                            .styleFrom(
+                                                                          primary:
+                                                                              AppColors.primary,
+                                                                          elevation:
+                                                                              10,
+                                                                          shadowColor:
+                                                                              Colors.black,
+                                                                          shape:
+                                                                              RoundedRectangleBorder(
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(15),
+                                                                          ),
+                                                                        ),
+                                                                        onPressed:
+                                                                            () {},
+                                                                        child: Text(
+                                                                            "Add to playlist"),
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              );
+                                                            },
+                                                            icon: Icon(
+                                                              Icons.more_vert,
+                                                            ),
                                                           ),
                                                         ],
                                                       ),
@@ -935,7 +1045,17 @@ class _SearchState extends State<Search> {
                                   snapshot.data!.length,
                                   (index) {
                                     return GestureDetector(
-                                      onTap: () {},
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (builder) => ViewGenre(
+                                              genre: snapshot.data![index],
+                                              pageIndex: 0,
+                                            ),
+                                          ),
+                                        );
+                                      },
                                       child: Stack(
                                         alignment: Alignment.bottomRight,
                                         children: [

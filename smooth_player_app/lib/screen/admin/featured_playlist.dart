@@ -30,11 +30,19 @@ class _FeaturedPlaylistViewState extends State<FeaturedPlaylistView> {
 
   bool more = true;
   int featuredPlaylistNum = 10;
+  late int featuredPlaylistsLength;
   late Future<List<FeaturedPlaylist>> featuredPlaylists;
 
   late StreamSubscription stateSub;
 
   bool songBarVisibility = Player.isPlaying;
+
+  Future<List<FeaturedPlaylist>> featuredPlaylistView() async {
+    List<FeaturedPlaylist> resData =
+        await FeaturedPlaylistHttp().getFeaturedPlaylist(featuredPlaylistNum);
+    featuredPlaylistsLength = resData.length;
+    return resData;
+  }
 
   @override
   void initState() {
@@ -47,8 +55,7 @@ class _FeaturedPlaylistViewState extends State<FeaturedPlaylistView> {
       greeting = "Good Evening";
     }
 
-    featuredPlaylists =
-        FeaturedPlaylistHttp().getFeaturedPlaylist(featuredPlaylistNum);
+    featuredPlaylists = featuredPlaylistView();
 
     stateSub = player.onAudioPositionChanged.listen((state) {
       setState(() {
@@ -352,13 +359,14 @@ class _FeaturedPlaylistViewState extends State<FeaturedPlaylistView> {
                       onPressed: () async {
                         final resData = await FeaturedPlaylistHttp()
                             .getFeaturedPlaylist(featuredPlaylistNum + 10);
-                        if (resData.length == featuredPlaylistNum) {
+                        if (resData.length == featuredPlaylistsLength) {
                           setState(() {
                             more = false;
                           });
                           return;
                         } else {
                           featuredPlaylistNum = featuredPlaylistNum + 10;
+                          featuredPlaylistsLength = resData.length;
                           setState(() {
                             featuredPlaylists = FeaturedPlaylistHttp()
                                 .getFeaturedPlaylist(featuredPlaylistNum);
