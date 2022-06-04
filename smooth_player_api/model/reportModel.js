@@ -10,6 +10,15 @@ const reportSchema = new mongoose.Schema(
       type: mongoose.Schema.ObjectId,
       ref: "song",
     },
+    message: {
+      type: String,
+      default: ""
+    },
+    reportFor: [
+      {
+        type: String
+      }
+    ]
   },
   {
     timestamps: true,
