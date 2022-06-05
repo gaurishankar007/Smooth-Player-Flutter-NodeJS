@@ -17,7 +17,7 @@ afterAll(async ()=> {
 describe('user schema test', ()=> {
 
     // insert
-    it('user insert testing', ()=> {
+    it('user insert testing', async ()=> {
         const newUser = {
             "username": "john08",
             "password": "John@23",
@@ -28,25 +28,24 @@ describe('user schema test', ()=> {
             "birth_date": "1986-06-13",
             "biography": "I am John Don and I take control of the world.",
         } 
-        return user.create(newUser).then((userData)=>{
-            expect(userData.username).toEqual("john08")
-            expect(userData.password).toEqual("John@23")
-            expect(userData.email).toEqual("john896@gmail.com")
-            expect(userData.profile_name).toEqual("John Don")
-            expect(userData.profile_picture).toEqual("profile.jpg")
-            expect(userData.gender).toEqual("Male")
-            expect(Date(userData.birth_date)).toEqual(Date("1986-06-13T00:00:00.000Z"))
-            expect(userData.biography).toEqual("I am John Don and I take control of the world.")
-            expect(userData.verified).toEqual(false)
-            expect(userData.admin).toEqual(false)
-            expect(userData.verified).toEqual(false)
-            expect(userData.profile_publication).toEqual(false)
-            expect(userData.followed_artist_publication).toEqual(false)
-            expect(userData.liked_song_publication).toEqual(false)
-            expect(userData.liked_album_publication).toEqual(false)
-            expect(userData.liked_featured_playlist_publication).toEqual(false)
-            expect(userData.created_playlist_publication).toEqual(false)
-        })
+        const userData = await user.create(newUser)
+        expect(userData.username).toEqual("john08")
+        expect(userData.password).toEqual("John@23")
+        expect(userData.email).toEqual("john896@gmail.com")
+        expect(userData.profile_name).toEqual("John Don")
+        expect(userData.profile_picture).toEqual("profile.jpg")
+        expect(userData.gender).toEqual("Male")
+        expect(Date(userData.birth_date)).toEqual(Date("1986-06-13T00:00:00.000Z"))
+        expect(userData.biography).toEqual("I am John Don and I take control of the world.")
+        expect(userData.verified).toEqual(false)
+        expect(userData.admin).toEqual(false)
+        expect(userData.verified).toEqual(false)
+        expect(userData.profile_publication).toEqual(false)
+        expect(userData.followed_artist_publication).toEqual(false)
+        expect(userData.liked_song_publication).toEqual(false)
+        expect(userData.liked_album_publication).toEqual(false)
+        expect(userData.liked_featured_playlist_publication).toEqual(false)
+        expect(userData.created_playlist_publication).toEqual(false)
     })
 
     // delete

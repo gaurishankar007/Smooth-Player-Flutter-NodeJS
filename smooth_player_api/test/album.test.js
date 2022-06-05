@@ -17,17 +17,16 @@ afterAll(async ()=> {
 describe('album schema test', ()=> {
 
     // insert
-    it('album insert testing', ()=> {
+    it('album insert testing', async ()=> {
         const newAlbum = {
             "title": "test",
             "artist": "627b61735bef0dc353f3d39a",
             "album_image": "album.jpg", 
         } 
-        return album.create(newAlbum).then((albumData)=>{
-            expect(albumData.title).toEqual("test")
-            expect(album.artist).toEqual(mongoose.Types.ObjectId("627b61735bef0dc353f3d39a"))
-            expect(albumData.album_image).toEqual("album.jpg")            
-        })
+        const albumData = await album.create(newAlbum)
+        expect(albumData.title).toEqual("test")
+        expect(album.artist).toEqual(mongoose.Types.ObjectId("627b61735bef0dc353f3d39a"))
+        expect(albumData.album_image).toEqual("album.jpg")
     })
 
     // delete

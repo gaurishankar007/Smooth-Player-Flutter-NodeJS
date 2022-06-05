@@ -116,4 +116,24 @@ router.post("/admin/artistProfile", auth.verifyAdmin, async (req, res) => {
   });
 });
 
+router.put("/verify/artist", auth.verifyUser, async (req, res) => {
+  user.findOne({ _id: req.body.artistId }).then((artistData) => {
+    user
+      .findOneAndUpdate(
+        { _id: artistData._id },
+        { verified: !artistData.verified }
+      )
+      .then(() => {
+        if (artistData.verified) {
+          return res.send({
+            resM: artistData.profile_name + " has been unverified.",
+          });
+        }
+        res.send({
+          resM: artistData.profile_name + " has been verified.",
+        });
+      });
+  });
+});
+
 module.exports = router;

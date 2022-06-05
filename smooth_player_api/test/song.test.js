@@ -17,7 +17,7 @@ afterAll(async ()=> {
 describe('song schema test', ()=> {
 
     // insert
-    it('song insert testing', ()=> {
+    it('song insert testing', async ()=> {
         const newSong = {
             "title": "test",
             "album": "627b62e2a6487bbb7d0a85ed",
@@ -25,12 +25,11 @@ describe('song schema test', ()=> {
             "cover_image": "cover.jpg",
             
         } 
-        return song.create(newSong).then((songData)=>{
-            expect(songData.title).toEqual("test")            
-            expect(songData.album).toEqual(mongoose.Types.ObjectId("627b62e2a6487bbb7d0a85ed"))
-            expect(songData.music_file).toEqual("song.mp3")
-            expect(songData.cover_image).toEqual("cover.jpg")
-        })
+        const songData = await song.create(newSong)
+        expect(songData.title).toEqual("test")
+        expect(songData.album).toEqual(mongoose.Types.ObjectId("627b62e2a6487bbb7d0a85ed"))
+        expect(songData.music_file).toEqual("song.mp3")
+        expect(songData.cover_image).toEqual("cover.jpg")
     })
 
     // update

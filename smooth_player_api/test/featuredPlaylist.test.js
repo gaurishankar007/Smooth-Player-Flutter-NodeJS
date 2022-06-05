@@ -17,16 +17,15 @@ afterAll(async ()=> {
 describe('featured playlist schema test', ()=> {
 
     // insert
-    it('featured playlist insert testing', ()=> {
+    it('featured playlist insert testing', async ()=> {
         const newFeaturedPlaylist = {
             "title": "test",
             "featured_playlist_image": "featuredPlaylist.jpg",            
         } 
 
-        return featuredPlaylist.create(newFeaturedPlaylist).then((playlistData)=>{
-            expect(playlistData.title).toEqual("test")
-            expect(playlistData.featured_playlist_image).toEqual("featuredPlaylist.jpg")
-        })
+        const playlistData = await featuredPlaylist.create(newFeaturedPlaylist)
+        expect(playlistData.title).toEqual("test")
+        expect(playlistData.featured_playlist_image).toEqual("featuredPlaylist.jpg")
     })
 
     // update

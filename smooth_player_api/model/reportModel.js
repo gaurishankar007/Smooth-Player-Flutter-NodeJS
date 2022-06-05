@@ -12,13 +12,17 @@ const reportSchema = new mongoose.Schema(
     },
     message: {
       type: String,
-      default: ""
+      default: "",
     },
     reportFor: [
       {
-        type: String
-      }
-    ]
+        type: String,
+      },
+    ],
+    solved: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

@@ -33,6 +33,15 @@ app.use(artist);
 const home = require("./router/homeRoute");
 app.use(home);
 
+const follow = require("./router/followRoute");
+app.use(follow);
+
+const like = require("./router/likeRoute");
+app.use(like);
+
+const report = require("./router/reportRoute");
+app.use(report);
+
 app.listen(8080, () => {
   console.log("Server running on port: 8080...");
 });

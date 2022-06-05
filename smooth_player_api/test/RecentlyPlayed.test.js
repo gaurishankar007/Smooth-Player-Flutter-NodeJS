@@ -17,16 +17,15 @@ afterAll(async ()=> {
 describe('recentlyPlayed schema test', ()=> {
 
     // insert
-    it('recentlyPlayed insert testing', ()=> {
+    it('recentlyPlayed insert testing', async ()=> {
         const newRecentlyPlayed = {
             "user": "628b2ef4c986e83c7429dea4",
             "song": "628b299cf03f51231909eebe",
         } 
 
-        return recentlyPlayed.create(newRecentlyPlayed).then((recentlyPlayedData)=>{
-            expect(recentlyPlayedData.user).toEqual(mongoose.Types.ObjectId("628b2ef4c986e83c7429dea4"))
-            expect(recentlyPlayedData.song).toEqual(mongoose.Types.ObjectId("628b299cf03f51231909eebe"))
-        })
+        const recentlyPlayedData = await recentlyPlayed.create(newRecentlyPlayed)
+        expect(recentlyPlayedData.user).toEqual(mongoose.Types.ObjectId("628b2ef4c986e83c7429dea4"))
+        expect(recentlyPlayedData.song).toEqual(mongoose.Types.ObjectId("628b299cf03f51231909eebe"))
     })
 
     // delete

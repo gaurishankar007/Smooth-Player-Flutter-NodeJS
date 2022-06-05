@@ -17,16 +17,15 @@ afterAll(async ()=> {
 describe('featuredSong schema test', ()=> {
 
     // insert
-    it('featuredSong insert testing', ()=> {
+    it('featuredSong insert testing', async ()=> {
         const newFeaturedSong = {
             "featuredPlaylist": "628b2d419edc02081d18d6a3",
             "song": "628b299cf03f51231909eebe",
         } 
         
-        return featuredSong.create(newFeaturedSong).then((featuredSongData)=>{
-            expect(featuredSongData.featuredPlaylist).toEqual(mongoose.Types.ObjectId("628b2d419edc02081d18d6a3"))
-            expect(featuredSongData.song).toEqual(mongoose.Types.ObjectId("628b299cf03f51231909eebe"))
-        })
+        const featuredSongData = await featuredSong.create(newFeaturedSong)
+        expect(featuredSongData.featuredPlaylist).toEqual(mongoose.Types.ObjectId("628b2d419edc02081d18d6a3"))
+        expect(featuredSongData.song).toEqual(mongoose.Types.ObjectId("628b299cf03f51231909eebe"))
     })
 
     // delete

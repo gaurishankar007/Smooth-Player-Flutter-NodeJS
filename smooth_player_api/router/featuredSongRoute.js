@@ -30,16 +30,16 @@ router.post("/view/featuredSong", auth.verifyAdmin, async (req, res) => {
     .find({ featuredPlaylist: mongoose.Types.ObjectId(featuredPlaylistId) })
     .populate("song")
     .populate("featuredPlaylist")
-    .sort({createdAt: -1});
+    .sort({ createdAt: -1 });
 
   const viewSongs2 = await featuredSong.populate(viewSongs1, {
     path: "song.album",
-    select: "title artist album_image like"
+    select: "title artist album_image like",
   });
 
   const viewSongs = await featuredSong.populate(viewSongs2, {
     path: "song.album.artist",
-    select: "profile_name profile_picture biography follower verified"
+    select: "profile_name profile_picture biography follower verified",
   });
 
   res.send(viewSongs);
@@ -51,16 +51,16 @@ router.post("/view/featuredSongs", auth.verifyUser, async (req, res) => {
     .find({ featuredPlaylist: mongoose.Types.ObjectId(featuredPlaylistId) })
     .populate("song")
     .populate("featuredPlaylist")
-    .sort({createdAt: -1});
+    .sort({ createdAt: -1 });
 
   const viewSongs2 = await featuredSong.populate(viewSongs1, {
     path: "song.album",
-    select: "title artist album_image like"
+    select: "title artist album_image like",
   });
 
   const viewSongs = await featuredSong.populate(viewSongs2, {
     path: "song.album.artist",
-    select: "profile_name profile_picture biography follower verified"
+    select: "profile_name profile_picture biography follower verified",
   });
 
   res.send(viewSongs);

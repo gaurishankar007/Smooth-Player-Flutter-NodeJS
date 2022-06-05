@@ -16,28 +16,27 @@ afterAll(async () => {
 
 describe("like schema test", () => {
   // insert
-  it("like insert", () => {
-    const newlike = {
+  it("like insert", async () => {
+    const newLike = {
       user: "628b2ef4c986e83c7429dea4",
       song: "628b2ef4c986e83c7429dea1",
       album: "628b2ef4c986e83c7429dea2",
       featuredPlaylist: "628b2ef4c986e83c7429dea3",
     };
 
-    return like.create(newlike).then((playlistData) => {
-      expect(playlistData.user).toEqual(
-        mongoose.Types.ObjectId("628b2ef4c986e83c7429dea4")
-      );
-      expect(playlistData.song).toEqual(
-        mongoose.Types.ObjectId("628b2ef4c986e83c7429dea1")
-      );
-      expect(playlistData.album).toEqual(
-        mongoose.Types.ObjectId("628b2ef4c986e83c7429dea2")
-      );
-      expect(playlistData.featuredPlaylist).toEqual(
-        mongoose.Types.ObjectId("628b2ef4c986e83c7429dea3")
-      );
-    });
+    const playlistData = await like.create(newLike);
+    expect(playlistData.user).toEqual(
+      mongoose.Types.ObjectId("628b2ef4c986e83c7429dea4")
+    );
+    expect(playlistData.song).toEqual(
+      mongoose.Types.ObjectId("628b2ef4c986e83c7429dea1")
+    );
+    expect(playlistData.album).toEqual(
+      mongoose.Types.ObjectId("628b2ef4c986e83c7429dea2")
+    );
+    expect(playlistData.featuredPlaylist).toEqual(
+      mongoose.Types.ObjectId("628b2ef4c986e83c7429dea3")
+    );
   });
 
   //delete

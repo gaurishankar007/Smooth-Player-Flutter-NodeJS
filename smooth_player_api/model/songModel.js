@@ -1,30 +1,32 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 
-const songSchema = new mongoose.Schema({
+const songSchema = new mongoose.Schema(
+  {
     title: {
-        type: String,
-        trim:true,
+      type: String,
+      trim: true,
     },
     genre: {
-        type: String,
+      type: String,
     },
-    album:{
-        type: mongoose.Schema.ObjectId,
-        ref: "album",
+    album: {
+      type: mongoose.Schema.ObjectId,
+      ref: "album",
     },
-    music_file:{
-        type:String
+    music_file: {
+      type: String,
     },
-    cover_image:{
-        type:String,
+    cover_image: {
+      type: String,
     },
-    like:{
-        type: Number,
-        default:0,
-    }
-},
-{
-    timestamps: true
-})
+    like: {
+      type: Number,
+      default: 0,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
 module.exports = mongoose.model("song", songSchema);

@@ -6,7 +6,6 @@ const featuredSongSchema = new mongoose.Schema(
       type: mongoose.Schema.ObjectId,
       ref: "featuredPlaylist",
     },
-
     song: {
       type: mongoose.Schema.ObjectId,
       ref: "song",

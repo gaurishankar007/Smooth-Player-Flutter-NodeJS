@@ -16,20 +16,19 @@ afterAll(async () => {
 
 describe("follow schema test", () => {
   // insert
-  it("follow insert", () => {
+  it("follow insert", async () => {
     const newFollower = {
       user: "628b2ef4c986e83c7429dea4",
       artist: "628b2ef4c986e83c7429dea1",
     };
 
-    return follow.create(newFollower).then((playlistData) => {
-      expect(playlistData.user).toEqual(
-        mongoose.Types.ObjectId("628b2ef4c986e83c7429dea4")
-      );
-      expect(playlistData.artist).toEqual(
-        mongoose.Types.ObjectId("628b2ef4c986e83c7429dea1")
-      );
-    });
+    const playlistData = await follow.create(newFollower);
+    expect(playlistData.user).toEqual(
+      mongoose.Types.ObjectId("628b2ef4c986e83c7429dea4")
+    );
+    expect(playlistData.artist).toEqual(
+      mongoose.Types.ObjectId("628b2ef4c986e83c7429dea1")
+    );
   });
 
   //delete

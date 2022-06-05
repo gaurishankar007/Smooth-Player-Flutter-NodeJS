@@ -16,7 +16,7 @@ afterAll(async () => {
 
 describe("report schema test", () => {
   // insert
-  it("report", () => {
+  it("report", async () => {
     const newReport = {
       user: "628b2ef4c986e83c7429dea4",
       song: "628b2ef4c986e83c7429dea1",
@@ -24,20 +24,20 @@ describe("report schema test", () => {
       reportFor: ["Violent content", "CopyRight"]
     };
 
-    return report.create(newReport).then((playlistData) => {
-      expect(playlistData.user).toEqual(
-        mongoose.Types.ObjectId("628b2ef4c986e83c7429dea4")
-      );
-      expect(playlistData.song).toEqual(
-        mongoose.Types.ObjectId("628b2ef4c986e83c7429dea1")
-      );
-      expect(playlistData.message).toEqual(
-        "Your song 'Dead Worries' has been reported for 'violent content, CopyRight'"
-      );
-      expect(playlistData.reportFor).toEqual(
-        ["Violent content", "CopyRight"]
-      );
-    });
+    const playlistData = await report.create(newReport);
+    expect(playlistData.user).toEqual(
+      mongoose.Types.ObjectId("628b2ef4c986e83c7429dea4")
+    );
+    expect(playlistData.song).toEqual(
+      mongoose.Types.ObjectId("628b2ef4c986e83c7429dea1")
+    );
+    expect(playlistData.message).toEqual(
+      "Your song 'Dead Worries' has been reported for 'violent content, CopyRight'"
+    );
+    expect(playlistData.reportFor).toEqual(
+      ["Violent content", "CopyRight"]
+    );
+    expect(playlistData.solved).toEqual(false);
   });
 
   //delete

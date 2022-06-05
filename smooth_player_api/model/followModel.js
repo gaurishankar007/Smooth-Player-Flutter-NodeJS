@@ -6,7 +6,6 @@ const followSchema = new mongoose.Schema(
       type: mongoose.Schema.ObjectId,
       ref: "user",
     },
-
     artist: {
       type: mongoose.Schema.ObjectId,
       ref: "user",
