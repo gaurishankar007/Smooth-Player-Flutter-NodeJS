@@ -51,4 +51,14 @@ router.post("/follow/checkArtist", auth.verifyUser, (req, res) => {
     });
 });
 
+router.get("/view/followedArtists", auth.verifyUser, async (req, res) => {
+  const followedArtists = await follow
+    .find({ user: req.userInfo._id })
+    .populate(
+      "artist",
+      "profile_name profile_picture biography follower verified"
+    );
+  res.send(followedArtists);
+});
+
 module.exports = router;
