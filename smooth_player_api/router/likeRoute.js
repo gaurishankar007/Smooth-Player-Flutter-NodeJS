@@ -64,6 +64,25 @@ router.post("/like/checkSong", auth.verifyUser, (req, res) => {
     });
 });
 
+router.get("/view/likedSongs", auth.verifyUser, async (req, res) => {
+  const likedSongs1 = await like
+    .find({ user: req.userInfo._id, album: null, featuredPlaylist: null })
+    .populate("song")
+    .sort({ createdAt: -1 });
+
+  const likedSongs2 = await like.populate(likedSongs1, {
+    path: "song.album",
+    select: "title artist album_image like",
+  });
+
+  const likedSongs = await like.populate(likedSongs2, {
+    path: "song.album.artist",
+    select: "profile_name profile_picture biography follower verified",
+  });
+
+  res.send(likedSongs);
+});
+
 router.post("/like/album", auth.verifyUser, (req, res) => {
   const albumId = req.body.albumId;
   like
@@ -119,6 +138,15 @@ router.post("/like/checkAlbum", auth.verifyUser, (req, res) => {
         res.send(true);
       }
     });
+});
+
+router.get("/view/likedAlbums", auth.verifyUser, async (req, res) => {
+  const likedAlbums = await like
+    .find({ user: req.userInfo._id, song: null, featuredPlaylist: null })
+    .populate("album")
+    .sort({ createdAt: -1 });
+
+  res.send(likedAlbums);
 });
 
 router.post("/like/featuredPlaylist", auth.verifyUser, (req, res) => {
@@ -192,5 +220,18 @@ router.post("/like/checkFeaturedPlaylist", auth.verifyUser, (req, res) => {
       }
     });
 });
+
+router.get(
+  "/view/likedFeaturedPlaylists",
+  auth.verifyUser,
+  async (req, res) => {
+    const likedFeaturedPlaylist = await like
+      .find({ user: req.userInfo._id, song: null, album: null })
+      .populate("featuredPlaylist")
+      .sort({ createdAt: -1 });
+
+    res.send(likedFeaturedPlaylist);
+  }
+);
 
 module.exports = router;

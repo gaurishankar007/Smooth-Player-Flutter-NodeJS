@@ -42,6 +42,12 @@ app.use(like);
 const report = require("./router/reportRoute");
 app.use(report);
 
+const playlist = require("./router/playlistRoute");
+app.use(playlist);
+
+const playlistSong = require("./router/playlistSongRoute");
+app.use(playlistSong);
+
 app.listen(8080, () => {
   console.log("Server running on port: 8080...");
 });
