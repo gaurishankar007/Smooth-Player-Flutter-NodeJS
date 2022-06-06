@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:smooth_player_app/screen/library/liked_song.dart';
 
 import '../resource/player.dart';
 import '../widget/navigator.dart';
@@ -44,8 +45,15 @@ class _LibraryState extends State<Library> {
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
+            children: [
               Text("Library Page"),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => ViewLikedSong()));
+                },
+                child: Text("Liked Song"),
+              ),
             ],
           ),
         ),
