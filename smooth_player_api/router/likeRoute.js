@@ -48,6 +48,22 @@ router.post("/like/song", auth.verifyUser, (req, res) => {
     });
 });
 
+router.post("/like/checkSong", auth.verifyUser, (req, res) => {
+  const songId = req.body.songId;
+  like
+    .findOne({
+      user: req.userInfo._id,
+      song: songId,
+    })
+    .then((likeData) => {
+      if (likeData === null) {
+        res.send(false);
+      } else {
+        res.send(true);
+      }
+    });
+});
+
 router.post("/like/album", auth.verifyUser, (req, res) => {
   const albumId = req.body.albumId;
   like
@@ -89,6 +105,22 @@ router.post("/like/album", auth.verifyUser, (req, res) => {
     });
 });
 
+router.post("/like/checkAlbum", auth.verifyUser, (req, res) => {
+  const albumId = req.body.albumId;
+  like
+    .findOne({
+      user: req.userInfo._id,
+      album: albumId,
+    })
+    .then((likeData) => {
+      if (likeData === null) {
+        res.send(false);
+      } else {
+        res.send(true);
+      }
+    });
+});
+
 router.post("/like/featuredPlaylist", auth.verifyUser, (req, res) => {
   const featuredPlaylistId = req.body.featuredPlaylistId;
   like
@@ -113,11 +145,9 @@ router.post("/like/featuredPlaylist", auth.verifyUser, (req, res) => {
                   { like: featuredPlaylistData.like + 1 }
                 )
                 .then(() => {
-                  res
-                    .status(201)
-                    .send({
-                      resM: "You liked " + req.body.featuredPlaylistTitle,
-                    });
+                  res.status(201).send({
+                    resM: "You liked " + req.body.featuredPlaylistTitle,
+                  });
                 });
             });
         });
@@ -143,6 +173,22 @@ router.post("/like/featuredPlaylist", auth.verifyUser, (req, res) => {
                   });
               });
           });
+      }
+    });
+});
+
+router.post("/like/checkFeaturedPlaylist", auth.verifyUser, (req, res) => {
+  const featuredPlaylistId = req.body.featuredPlaylistId;
+  like
+    .findOne({
+      user: req.userInfo._id,
+      featuredPlaylist: featuredPlaylistId,
+    })
+    .then((likeData) => {
+      if (likeData === null) {
+        res.send(false);
+      } else {
+        res.send(true);
       }
     });
 });
