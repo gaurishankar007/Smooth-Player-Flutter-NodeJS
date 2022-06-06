@@ -36,6 +36,8 @@ class _PlayingSongState extends State<PlayingSong> {
   void initState() {
     super.initState();
 
+    checkSongLike();
+
     stateSub = player.onPlayerStateChanged.listen((state) {
       setState(() {
         Player.isPaused = state == PlayerState.PAUSED;
