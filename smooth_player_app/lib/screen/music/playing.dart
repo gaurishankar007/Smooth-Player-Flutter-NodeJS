@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:smooth_player_app/api/http/like_http.dart';
 import 'package:smooth_player_app/resource/colors.dart';
 
 import '../../api/urls.dart';
@@ -23,6 +24,13 @@ class _PlayingSongState extends State<PlayingSong> {
 
   int isLoop = Player.isLoop;
   bool isShuffle = Player.isShuffle;
+  bool songLike = false;
+
+  void checkSongLike() async {
+    if (Player.playingSong != null) {
+      songLike = await LikeHttp().checkSongLike(Player.playingSong!.id!);
+    }
+  }
 
   @override
   void initState() {
@@ -169,7 +177,14 @@ class _PlayingSongState extends State<PlayingSong> {
                         ),
                       ),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          if (Player.playingSong != null) {
+                            await LikeHttp().likeSong(Player.playingSong!.id!);
+                            setState(() {
+                              songLike = !songLike;
+                            });
+                          }
+                        },
                         style: TextButton.styleFrom(
                           padding: EdgeInsets.zero,
                           minimumSize: Size.zero,
@@ -178,7 +193,7 @@ class _PlayingSongState extends State<PlayingSong> {
                         child: Icon(
                           Icons.favorite,
                           size: 25,
-                          color: Colors.black,
+                          color: songLike ? AppColors.primary : Colors.black,
                         ),
                       ),
                     ],
