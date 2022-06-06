@@ -18,7 +18,7 @@ const likeSchema = new mongoose.Schema(
     },
     featuredPlaylist: {
       type: mongoose.Schema.ObjectId,
-      ref: "album",
+      ref: "featuredPlaylist",
       default: null,
     },
   },
