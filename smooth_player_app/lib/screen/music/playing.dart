@@ -280,6 +280,9 @@ class _PlayingSongState extends State<PlayingSong> {
                           TextButton(
                             onPressed: () {
                               Player().previousSong();
+                              setState(() {
+                                checkSongLike();
+                              });
                             },
                             style: TextButton.styleFrom(
                               padding: EdgeInsets.zero,
@@ -380,6 +383,9 @@ class _PlayingSongState extends State<PlayingSong> {
                           TextButton(
                             onPressed: () {
                               Player().nextSong();
+                              setState(() {
+                                checkSongLike();
+                              });
                             },
                             style: TextButton.styleFrom(
                               padding: EdgeInsets.zero,

@@ -9,7 +9,7 @@ class LikeHttp {
   final token = LogStatus.token;
 
   Future<Map> likeSong(String songId) async {
-    final response = await post(Uri.parse(routeUrl + "/like/song"), body: {
+    final response = await post(Uri.parse(routeUrl + "like/song"), body: {
       "songId": songId,
     }, headers: {
       HttpHeaders.authorizationHeader: "Bearer $token",
