@@ -8,6 +8,7 @@ import 'package:smooth_player_app/api/urls.dart';
 import 'package:smooth_player_app/resource/colors.dart';
 import 'package:smooth_player_app/resource/player.dart';
 import 'package:smooth_player_app/screen/admin/artist_profile.dart';
+import 'package:smooth_player_app/screen/view/view_artist.dart';
 
 class ViewFollowedArtist extends StatefulWidget {
   const ViewFollowedArtist({ Key? key }) : super(key: key);
@@ -51,17 +52,32 @@ class _ViewFollowedArtistState extends State<ViewFollowedArtist> {
         final sWidth = MediaQuery.of(context).size.width;
     final sHeight = MediaQuery.of(context).size.height;
     return Scaffold(
+            appBar: AppBar(
+        title: Text(
+          "Followed Artists",
+          style: TextStyle(color: Colors.black),
+        ),
+        centerTitle: true,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.black,
+          ),
+        ),
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+      ),
       body: SafeArea(child: SingleChildScrollView(
           padding: EdgeInsets.only(
             left: sWidth * 0.03,
             right: sWidth * 0.03,
-            top: 20,
+            top: 10,
           ),
           child: Column(
             children: [
-              SizedBox(
-                height: 10,
-              ),
               FutureBuilder<List<Artist>>(
                 future: artistList,
                 builder: (context, snapshot) {
@@ -71,8 +87,8 @@ class _ViewFollowedArtistState extends State<ViewFollowedArtist> {
                       shrinkWrap: true,
                       childAspectRatio:
                           (sWidth - (sWidth * .64)) / (sHeight * .25),
-                      crossAxisSpacing: 10,
-                      crossAxisCount: 2,
+                      crossAxisSpacing:10,
+                      crossAxisCount: 3,
                       children: List.generate(
                         snapshot.data!.length,
                         (index) {
@@ -81,7 +97,7 @@ class _ViewFollowedArtistState extends State<ViewFollowedArtist> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                builder: (builder) => ArtistPage(
+                                builder: (builder) => ViewArtist(
                                     artistId: snapshot.data![index].id,
                                     pageIndex: 1,
                                   ),
@@ -89,7 +105,7 @@ class _ViewFollowedArtistState extends State<ViewFollowedArtist> {
                               );
                             },
                             child: Stack(
-                              alignment: Alignment.topRight,
+                              alignment: Alignment.center,
                               children: [
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -111,8 +127,8 @@ class _ViewFollowedArtistState extends State<ViewFollowedArtist> {
                                         borderRadius: BorderRadius.circular(
                                             sHeight * 0.125),
                                         child: Image(
-                                          height: sHeight * 0.25,
-                                          width: sHeight * 0.25,
+                                          height: sHeight * 0.167,
+                                          width: sHeight * 0.167,
                                           fit: BoxFit.cover,
                                           image: NetworkImage(
                                             artistImage +
