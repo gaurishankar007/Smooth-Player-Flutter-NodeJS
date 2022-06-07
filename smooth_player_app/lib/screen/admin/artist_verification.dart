@@ -95,7 +95,7 @@ class _VerifyArtistState extends State<VerifyArtist> {
                 ),
               ),
               SizedBox(
-                height: 10,
+                height: 15,
               ),
               FutureBuilder<List<Artist>>(
                 future: artistList,
@@ -107,7 +107,7 @@ class _VerifyArtistState extends State<VerifyArtist> {
                       childAspectRatio:
                           (sWidth - (sWidth * .64)) / (sHeight * .25),
                       crossAxisSpacing: 10,
-                      crossAxisCount: 2,
+                      crossAxisCount: 3,
                       children: List.generate(
                         snapshot.data!.length,
                         (index) {
@@ -124,7 +124,7 @@ class _VerifyArtistState extends State<VerifyArtist> {
                               );
                             },
                             child: Stack(
-                              alignment: Alignment.topRight,
+                              alignment: Alignment.center,
                               children: [
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -146,8 +146,8 @@ class _VerifyArtistState extends State<VerifyArtist> {
                                         borderRadius: BorderRadius.circular(
                                             sHeight * 0.125),
                                         child: Image(
-                                          height: sHeight * 0.25,
-                                          width: sHeight * 0.25,
+                                          height: sHeight * 0.167,
+                                          width: sHeight * 0.167,
                                           fit: BoxFit.cover,
                                           image: NetworkImage(
                                             profileImage +
