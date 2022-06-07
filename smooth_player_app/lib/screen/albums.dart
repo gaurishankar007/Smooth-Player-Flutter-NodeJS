@@ -53,7 +53,7 @@ class _AlbumViewState extends State<AlbumView> {
   @override
   void initState() {
     super.initState();
-    
+
     albumSongs = viewSongs();
 
     stateSub = player.onPlayerStateChanged.listen((state) {
@@ -412,6 +412,31 @@ class _AlbumViewState extends State<AlbumView> {
                                                       },
                                                       child:
                                                           Text("Add to queue"),
+                                                    ),
+                                                  ),
+                                                  SimpleDialogOption(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                      horizontal: 75,
+                                                    ),
+                                                    child: ElevatedButton(
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                        primary:
+                                                            AppColors.primary,
+                                                        elevation: 10,
+                                                        shadowColor:
+                                                            Colors.black,
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(15),
+                                                        ),
+                                                      ),
+                                                      onPressed: () {},
+                                                      child: Text(
+                                                          "Add to playlist"),
                                                     ),
                                                   ),
                                                   SimpleDialogOption(

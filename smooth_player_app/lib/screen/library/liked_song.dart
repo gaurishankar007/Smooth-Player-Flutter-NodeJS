@@ -2,9 +2,8 @@ import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:smooth_player_app/widget/admin_navigator.dart';
+import 'package:smooth_player_app/widget/navigator.dart';
 import '../../api/http/liked_http.dart';
-import '../../api/http/song_http.dart';
 import '../../api/res/song_res.dart';
 import '../../api/urls.dart';
 import '../../resource/colors.dart';
@@ -92,28 +91,33 @@ class _ViewLikedSongState extends State<ViewLikedSong> {
                     ],
                   ),
                 ),
-                // Container(
-                //   decoration: BoxDecoration(
-                //     boxShadow: const [
-                //       BoxShadow(
-                //         color: Colors.black26,
-                //         spreadRadius: 2,
-                //         blurRadius: 5,
-                //       )
-                //     ],
-                //   ),
-                //   child: ClipRRect(
-                //     borderRadius: BorderRadius.circular(5),
-                //     child: Image(
-                //       width: sWidth * .8,
-                //       height: sHeight * .3,
-                //       fit: BoxFit.cover,
-                //       image: NetworkImage(
-                //         coverImage + widget.albumImage!,
-                //       ),
-                //     ),
-                //   ),
-                // ),
+                Container(
+                  width: sWidth * .8,
+                  height: sHeight * .3,
+                  decoration: BoxDecoration(
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.black26,
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                      )
+                    ],
+                    gradient: LinearGradient(
+                      colors: const [
+                        Color(0XFF36D1DC),
+                        Color(0XFF5B86E5),
+                      ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Icon(
+                    Icons.favorite,
+                    size: 100,
+                    color: Colors.white,
+                  ),
+                ),
               ],
             ),
             Padding(
@@ -322,33 +326,102 @@ class _ViewLikedSongState extends State<ViewLikedSong> {
                                           constraints: BoxConstraints(),
                                           padding: EdgeInsets.zero,
                                           onPressed: () {
-                                            Player.songQueue.add(
-                                              Song(
-                                                id: snapshot.data![index].id!,
-                                                title: snapshot
-                                                    .data![index].title!,
-                                                album: snapshot
-                                                    .data![index].album!,
-                                                music_file: snapshot
-                                                    .data![index].music_file!,
-                                                cover_image: snapshot
-                                                    .data![index].cover_image!,
-                                                like:
-                                                    snapshot.data![index].like!,
+                                            showDialog(
+                                              context: context,
+                                              builder: (ctx) => SimpleDialog(
+                                                children: [
+                                                  SimpleDialogOption(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                      horizontal: 75,
+                                                    ),
+                                                    child: ElevatedButton(
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                        primary:
+                                                            AppColors.primary,
+                                                        elevation: 10,
+                                                        shadowColor:
+                                                            Colors.black,
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(15),
+                                                        ),
+                                                      ),
+                                                      onPressed: () {
+                                                        Navigator.of(ctx).pop();
+
+                                                        Player.songQueue.add(
+                                                          Song(
+                                                            id: snapshot
+                                                                .data![index]
+                                                                .id!,
+                                                            title: snapshot
+                                                                .data![index]
+                                                                .title!,
+                                                            album: snapshot
+                                                                .data![index]
+                                                                .album!,
+                                                            music_file: snapshot
+                                                                .data![index]
+                                                                .music_file!,
+                                                            cover_image: snapshot
+                                                                .data![index]
+                                                                .cover_image!,
+                                                            like: snapshot
+                                                                .data![index]
+                                                                .like!,
+                                                          ),
+                                                        );
+                                                        Fluttertoast.showToast(
+                                                          msg: snapshot
+                                                                  .data![index]
+                                                                  .title! +
+                                                              " is added to the queue.",
+                                                          toastLength: Toast
+                                                              .LENGTH_SHORT,
+                                                          gravity: ToastGravity
+                                                              .BOTTOM,
+                                                          timeInSecForIosWeb: 3,
+                                                        );
+                                                      },
+                                                      child:
+                                                          Text("Add to queue"),
+                                                    ),
+                                                  ),
+                                                  SimpleDialogOption(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                      horizontal: 75,
+                                                    ),
+                                                    child: ElevatedButton(
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                        primary:
+                                                            AppColors.primary,
+                                                        elevation: 10,
+                                                        shadowColor:
+                                                            Colors.black,
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(15),
+                                                        ),
+                                                      ),
+                                                      onPressed: () {},
+                                                      child: Text(
+                                                          "Add to playlist"),
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                            );
-                                            Fluttertoast.showToast(
-                                              msg:
-                                                  snapshot.data![index].title! +
-                                                      " is added to the queue.",
-                                              toastLength: Toast.LENGTH_SHORT,
-                                              gravity: ToastGravity.BOTTOM,
-                                              timeInSecForIosWeb: 3,
                                             );
                                           },
                                           icon: Icon(
-                                            Icons.add_to_queue,
-                                            color: AppColors.primary,
+                                            Icons.more_vert,
                                           ),
                                         ),
                                       ],
@@ -390,7 +463,7 @@ class _ViewLikedSongState extends State<ViewLikedSong> {
           : null,
       floatingActionButtonLocation:
           FloatingActionButtonLocation.miniCenterFloat,
-      bottomNavigationBar: AdminPageNavigator(pageIndex: 2),
+      bottomNavigationBar: PageNavigator(pageIndex: 2),
     );
   }
 }
