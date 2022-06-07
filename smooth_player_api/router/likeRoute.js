@@ -40,7 +40,7 @@ router.post("/like/song", auth.verifyUser, (req, res) => {
               song
                 .updateOne({ _id: songId }, { like: songData.like - 1 })
                 .then(() => {
-                  res.send({ res: "You unliked " + req.body.songTitle });
+                  res.send({ resM: "You unliked " + req.body.songTitle });
                 });
             });
           });
@@ -116,7 +116,7 @@ router.post("/like/album", auth.verifyUser, (req, res) => {
               album
                 .updateOne({ _id: albumId }, { like: albumData.like - 1 })
                 .then(() => {
-                  res.send({ res: "You unliked " + req.body.albumTitle });
+                  res.send({ resM: "You unliked " + req.body.albumTitle });
                 });
             });
           });
@@ -196,7 +196,7 @@ router.post("/like/featuredPlaylist", auth.verifyUser, (req, res) => {
                   )
                   .then(() => {
                     res.send({
-                      res: "You unliked " + req.body.featuredPlaylistTitle,
+                      resM: "You unliked " + req.body.featuredPlaylistTitle,
                     });
                   });
               });
