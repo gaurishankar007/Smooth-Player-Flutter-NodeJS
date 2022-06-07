@@ -3,7 +3,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:smooth_player_app/widget/navigator.dart';
-import '../../api/http/liked_http.dart';
+import '../../api/http/like_http.dart';
 import '../../api/res/song_res.dart';
 import '../../api/urls.dart';
 import '../../resource/colors.dart';
@@ -31,7 +31,7 @@ class _ViewLikedSongState extends State<ViewLikedSong> {
   late StreamSubscription stateSub;
 
   Future<List<Song>> viewLikedSongs() async {
-    List<Song> resData = await LikedSongHttp().viewLikedSongs();
+    List<Song> resData = await LikeHttp().viewLikedSongs();
     songs = resData;
     return resData;
   }
@@ -42,7 +42,7 @@ class _ViewLikedSongState extends State<ViewLikedSong> {
 
     viewLikedSongs();
 
-    likedSongs = LikedSongHttp().viewLikedSongs();
+    likedSongs = LikeHttp().viewLikedSongs();
 
     stateSub = player.onPlayerStateChanged.listen((state) {
       setState(() {

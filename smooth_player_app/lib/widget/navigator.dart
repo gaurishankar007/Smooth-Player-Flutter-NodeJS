@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:smooth_player_app/screen/home.dart';
-import 'package:smooth_player_app/screen/library/followed_artist.dart';
 import 'package:smooth_player_app/screen/my_music.dart';
 
 import '../screen/library.dart';
