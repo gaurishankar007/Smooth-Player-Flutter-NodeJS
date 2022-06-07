@@ -1,8 +1,8 @@
 import 'dart:async';
-
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:smooth_player_app/api/http/follow_http.dart';
 
 import '../../api/http/artist_http.dart';
 import '../../api/res/song_res.dart';
@@ -32,12 +32,17 @@ class _ViewArtistState extends State<ViewArtist> {
   Song? song = Player.playingSong;
   final coverImage = ApiUrls.coverImageUrl;
   final profileImage = ApiUrls.profileUrl;
+  bool checkFollow = false;
 
   late Future<ArtistData> artistData;
 
   List<Song> songs = [];
 
   late StreamSubscription stateSub;
+
+  void checkFollowArtist() async {
+    checkFollow = await FollowHttp().checkFollow(widget.artistId!);
+  }
 
   Future<ArtistData> viewSongs() async {
     ArtistData resData = await ArtistHttp().viewArtist(widget.artistId!);
@@ -47,6 +52,8 @@ class _ViewArtistState extends State<ViewArtist> {
   @override
   void initState() {
     super.initState();
+
+    checkFollowArtist();
 
     viewSongs().then((value) {
       songs = value.popularSong!;
@@ -176,9 +183,27 @@ class _ViewArtistState extends State<ViewArtist> {
                                   ),
                                 ),
                                 OutlinedButton(
-                                  onPressed: () {},
+                                  onPressed: () async {
+                                    final resData = await FollowHttp()
+                                        .followArtist(
+                                            widget.artistId!,
+                                            snapshot
+                                                .data!.artist!.profile_name!);
+                                    setState(() {
+                                      checkFollow = !checkFollow;
+                                    });
+                                    Fluttertoast.showToast(
+                                      msg: resData["resM"],
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.TOP,
+                                      timeInSecForIosWeb: 3,
+                                      backgroundColor: Colors.white,
+                                      textColor: Colors.black,
+                                      fontSize: 16.0,
+                                    );
+                                  },
                                   child: Text(
-                                    "Follow",
+                                    checkFollow ? "Following" : "Follow",
                                     style: TextStyle(
                                       fontSize: 15,
                                     ),

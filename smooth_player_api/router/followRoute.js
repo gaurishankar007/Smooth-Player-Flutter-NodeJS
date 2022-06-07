@@ -29,7 +29,7 @@ router.post("/follow/artist", auth.verifyUser, (req, res) => {
             artist: req.body.artistId,
           })
           .then(() => {
-            res.send({ res: "You unfollowed " + artistName });
+            res.send({ resM: "You unfollowed " + artistName });
           });
       }
     });
