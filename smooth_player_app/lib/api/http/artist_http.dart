@@ -45,7 +45,7 @@ class ArtistHttp {
     List resSearch = jsonDecode(response.body);
     return resSearch.map((e) => Artist.fromJson(e)).toList();
   }
-  
+
   Future<ArtistData> adminViewArtist(String artistId) async {
     final response =
         await post(Uri.parse(routeUrl + "admin/artistProfile"), body: {
@@ -55,5 +55,15 @@ class ArtistHttp {
     });
 
     return ArtistData.fromJson(jsonDecode(response.body));
+  }
+
+  Future<Map> verifyArtist(String artistId) async {
+    final response = await put(Uri.parse(routeUrl + "verify/artist"), body: {
+      "artistId": artistId
+    }, headers: {
+      HttpHeaders.authorizationHeader: "Bearer $token",
+    });
+
+    return jsonDecode(response.body) as Map;
   }
 }

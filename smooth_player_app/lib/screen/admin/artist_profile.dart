@@ -1,6 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:smooth_player_app/screen/admin/artist_verification.dart';
 import '../../api/http/artist_http.dart';
 import '../../api/res/song_res.dart';
 import '../../api/res/artist_data_res.dart';
@@ -29,7 +30,7 @@ class _ArtistPageState extends State<ArtistPage> {
   Song? song = Player.playingSong;
   final coverImage = ApiUrls.coverImageUrl;
   final profileImage = ApiUrls.profileUrl;
-  bool isVerified = true;
+  bool isVerified = false;
 
   late Future<ArtistData> artistData;
 
@@ -46,6 +47,9 @@ class _ArtistPageState extends State<ArtistPage> {
 
     viewSongs().then((value) {
       songs = value.popularSong!;
+      setState(() {
+        isVerified = value.artist!.verified!;
+      });
     });
 
     artistData = ArtistHttp().adminViewArtist(widget.artistId!);
@@ -186,7 +190,18 @@ class _ArtistPageState extends State<ArtistPage> {
                               child: Switch(
                                 activeColor: AppColors.primary,
                                 value: isVerified,
-                                onChanged: (value) {
+                                onChanged: (value) async {
+                                  final resData = await ArtistHttp()
+                                      .verifyArtist(widget.artistId!);
+                                  Fluttertoast.showToast(
+                                    msg: resData["resM"],
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.TOP,
+                                    timeInSecForIosWeb: 3,
+                                    backgroundColor: Colors.white,
+                                    textColor: Colors.black,
+                                    fontSize: 16.0,
+                                  );
                                   setState(() {
                                     isVerified = value;
                                   });
