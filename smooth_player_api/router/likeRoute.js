@@ -141,10 +141,15 @@ router.post("/like/checkAlbum", auth.verifyUser, (req, res) => {
 });
 
 router.get("/view/likedAlbums", auth.verifyUser, async (req, res) => {
-  const likedAlbums = await like
+  const likedAlbums1 = await like
     .find({ user: req.userInfo._id, song: null, featuredPlaylist: null })
     .populate("album")
     .sort({ createdAt: -1 });
+
+  const likedAlbums = await like.populate(likedAlbums1, {
+    path: "album.artist",
+    select: "profile_name profile_picture biography follower verified",
+  });
 
   res.send(likedAlbums);
 });
@@ -225,12 +230,12 @@ router.get(
   "/view/likedFeaturedPlaylists",
   auth.verifyUser,
   async (req, res) => {
-    const likedFeaturedPlaylist = await like
+    const likedFeaturedPlaylists = await like
       .find({ user: req.userInfo._id, song: null, album: null })
       .populate("featuredPlaylist")
       .sort({ createdAt: -1 });
 
-    res.send(likedFeaturedPlaylist);
+    res.send(likedFeaturedPlaylists);
   }
 );
 

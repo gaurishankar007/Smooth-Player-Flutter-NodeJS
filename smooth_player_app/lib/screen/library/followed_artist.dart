@@ -10,7 +10,9 @@ import 'package:smooth_player_app/resource/player.dart';
 import 'package:smooth_player_app/screen/view/view_artist.dart';
 
 class ViewFollowedArtist extends StatefulWidget {
-  const ViewFollowedArtist({Key? key}) : super(key: key);
+  final String? profilePic;
+  const ViewFollowedArtist({Key? key, @required this.profilePic})
+      : super(key: key);
 
   @override
   State<ViewFollowedArtist> createState() => _ViewFollowedArtistState();
@@ -18,6 +20,7 @@ class ViewFollowedArtist extends StatefulWidget {
 
 class _ViewFollowedArtistState extends State<ViewFollowedArtist> {
   final artistImage = ApiUrls.profileUrl;
+  final profileUrl = ApiUrls.profileUrl;
   final AudioPlayer player = Player.player;
   late StreamSubscription stateSub;
   bool songBarVisibility = Player.isPlaying;
@@ -59,6 +62,27 @@ class _ViewFollowedArtistState extends State<ViewFollowedArtist> {
         ),
         child: Column(
           children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Your Library",
+                  style: TextStyle(
+                    color: AppColors.text,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
+                ),
+                CircleAvatar(
+                  radius: 22,
+                  backgroundImage:
+                      NetworkImage(profileUrl + widget.profilePic!),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            ),
             Row(
               children: [
                 GestureDetector(

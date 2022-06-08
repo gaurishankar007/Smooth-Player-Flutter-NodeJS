@@ -16,6 +16,7 @@ class Artist {
   bool? verified;
 
   Artist({
+    this.id,
     this.profile_name,
     this.profile_picture,
     this.biography,

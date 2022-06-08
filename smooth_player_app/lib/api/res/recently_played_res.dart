@@ -14,7 +14,11 @@ class RecentlyPlayed {
   Artist? user;
   Song? song;
 
-  RecentlyPlayed({this.id, this.user, this.song});
+  RecentlyPlayed({
+    this.id,
+    this.user,
+    this.song,
+  });
 
   factory RecentlyPlayed.fromJson(Map<String, dynamic> json) =>
       _$RecentlyPlayedFromJson(json);

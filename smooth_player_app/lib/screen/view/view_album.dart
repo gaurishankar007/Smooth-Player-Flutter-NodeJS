@@ -4,6 +4,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import '../../api/http/like_http.dart';
 import '../../api/http/song_http.dart';
 import '../../api/res/song_res.dart';
 import '../../api/urls.dart';
@@ -36,26 +37,25 @@ class _ViewAlbumState extends State<ViewAlbum> {
   Song? song = Player.playingSong;
   final coverImage = ApiUrls.coverImageUrl;
 
-  late Future<List<Song>> albumSongs;
-
   List<Song> songs = [];
+  bool albumLike = false;
 
   late StreamSubscription stateSub;
 
-  Future<List<Song>> viewSongs() async {
+  void viewSongs() async {
     List<Song> resData = await SongHttp().getSongs(widget.albumId!);
-    return resData;
+    songs = resData;
+    bool albumLike1 = await LikeHttp().checkAlbumLike(widget.albumId!);
+    setState(() {
+      albumLike = albumLike1;
+    });
   }
 
   @override
   void initState() {
     super.initState();
 
-    viewSongs().then((value) {
-      songs = value;
-    });
-
-    albumSongs = SongHttp().getSongs(widget.albumId!);
+    viewSongs();
 
     stateSub = player.onPlayerStateChanged.listen((state) {
       setState(() {
@@ -170,10 +170,25 @@ class _ViewAlbumState extends State<ViewAlbum> {
                     ),
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      final resData = await LikeHttp()
+                          .likeAlbum(widget.albumId!, widget.title!);
+                      Fluttertoast.showToast(
+                        msg: resData["resM"],
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.TOP,
+                        timeInSecForIosWeb: 2,
+                        backgroundColor: Colors.white,
+                        textColor: Colors.black,
+                        fontSize: 16.0,
+                      );
+                      setState(() {
+                        albumLike = !albumLike;
+                      });
+                    },
                     icon: Icon(
                       Icons.favorite,
-                      color: AppColors.primary,
+                      color: albumLike ? AppColors.primary : AppColors.text,
                       size: 30,
                     ),
                   ),
@@ -188,7 +203,7 @@ class _ViewAlbumState extends State<ViewAlbum> {
                 bottom: 80,
               ),
               child: FutureBuilder<List<Song>>(
-                future: albumSongs,
+                future: SongHttp().getSongs(widget.albumId!),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     return ListView.builder(

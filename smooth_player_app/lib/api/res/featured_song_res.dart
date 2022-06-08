@@ -14,9 +14,14 @@ class FeaturedSong {
   FeaturedPlaylist? featuredPlaylist;
   Song? song;
 
-  FeaturedSong({this.id, this.featuredPlaylist, this.song});
+  FeaturedSong({
+    this.id,
+    this.featuredPlaylist,
+    this.song,
+  });
 
-  factory FeaturedSong.fromJson(Map<String, dynamic> json) => _$FeaturedSongFromJson(json);
+  factory FeaturedSong.fromJson(Map<String, dynamic> json) =>
+      _$FeaturedSongFromJson(json);
 
   Map<String, dynamic> toJson() => _$FeaturedSongToJson(this);
 }

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:smooth_player_app/api/http/like_http.dart';
 
 import '../../api/http/featured_song_http.dart';
 import '../../api/res/featured_song_res.dart';
@@ -38,30 +39,30 @@ class _ViewFeaturedPlaylistState extends State<ViewFeaturedPlaylist> {
   final coverImage = ApiUrls.coverImageUrl;
   final featuredPlaylistUrl = ApiUrls.featuredPlaylistUrl;
 
-  late Future<List<FeaturedSong>> featuredPlaylistSongs;
-
   List<Song> songs = [];
+  bool featuredPlaylistLike = false;
 
   late StreamSubscription stateSub;
 
-  Future<List<FeaturedSong>> viewSongs() async {
+  void viewSongs() async {
     List<FeaturedSong> resData =
         await FeaturedSongHttp().viewFeaturedSongs(widget.featuredPlaylistId!);
-    return resData;
+    for (int i = 0; i < resData.length; i++) {
+      songs.add(resData[i].song!);
+    }
+
+    bool featuredPlaylistLike1 =
+        await LikeHttp().checkFeaturedPlaylistLike(widget.featuredPlaylistId!);
+    setState(() {
+      featuredPlaylistLike = featuredPlaylistLike1;
+    });
   }
 
   @override
   void initState() {
     super.initState();
 
-    viewSongs().then((value) {
-      for (int i = 0; i < value.length; i++) {
-        songs.add(value[i].song!);
-      }
-    });
-
-    featuredPlaylistSongs =
-        FeaturedSongHttp().viewFeaturedSongs(widget.featuredPlaylistId!);
+    viewSongs();
 
     stateSub = player.onPlayerStateChanged.listen((state) {
       setState(() {
@@ -176,10 +177,27 @@ class _ViewFeaturedPlaylistState extends State<ViewFeaturedPlaylist> {
                     ),
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      final resData = await LikeHttp().likeFeaturedPlaylist(
+                          widget.featuredPlaylistId!, widget.title!);
+                      Fluttertoast.showToast(
+                        msg: resData["resM"],
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.TOP,
+                        timeInSecForIosWeb: 2,
+                        backgroundColor: Colors.white,
+                        textColor: Colors.black,
+                        fontSize: 16.0,
+                      );
+                      setState(() {
+                        featuredPlaylistLike = !featuredPlaylistLike;
+                      });
+                    },
                     icon: Icon(
                       Icons.favorite,
-                      color: AppColors.primary,
+                      color: featuredPlaylistLike
+                          ? AppColors.primary
+                          : AppColors.text,
                       size: 30,
                     ),
                   ),
@@ -194,7 +212,8 @@ class _ViewFeaturedPlaylistState extends State<ViewFeaturedPlaylist> {
                 bottom: 80,
               ),
               child: FutureBuilder<List<FeaturedSong>>(
-                future: featuredPlaylistSongs,
+                future: FeaturedSongHttp()
+                    .viewFeaturedSongs(widget.featuredPlaylistId!),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     return ListView.builder(

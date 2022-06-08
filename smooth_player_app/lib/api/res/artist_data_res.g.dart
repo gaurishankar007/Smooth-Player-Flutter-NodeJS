@@ -19,11 +19,10 @@ ArtistData _$ArtistDataFromJson(Map<String, dynamic> json) => ArtistData(
       oldAlbum: (json['oldAlbum'] as List<dynamic>?)
           ?.map((e) => Album.fromJson(e as Map<String, dynamic>))
           .toList(),
-    )..id = json['_id'] as String?;
+    );
 
 Map<String, dynamic> _$ArtistDataToJson(ArtistData instance) =>
     <String, dynamic>{
-      '_id': instance.id,
       'artist': instance.artist?.toJson(),
       'popularSong': instance.popularSong?.map((e) => e.toJson()).toList(),
       'newAlbum': instance.newAlbum?.map((e) => e.toJson()).toList(),

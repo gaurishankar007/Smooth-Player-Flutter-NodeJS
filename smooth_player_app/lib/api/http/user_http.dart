@@ -90,10 +90,10 @@ class UserHttp {
     };
   }
 
-  Future<Map> changeProfileName(String profilename) async {
+  Future<Map> changeProfileName(String profileName) async {
     final response = await put(
       Uri.parse(routeUrl + "user/changeProfileName"),
-      body: {"profile_name": profilename},
+      body: {"profile_name": profileName},
       headers: {
         HttpHeaders.authorizationHeader: "Bearer $token",
       },
@@ -168,5 +168,52 @@ class UserHttp {
       "statusCode": response.statusCode,
       "body": responseData as Map,
     };
+  }
+
+  Future<Map> publicProfile() async {
+    final response = await get(Uri.parse(routeUrl + "user/profilePublication"),
+        headers: {HttpHeaders.authorizationHeader: "Bearer $token"});
+
+    return jsonDecode(response.body) as Map;
+  }
+
+  Future<Map> publicFollowedArtist() async {
+    final response = await get(
+        Uri.parse(routeUrl + "user/followedArtistPublication"),
+        headers: {HttpHeaders.authorizationHeader: "Bearer $token"});
+
+    return jsonDecode(response.body) as Map;
+  }
+
+  Future<Map> publicLikedSong() async {
+    final response = await get(
+        Uri.parse(routeUrl + "user/likedSongPublication"),
+        headers: {HttpHeaders.authorizationHeader: "Bearer $token"});
+
+    return jsonDecode(response.body) as Map;
+  }
+
+  Future<Map> publicLikedAlbum() async {
+    final response = await get(
+        Uri.parse(routeUrl + "user/likedAlbumPublication"),
+        headers: {HttpHeaders.authorizationHeader: "Bearer $token"});
+
+    return jsonDecode(response.body) as Map;
+  }
+
+  Future<Map> publicLikedFeaturedPlaylist() async {
+    final response = await get(
+        Uri.parse(routeUrl + "user/likedFeaturedPlaylistPublication"),
+        headers: {HttpHeaders.authorizationHeader: "Bearer $token"});
+
+    return jsonDecode(response.body) as Map;
+  }
+
+  Future<Map> publicCreatedPlaylist() async {
+    final response = await get(
+        Uri.parse(routeUrl + "user/createdPlaylistPublication"),
+        headers: {HttpHeaders.authorizationHeader: "Bearer $token"});
+
+    return jsonDecode(response.body) as Map;
   }
 }

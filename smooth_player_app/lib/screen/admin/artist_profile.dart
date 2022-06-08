@@ -1,7 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:smooth_player_app/screen/admin/artist_verification.dart';
 import '../../api/http/artist_http.dart';
 import '../../api/res/song_res.dart';
 import '../../api/res/artist_data_res.dart';
