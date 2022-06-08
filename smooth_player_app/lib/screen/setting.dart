@@ -24,7 +24,7 @@ class Setting extends StatefulWidget {
 class _SettingState extends State<Setting> {
   final profileUrl = ApiUrls.profileUrl;
   late Future<User> getUser;
-  bool accountPublication = false,
+  bool profilePublication = false,
       followedArtistPublication = false,
       likedSongPublication = false,
       likedAlbumPublication = false,
@@ -56,6 +56,17 @@ class _SettingState extends State<Setting> {
   @override
   void initState() {
     super.initState();
+    UserHttp().getUser().then((value) {
+      setState(() {
+        profilePublication = value.profile_publication!;
+        followedArtistPublication = value.followed_artist_publication!;
+        likedSongPublication = value.liked_song_publication!;
+        likedAlbumPublication = value.liked_album_publication!;
+        likedFeaturedPlaylistPublication =
+            value.liked_featured_playlist_publication!;
+        createdPlaylistPublication = value.created_playlist_publication!;
+      });
+    });
     getUser = UserHttp().getUser();
   }
 
@@ -287,7 +298,7 @@ class _SettingState extends State<Setting> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Account Publication",
+                        "Profile Publication",
                         style: TextStyle(
                           color: AppColors.text,
                           fontWeight: FontWeight.bold,
@@ -305,10 +316,20 @@ class _SettingState extends State<Setting> {
                     width: 25,
                     child: Switch(
                       activeColor: AppColors.primary,
-                      value: accountPublication,
-                      onChanged: (value) {
+                      value: profilePublication,
+                      onChanged: (value) async {
+                        final resData = await UserHttp().publicProfile();
+                        Fluttertoast.showToast(
+                          msg: resData["resM"],
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.TOP,
+                          timeInSecForIosWeb: 2,
+                          backgroundColor: Colors.white,
+                          textColor: Colors.black,
+                          fontSize: 16.0,
+                        );
                         setState(() {
-                          accountPublication = value;
+                          profilePublication = value;
                         });
                       },
                     ),
@@ -347,7 +368,17 @@ class _SettingState extends State<Setting> {
                     child: Switch(
                       activeColor: AppColors.primary,
                       value: followedArtistPublication,
-                      onChanged: (value) {
+                      onChanged: (value) async {
+                        final resData = await UserHttp().publicFollowedArtist();
+                        Fluttertoast.showToast(
+                          msg: resData["resM"],
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.TOP,
+                          timeInSecForIosWeb: 2,
+                          backgroundColor: Colors.white,
+                          textColor: Colors.black,
+                          fontSize: 16.0,
+                        );
                         setState(() {
                           followedArtistPublication = value;
                         });
@@ -388,7 +419,17 @@ class _SettingState extends State<Setting> {
                     child: Switch(
                       activeColor: AppColors.primary,
                       value: likedSongPublication,
-                      onChanged: (value) {
+                      onChanged: (value) async {
+                        final resData = await UserHttp().publicLikedSong();
+                        Fluttertoast.showToast(
+                          msg: resData["resM"],
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.TOP,
+                          timeInSecForIosWeb: 2,
+                          backgroundColor: Colors.white,
+                          textColor: Colors.black,
+                          fontSize: 16.0,
+                        );
                         setState(() {
                           likedSongPublication = value;
                         });
@@ -429,7 +470,17 @@ class _SettingState extends State<Setting> {
                     child: Switch(
                       activeColor: AppColors.primary,
                       value: likedAlbumPublication,
-                      onChanged: (value) {
+                      onChanged: (value) async {
+                        final resData = await UserHttp().publicLikedAlbum();
+                        Fluttertoast.showToast(
+                          msg: resData["resM"],
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.TOP,
+                          timeInSecForIosWeb: 2,
+                          backgroundColor: Colors.white,
+                          textColor: Colors.black,
+                          fontSize: 16.0,
+                        );
                         setState(() {
                           likedAlbumPublication = value;
                         });
@@ -470,7 +521,18 @@ class _SettingState extends State<Setting> {
                     child: Switch(
                       activeColor: AppColors.primary,
                       value: likedFeaturedPlaylistPublication,
-                      onChanged: (value) {
+                      onChanged: (value) async {
+                        final resData =
+                            await UserHttp().publicLikedFeaturedPlaylist();
+                        Fluttertoast.showToast(
+                          msg: resData["resM"],
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.TOP,
+                          timeInSecForIosWeb: 2,
+                          backgroundColor: Colors.white,
+                          textColor: Colors.black,
+                          fontSize: 16.0,
+                        );
                         setState(() {
                           likedFeaturedPlaylistPublication = value;
                         });
@@ -511,7 +573,18 @@ class _SettingState extends State<Setting> {
                     child: Switch(
                       activeColor: AppColors.primary,
                       value: createdPlaylistPublication,
-                      onChanged: (value) {
+                      onChanged: (value) async {
+                        final resData =
+                            await UserHttp().publicCreatedPlaylist();
+                        Fluttertoast.showToast(
+                          msg: resData["resM"],
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.TOP,
+                          timeInSecForIosWeb: 2,
+                          backgroundColor: Colors.white,
+                          textColor: Colors.black,
+                          fontSize: 16.0,
+                        );
                         setState(() {
                           createdPlaylistPublication = value;
                         });

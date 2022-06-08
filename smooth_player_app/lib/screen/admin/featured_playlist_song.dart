@@ -43,21 +43,19 @@ class _FeaturedPlaylistSongState extends State<FeaturedPlaylistSong> {
 
   late StreamSubscription stateSub;
 
-  Future<List<FeaturedSong>> viewSongs() async {
+  void viewSongs() async {
     List<FeaturedSong> resData =
         await FeaturedSongHttp().getFeaturedSongs(widget.featuredPlaylistId!);
-    return resData;
+    for (int i = 0; i < resData.length; i++) {
+      songs.add(resData[i].song!);
+    }
   }
 
   @override
   void initState() {
     super.initState();
 
-    viewSongs().then((value) {
-      for (int i = 0; i < value.length; i++) {
-        songs.add(value[i].song!);
-      }
-    });
+    viewSongs();
 
     featuredPlaylistSongs =
         FeaturedSongHttp().getFeaturedSongs(widget.featuredPlaylistId!);

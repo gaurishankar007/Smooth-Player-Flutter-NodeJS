@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:smooth_player_app/api/http/like_http.dart';
 import 'package:smooth_player_app/resource/colors.dart';
 
@@ -181,7 +182,18 @@ class _PlayingSongState extends State<PlayingSong> {
                       TextButton(
                         onPressed: () async {
                           if (Player.playingSong != null) {
-                            await LikeHttp().likeSong(Player.playingSong!.id!);
+                            final resData = await LikeHttp().likeSong(
+                                Player.playingSong!.id!,
+                                Player.playingSong!.title!);
+                            Fluttertoast.showToast(
+                              msg: resData["resM"],
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.TOP,
+                              timeInSecForIosWeb: 2,
+                              backgroundColor: Colors.white,
+                              textColor: Colors.black,
+                              fontSize: 16.0,
+                            );
                             setState(() {
                               songLike = !songLike;
                             });

@@ -7,9 +7,6 @@ part 'artist_data_res.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class ArtistData {
-  @JsonKey(name: "_id")
-  String? id;
-
   Artist? artist;
   List<Song>? popularSong;
   List<Album>? newAlbum;

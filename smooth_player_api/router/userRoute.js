@@ -421,4 +421,113 @@ router.put("/user/changeBiography", auth.verifyUser, (req, res) => {
     });
 });
 
+router.get("/user/profilePublication", auth.verifyUser, (req, res) => {
+  user.findOne({ _id: req.userInfo._id }).then((userData) => {
+    user
+      .updateOne(
+        { _id: userData._id },
+        { profile_publication: !userData.profile_publication }
+      )
+      .then(() => {
+        if (userData.profile_publication) {
+          res.send({ resM: "Profile made private." });
+        } else {
+          res.send({ resM: "Profile made public." });
+        }
+      });
+  });
+});
+
+router.get("/user/followedArtistPublication", auth.verifyUser, (req, res) => {
+  user.findOne({ _id: req.userInfo._id }).then((userData) => {
+    user
+      .updateOne(
+        { _id: userData._id },
+        { followed_artist_publication: !userData.followed_artist_publication }
+      )
+      .then(() => {
+        if (userData.followed_artist_publication) {
+          res.send({ resM: "Followed artist made private." });
+        } else {
+          res.send({ resM: "Followed artist made public." });
+        }
+      });
+  });
+});
+
+router.get("/user/likedSongPublication", auth.verifyUser, (req, res) => {
+  user.findOne({ _id: req.userInfo._id }).then((userData) => {
+    user
+      .updateOne(
+        { _id: userData._id },
+        { liked_song_publication: !userData.liked_song_publication }
+      )
+      .then(() => {
+        if (userData.liked_song_publication) {
+          res.send({ resM: "Liked song made private." });
+        } else {
+          res.send({ resM: "Liked song made public." });
+        }
+      });
+  });
+});
+
+router.get("/user/likedAlbumPublication", auth.verifyUser, (req, res) => {
+  user.findOne({ _id: req.userInfo._id }).then((userData) => {
+    user
+      .updateOne(
+        { _id: userData._id },
+        { liked_album_publication: !userData.liked_album_publication }
+      )
+      .then(() => {
+        if (userData.liked_album_publication) {
+          res.send({ resM: "Liked album made private." });
+        } else {
+          res.send({ resM: "Liked album made public." });
+        }
+      });
+  });
+});
+
+router.get(
+  "/user/likedFeaturedPlaylistPublication",
+  auth.verifyUser,
+  (req, res) => {
+    user.findOne({ _id: req.userInfo._id }).then((userData) => {
+      user
+        .updateOne(
+          { _id: userData._id },
+          {
+            liked_featured_playlist_publication:
+              !userData.liked_featured_playlist_publication,
+          }
+        )
+        .then(() => {
+          if (userData.liked_featured_playlist_publication) {
+            res.send({ resM: "Liked featured playlist made private." });
+          } else {
+            res.send({ resM: "Liked featured playlist made public." });
+          }
+        });
+    });
+  }
+);
+
+router.get("/user/createdPlaylistPublication", auth.verifyUser, (req, res) => {
+  user.findOne({ _id: req.userInfo._id }).then((userData) => {
+    user
+      .updateOne(
+        { _id: userData._id },
+        { created_playlist_publication: !userData.created_playlist_publication }
+      )
+      .then(() => {
+        if (userData.created_playlist_publication) {
+          res.send({ resM: "Liked created playlist made private." });
+        } else {
+          res.send({ resM: "Liked created playlist made public." });
+        }
+      });
+  });
+});
+
 module.exports = router;

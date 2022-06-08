@@ -34,26 +34,20 @@ class _ViewAdminAlbumState extends State<ViewAdminAlbum> {
   Song? song = Player.playingSong;
   final coverImage = ApiUrls.coverImageUrl;
 
-  late Future<List<Song>> albumSongs;
-
   List<Song> songs = [];
 
   late StreamSubscription stateSub;
 
-  Future<List<Song>> viewSongs() async {
+  void viewSongs() async {
     List<Song> resData = await SongHttp().getSongsAdmin(widget.albumId!);
-    return resData;
+    songs = resData;
   }
 
   @override
   void initState() {
     super.initState();
 
-    viewSongs().then((value) {
-      songs = value;
-    });
-
-    albumSongs = SongHttp().getSongsAdmin(widget.albumId!);
+    viewSongs();
 
     stateSub = player.onPlayerStateChanged.listen((state) {
       setState(() {
@@ -178,7 +172,7 @@ class _ViewAdminAlbumState extends State<ViewAdminAlbum> {
                 bottom: 80,
               ),
               child: FutureBuilder<List<Song>>(
-                future: albumSongs,
+                future: SongHttp().getSongsAdmin(widget.albumId!),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     return ListView.builder(

@@ -4,13 +4,15 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_player_app/screen/library/liked_song.dart';
 
+import '../../api/urls.dart';
 import '../../resource/colors.dart';
 import '../../resource/player.dart';
 import '../../widget/navigator.dart';
 import '../../widget/song_bar.dart';
 
 class ViewPlaylist extends StatefulWidget {
-  const ViewPlaylist({Key? key}) : super(key: key);
+  final String? profilePic;
+  const ViewPlaylist({Key? key, @required this.profilePic}) : super(key: key);
 
   @override
   State<ViewPlaylist> createState() => _ViewPlaylistState();
@@ -18,6 +20,7 @@ class ViewPlaylist extends StatefulWidget {
 
 class _ViewPlaylistState extends State<ViewPlaylist> {
   final AudioPlayer player = Player.player;
+  final profileUrl = ApiUrls.profileUrl;
 
   late StreamSubscription stateSub;
 
@@ -55,6 +58,27 @@ class _ViewPlaylistState extends State<ViewPlaylist> {
           ),
           child: Column(
             children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Your Library",
+                            style: TextStyle(
+                              color: AppColors.text,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                          ),
+                          CircleAvatar(
+                            radius: 22,
+                            backgroundImage: NetworkImage(
+                                profileUrl + widget.profilePic!),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
