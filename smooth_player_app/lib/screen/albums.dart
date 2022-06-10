@@ -13,6 +13,7 @@ import '../api/urls.dart';
 import '../resource/player.dart';
 import '../widget/navigator.dart';
 import '../widget/song_bar.dart';
+import 'library/add_playlist_song.dart';
 
 class AlbumView extends StatefulWidget {
   final String? albumId;
@@ -434,7 +435,20 @@ class _AlbumViewState extends State<AlbumView> {
                                                                   .circular(15),
                                                         ),
                                                       ),
-                                                      onPressed: () {},
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                        Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (builder) =>
+                                                                AddSongToPlaylist(
+                                                              songId: snapshot
+                                                                  .data![index]
+                                                                  .id,
+                                                            ),
+                                                          ),
+                                                        );
+                                                      },
                                                       child: Text(
                                                           "Add to playlist"),
                                                     ),

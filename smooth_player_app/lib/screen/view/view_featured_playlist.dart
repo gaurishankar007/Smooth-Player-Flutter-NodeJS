@@ -13,6 +13,7 @@ import '../../resource/colors.dart';
 import '../../resource/player.dart';
 import '../../widget/navigator.dart';
 import '../../widget/song_bar.dart';
+import '../library/add_playlist_song.dart';
 
 class ViewFeaturedPlaylist extends StatefulWidget {
   final String? featuredPlaylistId;
@@ -488,7 +489,21 @@ class _ViewFeaturedPlaylistState extends State<ViewFeaturedPlaylist> {
                                                                   .circular(15),
                                                         ),
                                                       ),
-                                                      onPressed: () {},
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                        Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (builder) =>
+                                                                AddSongToPlaylist(
+                                                              songId: snapshot
+                                                                  .data![index]
+                                                                  .song!
+                                                                  .id,
+                                                            ),
+                                                          ),
+                                                        );
+                                                      },
                                                       child: Text(
                                                           "Add to playlist"),
                                                     ),

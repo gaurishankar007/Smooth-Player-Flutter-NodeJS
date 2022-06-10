@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:smooth_player_app/screen/library/add_playlist_song.dart';
 
 import '../../api/http/like_http.dart';
 import '../../api/http/song_http.dart';
@@ -462,7 +463,20 @@ class _ViewAlbumState extends State<ViewAlbum> {
                                                                   .circular(15),
                                                         ),
                                                       ),
-                                                      onPressed: () {},
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                        Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (builder) =>
+                                                                AddSongToPlaylist(
+                                                              songId: snapshot
+                                                                  .data![index]
+                                                                  .id,
+                                                            ),
+                                                          ),
+                                                        );
+                                                      },
                                                       child: Text(
                                                           "Add to playlist"),
                                                     ),

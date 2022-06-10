@@ -30,6 +30,7 @@ class _SearchState extends State<Search> {
   final coverImage = ApiUrls.coverImageUrl;
   final profileUrl = ApiUrls.profileUrl;
   final featuredPlaylistImage = ApiUrls.featuredPlaylistUrl;
+  final genreUrl = ApiUrls.genreUrl;
 
   late StreamSubscription stateSub;
 
@@ -1099,12 +1100,16 @@ class _SearchState extends State<Search> {
                                             ],
                                           ),
                                           ClipRRect(
+                                            borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(20),
+                                            ),
                                             child: Image(
-                                              height: sHeight * 0.15,
-                                              width: sHeight * 0.15,
+                                              height: sHeight * 0.13,
+                                              width: sHeight * 0.16,
                                               fit: BoxFit.cover,
-                                              image: NetworkImage(
-                                                  "https://www.cnet.com/a/img/resize/46cf22829afea321c902097ee78065f8d44a99d9/2021/11/10/ab5e2d3b-9a4a-41f0-b2cd-6cee804ce823/genre-charts-covers.png?auto=webp&fit=crop&height=630&width=1200"),
+                                              image: NetworkImage(genreUrl +
+                                                  snapshot.data![index] +
+                                                  ".jpg"),
                                             ),
                                           ),
                                         ],

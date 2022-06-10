@@ -99,8 +99,7 @@ class _CreateFeaturedSongState extends State<CreateFeaturedSong> {
                       } else {
                         setState(() {
                           searching = true;
-                          searchedSongs =
-                              SongHttp().searchSongByTitle(value);
+                          searchedSongs = SongHttp().searchSongByTitle(value);
                         });
                       }
                     }),
@@ -487,7 +486,7 @@ class _CreateFeaturedSongState extends State<CreateFeaturedSong> {
                                 Fluttertoast.showToast(
                                   toastLength: Toast.LENGTH_SHORT,
                                   gravity: ToastGravity.BOTTOM,
-                                  timeInSecForIosWeb: 3,
+                                  timeInSecForIosWeb: 5,
                                   backgroundColor: Colors.green,
                                   textColor: Colors.white,
                                   msg: resData["body"]["resM"],

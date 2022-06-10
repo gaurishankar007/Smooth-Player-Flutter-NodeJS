@@ -12,6 +12,7 @@ import '../../resource/colors.dart';
 import '../../resource/player.dart';
 import '../../widget/navigator.dart';
 import '../../widget/song_bar.dart';
+import '../library/add_playlist_song.dart';
 import 'view_album.dart';
 
 class ViewArtist extends StatefulWidget {
@@ -582,8 +583,24 @@ class _ViewArtistState extends State<ViewArtist> {
                                                                             15),
                                                                   ),
                                                                 ),
-                                                                onPressed:
-                                                                    () {},
+                                                                onPressed: () {
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                  Navigator
+                                                                      .push(
+                                                                    context,
+                                                                    MaterialPageRoute(
+                                                                      builder:
+                                                                          (builder) =>
+                                                                              AddSongToPlaylist(
+                                                                        songId: snapshot
+                                                                            .data!
+                                                                            .popularSong![index]
+                                                                            .id,
+                                                                      ),
+                                                                    ),
+                                                                  );
+                                                                },
                                                                 child: Text(
                                                                     "Add to playlist"),
                                                               ),

@@ -48,11 +48,11 @@ class PageNavigator extends StatelessWidget {
         ),
         NavigationDestination(
           icon: Icon(
-            Icons.music_note_rounded,
+            Icons.music_video_rounded,
             color: Colors.black,
           ),
           selectedIcon: Icon(
-            Icons.music_note_rounded,
+            Icons.music_video_rounded,
             color: Color(0XFF5B86E5),
           ),
           label: "",
@@ -91,7 +91,7 @@ class PageNavigator extends StatelessWidget {
               builder: (builder) => MyMusic(),
             ),
           );
-        } 
+        }
       },
     );
   }

@@ -3,7 +3,8 @@ import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:smooth_player_app/api/http/song_http.dart';
+import 'package:smooth_player_app/api/http/playlist_song_http.dart';
+import 'package:smooth_player_app/api/res/playlist_song_res.dart';
 import 'package:smooth_player_app/api/urls.dart';
 
 import '../../api/res/song_res.dart';
@@ -11,42 +12,40 @@ import '../../resource/colors.dart';
 import '../../resource/player.dart';
 import '../../widget/navigator.dart';
 import '../../widget/song_bar.dart';
-import '../library/add_playlist_song.dart';
 
-class ViewGenre extends StatefulWidget {
-  final String? genre;
-  final int? pageIndex;
-  const ViewGenre({
+class ViewPlaylistSong extends StatefulWidget {
+  final String? playlistId;
+  final String? playlistTitle;
+  const ViewPlaylistSong({
     Key? key,
-    @required this.genre,
-    @required this.pageIndex,
+    @required this.playlistId,
+    @required this.playlistTitle,
   }) : super(
           key: key,
         );
 
   @override
-  State<ViewGenre> createState() => _ViewGenreState();
+  State<ViewPlaylistSong> createState() => _ViewPlaylistSongState();
 }
 
-class _ViewGenreState extends State<ViewGenre> {
+class _ViewPlaylistSongState extends State<ViewPlaylistSong> {
   final AudioPlayer player = Player.player;
   final coverImage = ApiUrls.coverImageUrl;
 
   Song? song = Player.playingSong;
   List<Song> songs = [];
-  int songNum = 10;
-  late int songsLength;
-  bool more = true;
 
-  late Future<List<Song>> genreSongs;
+  late Future<List<PlaylistSong>> playlistSongs;
 
   late StreamSubscription stateSub;
 
-  Future<List<Song>> viewSongs() async {
-    List<Song> resData =
-        await SongHttp().viewGenreSongs(widget.genre!, songNum);
-    songs = resData;
-    songsLength = resData.length;
+  Future<List<PlaylistSong>> viewSongs() async {
+    List<PlaylistSong> resData =
+        await PlaylistSongHttp().viewPlaylistSongs(widget.playlistId!);
+    for (int i = 0; i < resData.length; i++) {
+      songs.add(resData[i].song!);
+    }
+
     return resData;
   }
 
@@ -54,7 +53,7 @@ class _ViewGenreState extends State<ViewGenre> {
   void initState() {
     super.initState();
 
-    genreSongs = viewSongs();
+    playlistSongs = viewSongs();
 
     stateSub = player.onPlayerStateChanged.listen((state) {
       setState(() {
@@ -85,7 +84,7 @@ class _ViewGenreState extends State<ViewGenre> {
           ),
         ),
         title: Text(
-          widget.genre!,
+          widget.playlistTitle!,
           style: TextStyle(
             color: AppColors.text,
             fontWeight: FontWeight.bold,
@@ -104,8 +103,8 @@ class _ViewGenreState extends State<ViewGenre> {
         ),
         child: Column(
           children: [
-            FutureBuilder<List<Song>>(
-              future: genreSongs,
+            FutureBuilder<List<PlaylistSong>>(
+              future: playlistSongs,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return ListView.builder(
@@ -118,12 +117,14 @@ class _ViewGenreState extends State<ViewGenre> {
                         child: GestureDetector(
                           onDoubleTap: () async {
                             Song newSong = Song(
-                              id: snapshot.data![index].id!,
-                              title: snapshot.data![index].title!,
-                              album: snapshot.data![index].album!,
-                              music_file: snapshot.data![index].music_file!,
-                              cover_image: snapshot.data![index].cover_image!,
-                              like: snapshot.data![index].like!,
+                              id: snapshot.data![index].song!.id!,
+                              title: snapshot.data![index].song!.title!,
+                              album: snapshot.data![index].song!.album!,
+                              music_file:
+                                  snapshot.data![index].song!.music_file!,
+                              cover_image:
+                                  snapshot.data![index].song!.cover_image!,
+                              like: snapshot.data![index].song!.like!,
                             );
 
                             Player().playSong(newSong, songs);
@@ -133,7 +134,7 @@ class _ViewGenreState extends State<ViewGenre> {
                             children: [
                               Player.playingSong != null
                                   ? Player.playingSong!.id ==
-                                          snapshot.data![index].id!
+                                          snapshot.data![index].song!.id!
                                       ? Icon(
                                           Icons.bar_chart_rounded,
                                           color: AppColors.primary,
@@ -179,7 +180,7 @@ class _ViewGenreState extends State<ViewGenre> {
                                             fit: BoxFit.cover,
                                             image: NetworkImage(
                                               coverImage +
-                                                  snapshot.data![index]
+                                                  snapshot.data![index].song!
                                                       .cover_image!,
                                             ),
                                           ),
@@ -197,7 +198,8 @@ class _ViewGenreState extends State<ViewGenre> {
                                             SingleChildScrollView(
                                               scrollDirection: Axis.horizontal,
                                               child: Text(
-                                                snapshot.data![index].title!,
+                                                snapshot
+                                                    .data![index].song!.title!,
                                                 overflow: TextOverflow.fade,
                                                 softWrap: false,
                                                 style: TextStyle(
@@ -222,8 +224,12 @@ class _ViewGenreState extends State<ViewGenre> {
                                             SingleChildScrollView(
                                               scrollDirection: Axis.horizontal,
                                               child: Text(
-                                                snapshot.data![index].album!
-                                                    .artist!.profile_name!,
+                                                snapshot
+                                                    .data![index]
+                                                    .song!
+                                                    .album!
+                                                    .artist!
+                                                    .profile_name!,
                                                 overflow: TextOverflow.fade,
                                                 softWrap: false,
                                                 style: TextStyle(
@@ -248,7 +254,8 @@ class _ViewGenreState extends State<ViewGenre> {
                                   Row(
                                     children: [
                                       Text(
-                                        snapshot.data![index].like!.toString(),
+                                        snapshot.data![index].song!.like!
+                                            .toString(),
                                         overflow: TextOverflow.fade,
                                         softWrap: false,
                                         style: TextStyle(
@@ -298,27 +305,35 @@ class _ViewGenreState extends State<ViewGenre> {
                                                       Player.songQueue.add(
                                                         Song(
                                                           id: snapshot
-                                                              .data![index].id!,
+                                                              .data![index]
+                                                              .song!
+                                                              .id!,
                                                           title: snapshot
                                                               .data![index]
+                                                              .song!
                                                               .title!,
                                                           album: snapshot
                                                               .data![index]
+                                                              .song!
                                                               .album!,
                                                           music_file: snapshot
                                                               .data![index]
+                                                              .song!
                                                               .music_file!,
                                                           cover_image: snapshot
                                                               .data![index]
+                                                              .song!
                                                               .cover_image!,
                                                           like: snapshot
                                                               .data![index]
+                                                              .song!
                                                               .like!,
                                                         ),
                                                       );
                                                       Fluttertoast.showToast(
                                                         msg: snapshot
                                                                 .data![index]
+                                                                .song!
                                                                 .title! +
                                                             " is added to the queue.",
                                                         toastLength:
@@ -338,8 +353,7 @@ class _ViewGenreState extends State<ViewGenre> {
                                                   child: ElevatedButton(
                                                     style: ElevatedButton
                                                         .styleFrom(
-                                                      primary:
-                                                          AppColors.primary,
+                                                      primary: Colors.red,
                                                       elevation: 10,
                                                       shadowColor: Colors.black,
                                                       shape:
@@ -349,22 +363,34 @@ class _ViewGenreState extends State<ViewGenre> {
                                                                 .circular(15),
                                                       ),
                                                     ),
-                                                    onPressed: () {
+                                                    onPressed: () async {
                                                       Navigator.pop(context);
-                                                      Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                          builder: (builder) =>
-                                                              AddSongToPlaylist(
-                                                            songId: snapshot
-                                                                .data![index]
-                                                                .id,
-                                                          ),
-                                                        ),
+                                                      final resData =
+                                                          await PlaylistSongHttp()
+                                                              .deletePlaylistSong(
+                                                                  snapshot
+                                                                      .data![
+                                                                          index]
+                                                                      .id!);
+
+                                                      setState(() {
+                                                        playlistSongs =
+                                                            PlaylistSongHttp()
+                                                                .viewPlaylistSongs(
+                                                                    widget
+                                                                        .playlistId!);
+                                                      });
+
+                                                      Fluttertoast.showToast(
+                                                        msg: resData["resM"],
+                                                        toastLength:
+                                                            Toast.LENGTH_SHORT,
+                                                        gravity:
+                                                            ToastGravity.BOTTOM,
+                                                        timeInSecForIosWeb: 3,
                                                       );
                                                     },
-                                                    child:
-                                                        Text("Add to playlist"),
+                                                    child: Text("Delete"),
                                                   ),
                                                 ),
                                               ],
@@ -403,49 +429,6 @@ class _ViewGenreState extends State<ViewGenre> {
                 );
               },
             ),
-            more
-                ? OutlinedButton(
-                    onPressed: () async {
-                      final resData = await SongHttp()
-                          .viewGenreSongs(widget.genre!, songNum + 10);
-                      songs = resData;
-                      if (resData.length == songsLength) {
-                        setState(() {
-                          more = false;
-                        });
-                        return;
-                      } else {
-                        songNum = songNum + 10;
-                        songsLength = resData.length;
-                        setState(() {
-                          genreSongs =
-                              SongHttp().viewGenreSongs(widget.genre!, songNum);
-                        });
-                      }
-                    },
-                    child: Text(
-                      "More",
-                      style: TextStyle(
-                        fontSize: 15,
-                      ),
-                    ),
-                    style: OutlinedButton.styleFrom(
-                      minimumSize: Size.zero,
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 4,
-                      ),
-                      primary: AppColors.primary,
-                      side: BorderSide(
-                        width: 2,
-                        color: AppColors.primary,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                    ),
-                  )
-                : SizedBox(),
           ],
         ),
       ),
@@ -456,7 +439,7 @@ class _ViewGenreState extends State<ViewGenre> {
           : null,
       floatingActionButtonLocation:
           FloatingActionButtonLocation.miniCenterFloat,
-      bottomNavigationBar: PageNavigator(pageIndex: widget.pageIndex),
+      bottomNavigationBar: PageNavigator(pageIndex: 2),
     );
   }
 }
