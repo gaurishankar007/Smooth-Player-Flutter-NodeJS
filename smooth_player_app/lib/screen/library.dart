@@ -56,7 +56,6 @@ class _LibraryState extends State<Library> {
   @override
   Widget build(BuildContext context) {
     final sWidth = MediaQuery.of(context).size.width;
-    final sHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       body: SafeArea(
@@ -518,28 +517,67 @@ class _LibraryState extends State<Library> {
                                       ),
                                       SizedBox(
                                         width: sWidth * .65,
-                                        child: SingleChildScrollView(
-                                          scrollDirection: Axis.horizontal,
-                                          child: Text(
-                                            snapshot.data!.artists![index]
-                                                .profile_name!,
-                                            overflow: TextOverflow.fade,
-                                            softWrap: false,
-                                            style: TextStyle(
-                                              fontSize: 15,
-                                              color: Player.playingSong != null
-                                                  ? Player.playingSong!.album!
-                                                              .artist!.id ==
-                                                          snapshot
-                                                              .data!
-                                                              .artists![index]
-                                                              .id!
-                                                      ? AppColors.primary
-                                                      : AppColors.text
-                                                  : AppColors.text,
-                                              fontWeight: FontWeight.bold,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            SingleChildScrollView(
+                                              scrollDirection: Axis.horizontal,
+                                              child: Text(
+                                                snapshot.data!.artists![index]
+                                                    .profile_name!,
+                                                overflow: TextOverflow.fade,
+                                                softWrap: false,
+                                                style: TextStyle(
+                                                  fontSize: 15,
+                                                  color: Player.playingSong !=
+                                                          null
+                                                      ? Player
+                                                                  .playingSong!
+                                                                  .album!
+                                                                  .artist!
+                                                                  .id ==
+                                                              snapshot
+                                                                  .data!
+                                                                  .artists![
+                                                                      index]
+                                                                  .id!
+                                                          ? AppColors.primary
+                                                          : AppColors.text 
+                                                      : AppColors.text,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
                                             ),
-                                          ),
+                                            SizedBox(
+                                              height: 5,
+                                            ),
+                                            SingleChildScrollView(
+                                              scrollDirection: Axis.horizontal,
+                                              child: Text(
+                                                "Artist",
+                                                overflow: TextOverflow.fade,
+                                                softWrap: false,
+                                                style: TextStyle(
+                                                  color: Player.playingSong !=
+                                                          null
+                                                      ? Player
+                                                                  .playingSong!
+                                                                  .album!
+                                                                  .artist!
+                                                                  .id ==
+                                                              snapshot
+                                                                  .data!
+                                                                  .artists![
+                                                                      index]
+                                                                  .id!
+                                                          ? AppColors.primary
+                                                          : AppColors.text
+                                                      : AppColors.text,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ],
@@ -603,13 +641,10 @@ class _LibraryState extends State<Library> {
                                       ),
                                       borderRadius: BorderRadius.circular(5),
                                     ),
-                                    child: Text(
-                                      "G",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 35,
-                                        color: Colors.white,
-                                      ),
+                                    child: Icon(
+                                      Icons.group_work_rounded,
+                                      size: 35,
+                                      color: Colors.white,
                                     ),
                                   ),
                                   SizedBox(
@@ -617,18 +652,38 @@ class _LibraryState extends State<Library> {
                                   ),
                                   SizedBox(
                                     width: sWidth * .65,
-                                    child: SingleChildScrollView(
-                                      scrollDirection: Axis.horizontal,
-                                      child: Text(
-                                        snapshot.data!.genres![index],
-                                        overflow: TextOverflow.fade,
-                                        softWrap: false,
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          color: AppColors.text,
-                                          fontWeight: FontWeight.bold,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        SingleChildScrollView(
+                                          scrollDirection: Axis.horizontal,
+                                          child: Text(
+                                            snapshot.data!.genres![index],
+                                            overflow: TextOverflow.fade,
+                                            softWrap: false,
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                              color: AppColors.text,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
                                         ),
-                                      ),
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+                                        SingleChildScrollView(
+                                          scrollDirection: Axis.horizontal,
+                                          child: Text(
+                                            "Genre",
+                                            overflow: TextOverflow.fade,
+                                            softWrap: false,
+                                            style: TextStyle(
+                                              color: AppColors.text,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ],
@@ -670,13 +725,10 @@ class _LibraryState extends State<Library> {
                                       ),
                                       borderRadius: BorderRadius.circular(5),
                                     ),
-                                    child: Text(
-                                      "p",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 35,
-                                        color: Colors.white,
-                                      ),
+                                    child: Icon(
+                                      Icons.music_note_rounded,
+                                      size: 35,
+                                      color: Colors.white,
                                     ),
                                   ),
                                   SizedBox(
@@ -684,19 +736,39 @@ class _LibraryState extends State<Library> {
                                   ),
                                   SizedBox(
                                     width: sWidth * .65,
-                                    child: SingleChildScrollView(
-                                      scrollDirection: Axis.horizontal,
-                                      child: Text(
-                                        snapshot
-                                            .data!.userPlaylists![index].title!,
-                                        overflow: TextOverflow.fade,
-                                        softWrap: false,
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          color: AppColors.text,
-                                          fontWeight: FontWeight.bold,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        SingleChildScrollView(
+                                          scrollDirection: Axis.horizontal,
+                                          child: Text(
+                                            snapshot.data!.userPlaylists![index]
+                                                .title!,
+                                            overflow: TextOverflow.fade,
+                                            softWrap: false,
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                              color: AppColors.text,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
                                         ),
-                                      ),
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+                                        SingleChildScrollView(
+                                          scrollDirection: Axis.horizontal,
+                                          child: Text(
+                                            "Playlist",
+                                            overflow: TextOverflow.fade,
+                                            softWrap: false,
+                                            style: TextStyle(
+                                              color: AppColors.text,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ],

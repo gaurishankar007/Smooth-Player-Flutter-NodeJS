@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:smooth_player_app/api/http/like_http.dart';
 import 'package:smooth_player_app/api/res/featured_playlist_res.dart';
 import 'package:smooth_player_app/screen/view/view_featured_playlist.dart';
-import 'package:smooth_player_app/widget/admin_navigator.dart';
+import 'package:smooth_player_app/widget/navigator.dart';
 
 import '../../api/urls.dart';
 import '../../resource/colors.dart';
@@ -58,6 +58,7 @@ class _LikedFeaturedPlaylistState extends State<LikedFeaturedPlaylist> {
             top: sHeight * .01,
             left: sWidth * .03,
             right: sWidth * .03,
+            bottom: 80,
           ),
           child: Column(
             children: [
@@ -229,8 +230,8 @@ class _LikedFeaturedPlaylistState extends State<LikedFeaturedPlaylist> {
           : null,
       floatingActionButtonLocation:
           FloatingActionButtonLocation.miniCenterFloat,
-      bottomNavigationBar: AdminPageNavigator(
-        pageIndex: 0,
+      bottomNavigationBar: PageNavigator(
+        pageIndex: 2,
       ),
     );
   }

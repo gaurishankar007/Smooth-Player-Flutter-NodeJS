@@ -242,7 +242,7 @@ class _LikedAlbumState extends State<LikedAlbum> {
       floatingActionButtonLocation:
           FloatingActionButtonLocation.miniCenterFloat,
       bottomNavigationBar: PageNavigator(
-        pageIndex: 3,
+        pageIndex: 2,
       ),
     );
   }

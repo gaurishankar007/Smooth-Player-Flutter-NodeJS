@@ -249,6 +249,11 @@ class SongHttp {
       },
     );
 
+    if (jsonDecode(response.body).isEmpty) {
+      return SearchData(
+          songs: [], albums: [], featuredPlaylists: [], artists: [], users: []);
+    }
+
     return SearchData.fromJson(jsonDecode(response.body));
   }
 

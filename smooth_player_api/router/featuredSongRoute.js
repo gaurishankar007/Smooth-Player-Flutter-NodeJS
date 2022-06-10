@@ -10,18 +10,36 @@ router.delete("/delete/featuredPlaylistSong", auth.verifyAdmin, (req, res) => {
   });
 });
 
-router.post("/upload/featuredSong", auth.verifyAdmin, (req, res) => {
+router.post("/upload/featuredSong", auth.verifyAdmin, async (req, res) => {
   const featuredPlaylistId = req.body.featuredPlaylistId;
   const songId = req.body.songId;
+  var songExist = false;
 
   for (i = 0; i < songId.length; i++) {
-    new featuredSong({
-      featuredPlaylist: mongoose.Types.ObjectId(featuredPlaylistId),
-      song: mongoose.Types.ObjectId(songId[i]),
-    }).save();
+    const featuredSongData = await featuredSong.findOne({
+      featuredPlaylist: featuredPlaylistId,
+      song: songId[i],
+    });
+
+    if (featuredSongData === null) {
+      await featuredSong.create({
+        featuredPlaylist: mongoose.Types.ObjectId(featuredPlaylistId),
+        song: mongoose.Types.ObjectId(songId[i]),
+      });
+    } else {
+      songExist = true;
+    }
   }
 
-  res.status(201).send({ resM: "Songs added to featured playlist." });
+  if (songExist) {
+    res
+      .status(201)
+      .send({
+        resM: "Songs added to featured playlist except already existing ones.",
+      });
+  } else {
+    res.status(201).send({ resM: "Songs added to featured playlist." });
+  }
 });
 
 router.post("/view/featuredSong", auth.verifyAdmin, async (req, res) => {
