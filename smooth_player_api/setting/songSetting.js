@@ -3,7 +3,7 @@ const multer = require("multer");
 const storageNavigation = multer.diskStorage({
     destination: function(req, file, cb) {
         if(file.originalname.split(".").pop() == "png" || file.originalname.split(".").pop() == "jpeg" || file.originalname.split(".").pop() == "jpg")  { 
-            cb(null, "../smooth_player_api/upload/image/album_song");
+            cb(null, "../smooth_player_api/upload/image/albumSong");
         } else if(file.originalname.split(".").pop() == "mp3" || file.originalname.split(".").pop() == "mp4") {
             cb(null, "../smooth_player_api/upload/music");
         }
