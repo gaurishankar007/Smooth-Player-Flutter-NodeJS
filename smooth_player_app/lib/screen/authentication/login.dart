@@ -5,6 +5,7 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:smooth_player_app/resource/colors.dart';
 import 'package:smooth_player_app/api/http/authentication/login_http.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:smooth_player_app/screen/authentication/forget_password.dart';
 import 'package:smooth_player_app/screen/authentication/sign_up.dart';
 import 'package:smooth_player_app/screen/home.dart';
 import '../../api/log_status.dart';
@@ -231,18 +232,20 @@ class _LoginState extends State<Login> {
                   ),
                 ),
                 SizedBox(
-                  height: 25,
+                  height: 2,
                 ),
-                Text(
+                TextButton(onPressed: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (builder)=> ForgetPassword()));
+                }, child:                 Text(
                   "Forgot Password",
                   style: TextStyle(
                     decoration: TextDecoration.underline,
                     fontSize: 15,
                     color: AppColors.primary,
                   ),
-                ),
+                ),),
                 SizedBox(
-                  height: 25,
+                  height: 2,
                 ),
                 ElevatedButton(
                   key: Key("button"),
