@@ -511,22 +511,6 @@ class _SignUpState extends State<SignUp> {
                   ),
                 ),
                 SizedBox(
-                  height: 20,
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, "login");
-                  },
-                  child: Text(
-                    "Already have an account? Login",
-                    style: TextStyle(
-                      decoration: TextDecoration.underline,
-                      fontSize: 15,
-                      color: AppColors.primary,
-                    ),
-                  ),
-                ),
-                SizedBox(
                   height: 25,
                 ),
               ],
