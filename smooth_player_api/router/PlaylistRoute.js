@@ -1,6 +1,5 @@
 const express = require("express");
 const router = new express.Router();
-const mongoose = require("mongoose");
 const auth = require("../authentication/auth");
 const playlist = require("../model/playlistModel");
 

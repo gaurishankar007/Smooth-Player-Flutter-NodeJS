@@ -1,5 +1,4 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const router = new express.Router();
 const auth = require("../authentication/auth");
 const bcryptjs = require("bcryptjs");

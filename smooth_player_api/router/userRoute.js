@@ -13,7 +13,6 @@ const like = require("../model/likeModel");
 const playlist = require("../model/playlistModel");
 const auth = require("../authentication/auth.js");
 const profileUpload = require("../setting/profileSetting.js");
-const { find } = require("../model/userModel");
 
 // User routes.....
 router.post("/admin/register", (req, res) => {
