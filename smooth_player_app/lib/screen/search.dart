@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:smooth_player_app/api/http/song_http.dart';
 import 'package:smooth_player_app/api/res/search_song_res.dart';
+import 'package:smooth_player_app/screen/view/view_user.dart';
 
 import '../api/res/song_res.dart';
 import '../api/urls.dart';
@@ -885,8 +886,8 @@ class _SearchState extends State<Search> {
                                                 context,
                                                 MaterialPageRoute(
                                                   builder: (builder) =>
-                                                      ViewArtist(
-                                                    artistId: snapshot
+                                                      ViewUser(
+                                                    userId: snapshot
                                                         .data!.users![index].id,
                                                     pageIndex: 0,
                                                   ),
