@@ -18,5 +18,6 @@ const featuredPlaylistSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+const featuredPlaylist = mongoose.model("featuredPlaylist", featuredPlaylistSchema);
 
-module.exports = mongoose.model("featuredPlaylist", featuredPlaylistSchema);
+module.exports = featuredPlaylist;

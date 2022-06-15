@@ -318,4 +318,20 @@ router.post("/genre/songs", auth.verifyUser, async (req, res) => {
   res.send(songs);
 });
 
+router.delete("/delete/reportedSong", auth.verifyAdmin, (req, res) => {
+  song.findOne({ _id: req.body.songId }).then((songData) => {
+    album.findOne({ _id: songData.album }).then((albumData) => {
+      if (songData.cover_image !== albumData.album_image) {
+        fs.unlinkSync(
+          `../smooth_player_api/upload/image/album_song/${songData.cover_image}`
+        );
+      }
+      fs.unlinkSync(`../smooth_player_api/upload/music/${songData.music_file}`);
+      song.findByIdAndDelete(songData._id).then(() => {
+        res.send({ resM: "song deleted." });
+      });
+    });
+  });
+});
+
 module.exports = router;
