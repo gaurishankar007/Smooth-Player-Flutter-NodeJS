@@ -51,6 +51,9 @@ app.use(playlistSong);
 const library = require("./router/libraryRoute");
 app.use(library);
 
+const token = require("./router/tokenRoute");
+app.use(token);
+
 app.listen(8080, () => {
   console.log("Server running on port: 8080...");
 });

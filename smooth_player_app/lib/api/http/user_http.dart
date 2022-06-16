@@ -5,6 +5,7 @@ import 'dart:io';
 
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
+import 'package:smooth_player_app/api/res/user_data_res.dart';
 
 import '../log_status.dart';
 import '../res/user_res.dart';
@@ -215,5 +216,13 @@ class UserHttp {
         headers: {HttpHeaders.authorizationHeader: "Bearer $token"});
 
     return jsonDecode(response.body) as Map;
+  }
+
+  Future<UserData> userPublishedData(String userId) async {
+    final response = await post(Uri.parse(routeUrl + "user/publishedData"),
+        body: {"userId": userId},
+        headers: {HttpHeaders.authorizationHeader: "Bearer $token"});
+
+    return UserData.fromJson(jsonDecode(response.body));
   }
 }

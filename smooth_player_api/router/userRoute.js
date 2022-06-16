@@ -8,6 +8,9 @@ const fs = require("fs");
 
 // Importing self made js files....
 const user = require("../model/userModel");
+const follow = require("../model/followModel");
+const like = require("../model/likeModel");
+const playlist = require("../model/playlistModel");
 const auth = require("../authentication/auth.js");
 const profileUpload = require("../setting/profileSetting.js");
 
@@ -528,6 +531,117 @@ router.get("/user/createdPlaylistPublication", auth.verifyUser, (req, res) => {
         }
       });
   });
+});
+
+router.post("/user/publishedData", auth.verifyUser, async (req, res) => {
+  const userId = req.body.userId;
+  const userDetail = await user.findById(userId);
+  const userData = {};
+
+  if (userDetail.profile_publication) {
+    userData["profile"] = {
+      profile_name: userDetail.profile_name,
+      profile_picture: userDetail.profile_picture,
+      gender: userDetail.gender,
+      birth_date: userDetail.birth_date,
+      biography: userDetail.biography,
+    };
+  }
+
+  if (userDetail.followed_artist_publication) {
+    const followedArtists1 = await follow
+      .find({ user: userId })
+      .populate(
+        "artist",
+        "profile_name profile_picture biography follower verified"
+      )
+      .sort({ createdAt: -1 });
+
+    const followedArtists = [];
+    for (let i = 0; i < followedArtists1.length; i++) {
+      followedArtists.push(followedArtists1[i].artist);
+    }
+    userData["followedArtists"] = followedArtists;
+  }
+
+  if (userDetail.liked_song_publication) {
+    const likedSongs1 = await like
+      .find({
+        user: userId,
+        album: null,
+        featuredPlaylist: null,
+      })
+      .populate("song")
+      .sort({ createdAt: -1 });
+
+    const likedSongs2 = await like.populate(likedSongs1, {
+      path: "song.album",
+      select: "title artist album_image like",
+    });
+
+    const likedSongs3 = await like.populate(likedSongs2, {
+      path: "song.album.artist",
+      select: "profile_name profile_picture biography follower verified",
+    });
+
+    const likedSongs = [];
+    for (let i = 0; i < likedSongs3.length; i++) {
+      likedSongs.push(likedSongs3[i].song);
+    }
+
+    userData["likedSongs"] = likedSongs;
+  }
+
+  if (userDetail.liked_album_publication) {
+    const likedAlbums1 = await like
+      .find({
+        user: userId,
+        song: null,
+        featuredPlaylist: null,
+      })
+      .populate("album")
+      .sort({ createdAt: -1 });
+
+    const likedAlbums2 = await like.populate(likedAlbums1, {
+      path: "album.artist",
+      select: "profile_name profile_picture biography follower verified",
+    });
+
+    const likedAlbums = [];
+    for (let i = 0; i < likedAlbums2.length; i++) {
+      likedAlbums.push(likedAlbums2[i].album);
+    }
+
+    userData["likedAlbums"] = likedAlbums;
+  }
+
+  if (userDetail.liked_featured_playlist_publication) {
+    const likedFeaturedPlaylists1 = await like
+      .find({
+        user: userId,
+        song: null,
+        album: null,
+      })
+      .populate("featuredPlaylist")
+      .sort({ createdAt: -1 });
+
+    const likedFeaturedPlaylists = [];
+    for (let i = 0; i < likedFeaturedPlaylists1.length; i++) {
+      likedFeaturedPlaylists.push(likedFeaturedPlaylists1[i].featuredPlaylist);
+    }
+
+    userData["likedFeaturedPlaylists"] = likedFeaturedPlaylists;
+  }
+
+  if (userDetail.created_playlist_publication) {
+    userData["playlists"] = await playlist
+      .find({
+        user: userId,
+      })
+      .sort({ createdAt: -1 });
+  }
+
+  res.send(userData);
 });
 
 module.exports = router;
