@@ -3,8 +3,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:smooth_player_app/api/res/album_res.dart';
 
-
-    part 'song_res.g.dart';
+part 'song_res.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Song {
@@ -25,11 +24,10 @@ class Song {
     this.album,
     this.music_file,
     this.cover_image,
-    this.like
+    this.like,
   });
 
- factory Song.fromJson(Map<String, dynamic> json) =>
-      _$SongFromJson(json);
+  factory Song.fromJson(Map<String, dynamic> json) => _$SongFromJson(json);
 
   Map<String, dynamic> toJson() => _$SongToJson(this);
 }

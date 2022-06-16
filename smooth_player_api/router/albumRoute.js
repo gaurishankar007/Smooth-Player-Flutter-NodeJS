@@ -56,7 +56,7 @@ router.delete("/delete/album", auth.verifyUser, async (req, res) => {
 
     if (songs[i]["cover_image"] !== albumData["album_image"]) {
       fs.unlinkSync(
-        `../smooth_player_api/upload/image/album_song/${songs[i]["cover_image"]}`
+        `../smooth_player_api/upload/image/albumSong/${songs[i]["cover_image"]}`
       );
     }
     fs.unlinkSync(
@@ -65,7 +65,7 @@ router.delete("/delete/album", auth.verifyUser, async (req, res) => {
   }
 
   fs.unlinkSync(
-    `../smooth_player_api/upload/image/album_song/${albumData["album_image"]}`
+    `../smooth_player_api/upload/image/albumSong/${albumData["album_image"]}`
   );
   album.findByIdAndDelete(albumData["_id"]).then(() => {
     res.send({ resM: "Album has been deleted." });
@@ -87,7 +87,7 @@ router.put(
 
     album.findOne({ _id: req.body.albumId }).then((albumData) => {
       fs.unlinkSync(
-        `../smooth_player_api/upload/image/album_song/${albumData["album_image"]}`
+        `../smooth_player_api/upload/image/albumSong/${albumData["album_image"]}`
       );
       album
         .updateOne(

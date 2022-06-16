@@ -75,7 +75,7 @@ class _PasswordSettingState extends State<PasswordSetting> {
                       },
                       validator: MultiValidator([
                         RequiredValidator(
-                            errorText: "Currrent password is required!"),
+                            errorText: "Current password is required!"),
                       ]),
                       obscureText: curP,
                       style: TextStyle(
@@ -147,9 +147,9 @@ class _PasswordSettingState extends State<PasswordSetting> {
                       ),
                     ),
                   ),
-                  // SizedBox(
-                  //   height: 5,
-                  // ),
+                  SizedBox(
+                    height: 5,
+                  ),
                   ListTile(
                     contentPadding:
                         EdgeInsets.only(left: 0, right: 0, bottom: 10),
@@ -206,7 +206,7 @@ class _PasswordSettingState extends State<PasswordSetting> {
                             backgroundColor: Colors.red,
                             textColor: Colors.white,
                             msg:
-                                "Confirm password and new password muust be same",
+                                "Confirm password and new password must be same",
                           );
                         }
 

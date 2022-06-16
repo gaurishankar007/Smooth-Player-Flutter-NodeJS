@@ -6,11 +6,11 @@ import 'package:http/http.dart';
 import '../log_status.dart';
 import '../urls.dart';
 
-class TokentHttp {
+class TokenHttp {
   final routeUrl = ApiUrls.routeUrl;
   final token = LogStatus.token;
 
-  Future<Map> generateTokem(String email, String password) async {
+  Future<Map> generateToken(String email, String password) async {
     final response = await post(
       Uri.parse(routeUrl + "generate/token"),
       body: {"email": email, "password": password},
@@ -19,7 +19,10 @@ class TokentHttp {
       },
     );
 
-    return jsonDecode(response.body) as Map;
+    return {
+      "statusCode": response.statusCode,
+      "body": jsonDecode(response.body)
+    };
   }
 
   Future<Map> verifyToken(String tokenNumber, String userId) async {
@@ -31,6 +34,9 @@ class TokentHttp {
       },
     );
 
-    return jsonDecode(response.body) as Map;
+    return {
+      "statusCode": response.statusCode,
+      "body": jsonDecode(response.body)
+    };
   }
 }
