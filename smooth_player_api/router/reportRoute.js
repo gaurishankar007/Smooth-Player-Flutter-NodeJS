@@ -6,6 +6,7 @@ const report = require("../model/reportModel");
 const album = require("../model/albumModel");
 const song = require("../model/songModel");
 const user = require("../model/userModel");
+const fs = require("fs");
 
 router.post("/report/song", auth.verifyUser, (req, res) => {
   const reportFor = req.body.reportFor;
@@ -24,17 +25,45 @@ router.post("/report/song", auth.verifyUser, (req, res) => {
   });
 });
 
-router.put("/report/solved", auth.verifyAdmin, (req, res) => {
-  report
-    .findOneAndUpdate({ _id: req.body.reportId }, { solved: true })
-    .then(() => {
-      res.status(201).send({ resM: "Report has been solved." });
-    });
+router.delete("/report/delete", auth.verifyAdmin, (req, res) => {
+  report.deleteOne({ _id: req.body.reportId }).then(() => {
+    res.send({ resM: "Report has been deleted." });
+  });
 });
 
-router.put("/report/delete", auth.verifyAdmin, (req, res) => {
-  report.findOneAndDelete({ _id: req.body.reportId }).then(() => {
-    res.send({ resM: "Report has been deleted." });
+router.delete("/report/deleteSong", auth.verifyUser, (req, res) => {
+  song.findOne({ _id: req.body.songId }).then((songData) => {
+    album.findOne({ _id: songData.album }).then((albumData) => {
+      if (songData.cover_image !== albumData.album_image) {
+        fs.unlinkSync(
+          `../smooth_player_api/upload/image/albumSong/${songData.cover_image}`
+        );
+      }
+      fs.unlinkSync(`../smooth_player_api/upload/music/${songData.music_file}`);
+      song.findByIdAndDelete(songData._id).then(() => {
+        report.deleteMany({ song: songData._id }).then(() => {
+          res.send({ resM: "song deleted." });
+        });
+      });
+    });
+  });
+});
+
+router.delete("/report/songDeleted", auth.verifyAdmin, (req, res) => {
+  song.findOne({ _id: req.body.songId }).then((songData) => {
+    album.findOne({ _id: songData.album }).then((albumData) => {
+      if (songData.cover_image !== albumData.album_image) {
+        fs.unlinkSync(
+          `../smooth_player_api/upload/image/albumSong/${songData.cover_image}`
+        );
+      }
+      fs.unlinkSync(`../smooth_player_api/upload/music/${songData.music_file}`);
+      song.findByIdAndDelete(songData._id).then(() => {
+        report.deleteMany({ song: songData._id }).then(() => {
+          res.send({ resM: "song deleted." });
+        });
+      });
+    });
   });
 });
 
@@ -47,7 +76,7 @@ router.put("/report/warnArtist", auth.verifyAdmin, (req, res) => {
   }
 
   report.findOneAndUpdate({ _id: reportId }, { message: message }).then(() => {
-    res.status(201).send({ resM: "Report has been solved." });
+    res.send({ resM: "Report message sent." });
   });
 });
 
@@ -55,7 +84,11 @@ router.get("/report/viewMy", auth.verifyUser, async (req, res) => {
   const albums = await album.find({ artist: req.userInfo._id });
   const songs = await song.find({ album: { $in: albums } });
   const reports1 = await report
-    .find({ song: { $in: songs }, solved: false })
+    .find({ song: { $in: songs }, })
+    .populate(
+      "user",
+      "profile_name profile_picture biography follower verified"
+    )
     .populate("song")
     .sort({ createdAt: -1 });
 
@@ -75,10 +108,7 @@ router.get("/report/viewMy", auth.verifyUser, async (req, res) => {
 router.get("/report/check", auth.verifyUser, async (req, res) => {
   const albums = await album.find({ artist: req.userInfo._id });
   const songs = await song.find({ album: { $in: albums } });
-  const reports = await report
-    .find({ song: { $in: songs }, solved: false })
-    .populate("song")
-    .sort({ createdAt: -1 });
+  const reports = await report.find({ song: { $in: songs }, });
 
   var reportExists = false;
   if (reports.length > 0) {
@@ -88,19 +118,22 @@ router.get("/report/check", auth.verifyUser, async (req, res) => {
   res.send(reportExists);
 });
 
-router.get("/report/viewAll", auth.verifyAdmin, async (req, res) => {
+router.post("/report/viewAll", auth.verifyAdmin, async (req, res) => {
   const reportNum = req.body.reportNum;
+
   const reports1 = await report
-    .find({solved: false})
+    .find()
+    .populate(
+      "user",
+      "profile_name profile_picture biography follower verified"
+    )
     .populate("song")
     .sort({ createdAt: -1 })
     .limit(reportNum);
-
   const reports2 = await report.populate(reports1, {
     path: "song.album",
     select: "title artist album_image like",
   });
-
   const reports = await report.populate(reports2, {
     path: "song.album.artist",
     select: "profile_name profile_picture biography follower verified",
@@ -109,9 +142,8 @@ router.get("/report/viewAll", auth.verifyAdmin, async (req, res) => {
   res.send(reports);
 });
 
-router.post("/report/search", auth.verifyUser, async (req, res) => {
+router.post("/report/search", auth.verifyAdmin, async (req, res) => {
   const artistName = req.body.artistName;
-  const solved = req.body.solved;
   if (artistName.trim() === "") {
     res.send([]);
   }
@@ -124,7 +156,11 @@ router.post("/report/search", auth.verifyUser, async (req, res) => {
   const songs = await song.find({ album: { $in: albums } });
 
   const reports1 = await report
-    .find({ song: { $in: songs }, solved: solved })
+    .find({ song: { $in: songs }})
+    .populate(
+      "user",
+      "profile_name profile_picture biography follower verified"
+    )
     .populate("song")
     .sort({ createdAt: -1 });
   const reports2 = await report.populate(reports1, {

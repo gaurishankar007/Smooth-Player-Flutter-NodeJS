@@ -19,10 +19,6 @@ const reportSchema = new mongoose.Schema(
         type: String,
       },
     ],
-    solved: {
-      type: Boolean,
-      default: false,
-    },
   },
   {
     timestamps: true,

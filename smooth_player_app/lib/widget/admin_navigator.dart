@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smooth_player_app/screen/admin/artist_verification.dart';
 import 'package:smooth_player_app/screen/admin/featured_playlist.dart';
+import 'package:smooth_player_app/screen/admin/report.dart';
 
 class AdminPageNavigator extends StatelessWidget {
   final int? pageIndex;
@@ -62,6 +63,13 @@ class AdminPageNavigator extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (builder) => VerifyArtist(),
+            ),
+          );
+        } else if (index == 2) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (builder) => ReportedSongs(),
             ),
           );
         }

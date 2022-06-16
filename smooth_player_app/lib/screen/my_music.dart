@@ -3,12 +3,14 @@ import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:smooth_player_app/api/http/report_http.dart';
 import 'package:smooth_player_app/api/urls.dart';
 import 'package:smooth_player_app/resource/colors.dart';
 import 'package:smooth_player_app/screen/albums.dart';
 import 'package:smooth_player_app/screen/upload/edit_album.dart';
 import 'package:smooth_player_app/screen/upload/upload_album.dart';
 import 'package:smooth_player_app/screen/upload/upload_song.dart';
+import 'package:smooth_player_app/screen/view/view_report.dart';
 
 import '../api/http/album_http.dart';
 import '../api/res/album_res.dart';
@@ -28,16 +30,27 @@ class _MyMusicState extends State<MyMusic> {
   final coverImage = ApiUrls.coverImageUrl;
 
   late Future<List<Album>> albums;
+  bool reportExist = false;
 
   late StreamSubscription stateSub;
 
   bool songBarVisibility = Player.isPlaying;
+
+  void checkingReport() async {
+    bool reporting = await ReportHttp().checkReport();
+    if (reporting) {
+      setState(() {
+        reportExist = reporting;
+      });
+    }
+  }
 
   @override
   void initState() {
     super.initState();
 
     albums = AlbumHttp().getAlbums();
+    checkingReport();
 
     stateSub = player.onPlayerStateChanged.listen((state) {
       setState(() {
@@ -93,6 +106,23 @@ class _MyMusicState extends State<MyMusic> {
                       ),
                     ),
                   ),
+                  reportExist
+                      ? IconButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (builder) => ViewReport(),
+                              ),
+                            );
+                          },
+                          icon: Icon(
+                            Icons.report,
+                            color: Colors.red,
+                            size: 35,
+                          ),
+                        )
+                      : SizedBox(),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       primary: AppColors.primary,

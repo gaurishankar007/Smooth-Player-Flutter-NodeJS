@@ -26,7 +26,7 @@ router.post("/generate/token", async (req, res) => {
   if (userData === null) {
     return res
       .status(400)
-      .send({ resM: "User with that username does not exist." });
+      .send({ resM: "User with that email does not exist." });
   }
 
   const tokenData = await token.find({ user: userData._id });
@@ -49,7 +49,11 @@ router.post("/generate/token", async (req, res) => {
   });
 
   newToken.save().then(() => {
-    sendEmail(email, "Password Reset Token", "Your password reset token is " + tokenNumber + ".");
+    sendEmail(
+      email,
+      "Password Reset Token",
+      "Your password reset token is " + tokenNumber + "."
+    );
     res.status(201).send({ resM: "Token generated.", userId: userData._id });
   });
 });
@@ -57,6 +61,11 @@ router.post("/generate/token", async (req, res) => {
 router.put("/verify/token", (req, res) => {
   const tokenNumber = req.body.tokenNumber;
   const userId = req.body.userId;
+
+  const numberReg = new RegExp("^[0-9]+$");
+  if (!numberReg.test(tokenNumber)) {
+    return res.status(400).send({ resM: "Invalid token number." });
+  }
 
   token.findOne({ token: tokenNumber, user: userId }).then((tokenData) => {
     if (tokenData === null) {
