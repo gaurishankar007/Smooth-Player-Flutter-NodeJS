@@ -2,18 +2,21 @@ import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:smooth_player_app/api/http/follow_http.dart';
+import 'package:smooth_player_app/api/http/user_http.dart';
+import 'package:smooth_player_app/api/res/user_data_res.dart';
+import 'package:smooth_player_app/screen/view/view_featured_playlist.dart';
 
-import '../../api/http/artist_http.dart';
 import '../../api/res/song_res.dart';
-import '../../api/res/artist_data_res.dart';
 import '../../api/urls.dart';
 import '../../resource/colors.dart';
 import '../../resource/player.dart';
 import '../../widget/navigator.dart';
 import '../../widget/song_bar.dart';
 import '../library/add_playlist_song.dart';
+import '../library/playlist_song.dart';
 import 'view_album.dart';
+import 'view_artist.dart';
+import 'view_user_playlist.dart';
 
 class ViewUser extends StatefulWidget {
   final String? userId;
@@ -32,28 +35,26 @@ class _ViewUserState extends State<ViewUser> {
   final AudioPlayer player = Player.player;
   Song? song = Player.playingSong;
   final coverImage = ApiUrls.coverImageUrl;
+  final featuredPlaylistImage = ApiUrls.featuredPlaylistUrl;
   final profileImage = ApiUrls.profileUrl;
 
-  late Future<ArtistData> userData;
+  List<Song> songs = [];
+
+  late Future<UserData> userData;
 
   late StreamSubscription stateSub;
 
-  void checkFollowArtist() async {
-    final checkFollow = await FollowHttp().checkFollow(widget.userId!);
-  }
-
-  Future<ArtistData> viewSongs() async {
-    ArtistData resData = await ArtistHttp().viewArtist(widget.userId!);
-    return resData;
+  void userPublishedData() async {
+    userData = UserHttp().userPublishedData(widget.userId!);
+    UserData resData = await userData;
+    songs = resData.likedSongs!;
   }
 
   @override
   void initState() {
     super.initState();
 
-    checkFollowArtist();
-
-    userData = ArtistHttp().viewArtist(widget.userId!);
+    userPublishedData();
 
     stateSub = player.onPlayerStateChanged.listen((state) {
       setState(() {
@@ -76,7 +77,7 @@ class _ViewUserState extends State<ViewUser> {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
-          child: FutureBuilder<ArtistData>(
+          child: FutureBuilder<UserData>(
               future: userData,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
@@ -97,8 +98,8 @@ class _ViewUserState extends State<ViewUser> {
                                       fit: BoxFit.cover,
                                       image: NetworkImage(
                                         profileImage +
-                                            snapshot
-                                                .data!.artist!.profile_picture!,
+                                            snapshot.data!.profile!
+                                                .profile_picture!,
                                       ),
                                     ),
                                   ),
@@ -134,9 +135,111 @@ class _ViewUserState extends State<ViewUser> {
                               ),
                             ],
                           ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: sWidth * 0.015,
+                              vertical: 5,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                SizedBox(
+                                  width: sWidth * .75,
+                                  child: SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Text(
+                                      snapshot.data!.profile!.profile_name!,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
-                      snapshot.data!.popularSong!.isNotEmpty
+                      Padding(
+                        padding: EdgeInsets.only(
+                          left: sWidth * 0.03,
+                          right: sWidth * 0.03,
+                          top: 10,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      "Gender: ",
+                                      style: TextStyle(
+                                        color: AppColors.text,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                    Text(
+                                      snapshot.data!.profile!.gender!,
+                                      style: TextStyle(
+                                        color: AppColors.text,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      "Birth Date: ",
+                                      style: TextStyle(
+                                        color: AppColors.text,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                    Text(
+                                      snapshot.data!.profile!.birth_date!
+                                          .split("T")[0],
+                                      style: TextStyle(
+                                        color: AppColors.text,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              "Biography:",
+                              style: TextStyle(
+                                color: AppColors.text,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                            SizedBox(
+                              width: sWidth * .9,
+                              child: Text(
+                                snapshot.data!.profile!.biography!,
+                                textAlign: TextAlign.justify,
+                                overflow: TextOverflow.fade,
+                                softWrap: true,
+                                style: TextStyle(
+                                  color: AppColors.text,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      snapshot.data!.likedSongs!.isNotEmpty
                           ? Padding(
                               padding: EdgeInsets.only(
                                 left: sWidth * 0.03,
@@ -146,7 +249,7 @@ class _ViewUserState extends State<ViewUser> {
                               child: Row(
                                 children: [
                                   Text(
-                                    "Popular",
+                                    "Liked Songs",
                                     style: TextStyle(
                                       color: AppColors.text,
                                       fontWeight: FontWeight.bold,
@@ -157,7 +260,7 @@ class _ViewUserState extends State<ViewUser> {
                               ),
                             )
                           : SizedBox(),
-                      snapshot.data!.popularSong!.isNotEmpty
+                      snapshot.data!.likedSongs!.isNotEmpty
                           ? Padding(
                               padding: EdgeInsets.only(
                                 left: sWidth * 0.03,
@@ -166,7 +269,7 @@ class _ViewUserState extends State<ViewUser> {
                               child: ListView.builder(
                                 physics: NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
-                                itemCount: snapshot.data!.popularSong!.length,
+                                itemCount: snapshot.data!.likedSongs!.length,
                                 itemBuilder: (context, index) {
                                   return Padding(
                                     padding: const EdgeInsets.only(bottom: 15),
@@ -174,18 +277,20 @@ class _ViewUserState extends State<ViewUser> {
                                       onDoubleTap: () async {
                                         Song newSong = Song(
                                           id: snapshot
-                                              .data!.popularSong![index].id!,
+                                              .data!.likedSongs![index].id!,
                                           title: snapshot
-                                              .data!.popularSong![index].title!,
+                                              .data!.likedSongs![index].title!,
                                           album: snapshot
-                                              .data!.popularSong![index].album!,
+                                              .data!.likedSongs![index].album!,
                                           music_file: snapshot.data!
-                                              .popularSong![index].music_file!,
+                                              .likedSongs![index].music_file!,
                                           cover_image: snapshot.data!
-                                              .popularSong![index].cover_image!,
+                                              .likedSongs![index].cover_image!,
                                           like: snapshot
-                                              .data!.popularSong![index].like!,
+                                              .data!.likedSongs![index].like!,
                                         );
+
+                                        Player().playSong(newSong, songs);
 
                                         setState(() {
                                           song = newSong;
@@ -198,7 +303,7 @@ class _ViewUserState extends State<ViewUser> {
                                               ? Player.playingSong!.id ==
                                                       snapshot
                                                           .data!
-                                                          .popularSong![index]
+                                                          .likedSongs![index]
                                                           .id!
                                                   ? Icon(
                                                       Icons.bar_chart_rounded,
@@ -248,7 +353,7 @@ class _ViewUserState extends State<ViewUser> {
                                                           coverImage +
                                                               snapshot
                                                                   .data!
-                                                                  .popularSong![
+                                                                  .likedSongs![
                                                                       index]
                                                                   .cover_image!,
                                                         ),
@@ -271,7 +376,7 @@ class _ViewUserState extends State<ViewUser> {
                                                           child: Text(
                                                             snapshot
                                                                 .data!
-                                                                .popularSong![
+                                                                .likedSongs![
                                                                     index]
                                                                 .title!,
                                                             overflow:
@@ -287,7 +392,7 @@ class _ViewUserState extends State<ViewUser> {
                                                                               .id ==
                                                                           snapshot
                                                                               .data!
-                                                                              .popularSong![
+                                                                              .likedSongs![
                                                                                   index]
                                                                               .id!
                                                                       ? AppColors
@@ -311,7 +416,7 @@ class _ViewUserState extends State<ViewUser> {
                                                           child: Text(
                                                             snapshot
                                                                 .data!
-                                                                .popularSong![
+                                                                .likedSongs![
                                                                     index]
                                                                 .album!
                                                                 .title!,
@@ -327,7 +432,7 @@ class _ViewUserState extends State<ViewUser> {
                                                                               .id ==
                                                                           snapshot
                                                                               .data!
-                                                                              .popularSong![
+                                                                              .likedSongs![
                                                                                   index]
                                                                               .id!
                                                                       ? AppColors
@@ -349,7 +454,7 @@ class _ViewUserState extends State<ViewUser> {
                                                   Text(
                                                     snapshot
                                                         .data!
-                                                        .popularSong![index]
+                                                        .likedSongs![index]
                                                         .like!
                                                         .toString(),
                                                     overflow: TextOverflow.fade,
@@ -413,32 +518,32 @@ class _ViewUserState extends State<ViewUser> {
                                                                     Song(
                                                                       id: snapshot
                                                                           .data!
-                                                                          .popularSong![
+                                                                          .likedSongs![
                                                                               index]
                                                                           .id!,
                                                                       title: snapshot
                                                                           .data!
-                                                                          .popularSong![
+                                                                          .likedSongs![
                                                                               index]
                                                                           .title!,
                                                                       album: snapshot
                                                                           .data!
-                                                                          .popularSong![
+                                                                          .likedSongs![
                                                                               index]
                                                                           .album!,
                                                                       music_file: snapshot
                                                                           .data!
-                                                                          .popularSong![
+                                                                          .likedSongs![
                                                                               index]
                                                                           .music_file!,
                                                                       cover_image: snapshot
                                                                           .data!
-                                                                          .popularSong![
+                                                                          .likedSongs![
                                                                               index]
                                                                           .cover_image!,
                                                                       like: snapshot
                                                                           .data!
-                                                                          .popularSong![
+                                                                          .likedSongs![
                                                                               index]
                                                                           .like!,
                                                                     ),
@@ -447,7 +552,7 @@ class _ViewUserState extends State<ViewUser> {
                                                                       .showToast(
                                                                     msg: snapshot
                                                                             .data!
-                                                                            .popularSong![index]
+                                                                            .likedSongs![index]
                                                                             .title! +
                                                                         " is added to the queue.",
                                                                     toastLength:
@@ -499,7 +604,7 @@ class _ViewUserState extends State<ViewUser> {
                                                                               AddSongToPlaylist(
                                                                         songId: snapshot
                                                                             .data!
-                                                                            .popularSong![index]
+                                                                            .likedSongs![index]
                                                                             .id,
                                                                       ),
                                                                     ),
@@ -529,17 +634,17 @@ class _ViewUserState extends State<ViewUser> {
                               ),
                             )
                           : SizedBox(),
-                      snapshot.data!.newAlbum!.isNotEmpty
+                      snapshot.data!.followedArtists!.isNotEmpty
                           ? Padding(
                               padding: EdgeInsets.only(
                                 left: sWidth * 0.03,
-                                top: 10,
+                                top: 20,
                                 bottom: 10,
                               ),
                               child: Row(
                                 children: [
                                   Text(
-                                    "New Releases",
+                                    "Followed Artists",
                                     style: TextStyle(
                                       color: AppColors.text,
                                       fontWeight: FontWeight.bold,
@@ -550,7 +655,130 @@ class _ViewUserState extends State<ViewUser> {
                               ),
                             )
                           : SizedBox(),
-                      snapshot.data!.newAlbum!.isNotEmpty
+                      snapshot.data!.likedAlbums!.isNotEmpty
+                          ? GridView.count(
+                              physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              childAspectRatio:
+                                  (sWidth - (sWidth * .64)) / (sHeight * .25),
+                              crossAxisSpacing: 10,
+                              crossAxisCount: 3,
+                              children: List.generate(
+                                snapshot.data!.followedArtists!.length,
+                                (index) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (builder) => ViewArtist(
+                                            artistId: snapshot.data!
+                                                .followedArtists![index].id,
+                                            pageIndex: 1,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    child: Stack(
+                                      alignment: Alignment.center,
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        sHeight * 0.125),
+                                                boxShadow: const [
+                                                  BoxShadow(
+                                                    color: Colors.black26,
+                                                    spreadRadius: 1,
+                                                    blurRadius: 5,
+                                                    offset: Offset(2, 2),
+                                                  )
+                                                ],
+                                              ),
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        sHeight * 0.125),
+                                                child: Image(
+                                                  height: sHeight * 0.167,
+                                                  width: sHeight * 0.167,
+                                                  fit: BoxFit.cover,
+                                                  image: NetworkImage(
+                                                    profileImage +
+                                                        snapshot
+                                                            .data!
+                                                            .followedArtists![
+                                                                index]
+                                                            .profile_picture!,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            Text(
+                                              snapshot
+                                                  .data!
+                                                  .followedArtists![index]
+                                                  .profile_name!,
+                                              overflow: TextOverflow.fade,
+                                              softWrap: false,
+                                              style: TextStyle(
+                                                color: AppColors.text,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Player.playingSong != null
+                                            ? Player.playingSong!.album!.artist!
+                                                        .id ==
+                                                    snapshot
+                                                        .data!
+                                                        .followedArtists![index]
+                                                        .id
+                                                ? Icon(
+                                                    Icons.bar_chart_rounded,
+                                                    color: AppColors.primary,
+                                                    size: 40,
+                                                  )
+                                                : SizedBox()
+                                            : SizedBox(),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
+                            )
+                          : SizedBox(),
+                      snapshot.data!.likedAlbums!.isNotEmpty
+                          ? Padding(
+                              padding: EdgeInsets.only(
+                                left: sWidth * 0.03,
+                                top: 10,
+                                bottom: 10,
+                              ),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "Liked Albums",
+                                    style: TextStyle(
+                                      color: AppColors.text,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : SizedBox(),
+                      snapshot.data!.likedAlbums!.isNotEmpty
                           ? GridView.count(
                               padding: EdgeInsets.only(
                                 left: sWidth * .03,
@@ -563,7 +791,7 @@ class _ViewUserState extends State<ViewUser> {
                               crossAxisSpacing: 10,
                               crossAxisCount: 2,
                               children: List.generate(
-                                snapshot.data!.newAlbum!.length,
+                                snapshot.data!.likedAlbums!.length,
                                 (index) {
                                   return GestureDetector(
                                     onTap: () {
@@ -572,13 +800,15 @@ class _ViewUserState extends State<ViewUser> {
                                         MaterialPageRoute(
                                           builder: (builder) => ViewAlbum(
                                             albumId: snapshot
-                                                .data!.newAlbum![index].id,
-                                            title: snapshot
-                                                .data!.newAlbum![index].title!,
-                                            albumImage: snapshot.data!
-                                                .newAlbum![index].album_image,
+                                                .data!.likedAlbums![index].id,
+                                            title: snapshot.data!
+                                                .likedAlbums![index].title!,
+                                            albumImage: snapshot
+                                                .data!
+                                                .likedAlbums![index]
+                                                .album_image,
                                             like: snapshot
-                                                .data!.newAlbum![index].like,
+                                                .data!.likedAlbums![index].like,
                                             pageIndex: widget.pageIndex,
                                           ),
                                         ),
@@ -613,7 +843,7 @@ class _ViewUserState extends State<ViewUser> {
                                                     coverImage +
                                                         snapshot
                                                             .data!
-                                                            .newAlbum![index]
+                                                            .likedAlbums![index]
                                                             .album_image!,
                                                   ),
                                                 ),
@@ -623,7 +853,7 @@ class _ViewUserState extends State<ViewUser> {
                                               height: 10,
                                             ),
                                             Text(
-                                              snapshot.data!.newAlbum![index]
+                                              snapshot.data!.likedAlbums![index]
                                                   .title!,
                                               overflow: TextOverflow.fade,
                                               softWrap: false,
@@ -637,7 +867,7 @@ class _ViewUserState extends State<ViewUser> {
                                         Player.playingSong != null
                                             ? Player.playingSong!.album!.id ==
                                                     snapshot.data!
-                                                        .newAlbum![index].id
+                                                        .likedAlbums![index].id
                                                 ? Icon(
                                                     Icons.bar_chart_rounded,
                                                     color: AppColors.primary,
@@ -652,7 +882,7 @@ class _ViewUserState extends State<ViewUser> {
                               ),
                             )
                           : SizedBox(),
-                      snapshot.data!.oldAlbum!.isNotEmpty
+                      snapshot.data!.likedFeaturedPlaylists!.isNotEmpty
                           ? Padding(
                               padding: EdgeInsets.only(
                                 left: sWidth * 0.03,
@@ -662,7 +892,7 @@ class _ViewUserState extends State<ViewUser> {
                               child: Row(
                                 children: [
                                   Text(
-                                    "Albums",
+                                    "Liked Featured Playlists",
                                     style: TextStyle(
                                       color: AppColors.text,
                                       fontWeight: FontWeight.bold,
@@ -673,7 +903,7 @@ class _ViewUserState extends State<ViewUser> {
                               ),
                             )
                           : SizedBox(),
-                      snapshot.data!.oldAlbum!.isNotEmpty
+                      snapshot.data!.likedFeaturedPlaylists!.isNotEmpty
                           ? GridView.count(
                               padding: EdgeInsets.only(
                                 left: sWidth * .03,
@@ -686,88 +916,84 @@ class _ViewUserState extends State<ViewUser> {
                               crossAxisSpacing: 10,
                               crossAxisCount: 2,
                               children: List.generate(
-                                snapshot.data!.oldAlbum!.length,
+                                snapshot.data!.likedFeaturedPlaylists!.length,
                                 (index) {
                                   return GestureDetector(
                                     onTap: () {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (builder) => ViewAlbum(
-                                            albumId: snapshot
-                                                .data!.oldAlbum![index].id,
+                                          builder: (builder) =>
+                                              ViewFeaturedPlaylist(
+                                            featuredPlaylistId: snapshot
+                                                .data!
+                                                .likedFeaturedPlaylists![index]
+                                                .id,
                                             title: snapshot
-                                                .data!.oldAlbum![index].title!,
-                                            albumImage: snapshot.data!
-                                                .oldAlbum![index].album_image,
+                                                .data!
+                                                .likedFeaturedPlaylists![index]
+                                                .title!,
+                                            featuredPlaylistImage: snapshot
+                                                .data!
+                                                .likedFeaturedPlaylists![index]
+                                                .featured_playlist_image,
                                             like: snapshot
-                                                .data!.oldAlbum![index].like,
+                                                .data!
+                                                .likedFeaturedPlaylists![index]
+                                                .like,
                                             pageIndex: widget.pageIndex,
                                           ),
                                         ),
                                       );
                                     },
-                                    child: Stack(
-                                      alignment: Alignment.center,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              decoration: BoxDecoration(
-                                                boxShadow: const [
-                                                  BoxShadow(
-                                                    color: Colors.black26,
-                                                    spreadRadius: 1,
-                                                    blurRadius: 5,
-                                                    offset: Offset(2, 2),
-                                                  )
-                                                ],
-                                              ),
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
-                                                child: Image(
-                                                  height: sHeight * 0.2,
-                                                  width: sWidth * 0.46,
-                                                  fit: BoxFit.cover,
-                                                  image: NetworkImage(
-                                                    coverImage +
-                                                        snapshot
-                                                            .data!
-                                                            .oldAlbum![index]
-                                                            .album_image!,
-                                                  ),
-                                                ),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            boxShadow: const [
+                                              BoxShadow(
+                                                color: Colors.black26,
+                                                spreadRadius: 1,
+                                                blurRadius: 5,
+                                                offset: Offset(2, 2),
+                                              )
+                                            ],
+                                          ),
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            child: Image(
+                                              height: sHeight * 0.2,
+                                              width: sWidth * 0.46,
+                                              fit: BoxFit.cover,
+                                              image: NetworkImage(
+                                                featuredPlaylistImage +
+                                                    snapshot
+                                                        .data!
+                                                        .likedFeaturedPlaylists![
+                                                            index]
+                                                        .featured_playlist_image!,
                                               ),
                                             ),
-                                            SizedBox(
-                                              height: 10,
-                                            ),
-                                            Text(
-                                              snapshot.data!.oldAlbum![index]
-                                                  .title!,
-                                              overflow: TextOverflow.fade,
-                                              softWrap: false,
-                                              style: TextStyle(
-                                                color: AppColors.text,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ],
+                                          ),
                                         ),
-                                        Player.playingSong != null
-                                            ? Player.playingSong!.album!.id ==
-                                                    snapshot.data!
-                                                        .oldAlbum![index].id
-                                                ? Icon(
-                                                    Icons.bar_chart_rounded,
-                                                    color: Colors.white,
-                                                    size: 30,
-                                                  )
-                                                : SizedBox()
-                                            : SizedBox(),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Text(
+                                          snapshot
+                                              .data!
+                                              .likedFeaturedPlaylists![index]
+                                              .title!,
+                                          overflow: TextOverflow.fade,
+                                          softWrap: false,
+                                          style: TextStyle(
+                                            color: AppColors.text,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   );
@@ -775,17 +1001,17 @@ class _ViewUserState extends State<ViewUser> {
                               ),
                             )
                           : SizedBox(),
-                      snapshot.data!.artist!.biography!.trim().isNotEmpty
+                      snapshot.data!.playlists!.isNotEmpty
                           ? Padding(
                               padding: EdgeInsets.only(
                                 left: sWidth * 0.03,
-                                top: 10,
+                                top: 20,
                                 bottom: 10,
                               ),
                               child: Row(
                                 children: [
                                   Text(
-                                    "About",
+                                    "Playlists",
                                     style: TextStyle(
                                       color: AppColors.text,
                                       fontWeight: FontWeight.bold,
@@ -796,140 +1022,116 @@ class _ViewUserState extends State<ViewUser> {
                               ),
                             )
                           : SizedBox(),
-                      snapshot.data!.artist!.biography!.trim().isNotEmpty
-                          ? Stack(
-                              alignment: Alignment.bottomCenter,
-                              children: [
-                                Stack(
-                                  alignment: Alignment.topCenter,
-                                  children: [
-                                    Stack(
-                                      alignment: Alignment.center,
-                                      children: [
-                                        ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          child: Image(
-                                            width: sWidth * .95,
-                                            height: sHeight * .4,
-                                            fit: BoxFit.cover,
-                                            image: NetworkImage(
-                                              profileImage +
-                                                  snapshot.data!.artist!
-                                                      .profile_picture!,
+                      snapshot.data!.likedSongs!.isNotEmpty
+                          ? Padding(
+                              padding: EdgeInsets.only(
+                                left: sWidth * 0.03,
+                                right: sWidth * 0.03,
+                              ),
+                              child: ListView.builder(
+                                physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: snapshot.data!.playlists!.length,
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(bottom: 15),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (builder) =>
+                                                UserPlaylistSong(
+                                              playlistId: snapshot
+                                                  .data!.playlists![index].id,
+                                              playlistTitle: snapshot.data!
+                                                  .playlists![index].title,
                                             ),
                                           ),
-                                        ),
-                                        Container(
-                                          width: sWidth * .95,
-                                          height: sHeight * .4,
-                                          decoration: BoxDecoration(
-                                            boxShadow: const [
-                                              BoxShadow(
-                                                color: Colors.black54,
-                                                spreadRadius: 1,
-                                                blurRadius: 5,
-                                              )
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    snapshot.data!.artist!.verified!
-                                        ? Container(
-                                            width: sWidth * .95,
-                                            padding: EdgeInsets.all(5),
-                                            child: Row(
-                                              children: const [
-                                                Icon(
-                                                  Icons.verified_rounded,
-                                                  color: Colors.white,
-                                                ),
-                                                SizedBox(
-                                                  width: 5,
-                                                ),
-                                                Text(
-                                                  "Verified Artist",
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
+                                        );
+                                      },
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            width: 65,
+                                            height: 65,
+                                            alignment: Alignment.center,
+                                            decoration: BoxDecoration(
+                                              boxShadow: const [
+                                                BoxShadow(
+                                                  color: Colors.black26,
+                                                  spreadRadius: 2,
+                                                  blurRadius: 5,
+                                                )
                                               ],
+                                              gradient: LinearGradient(
+                                                colors: const [
+                                                  Color(0XFF36D1DC),
+                                                  Color(0XFF5B86E5),
+                                                ],
+                                                begin: Alignment.topCenter,
+                                                end: Alignment.bottomCenter,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
                                             ),
-                                          )
-                                        : SizedBox(),
-                                  ],
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (builder) => AlertDialog(
-                                        contentPadding: EdgeInsets.symmetric(
-                                          vertical: 5,
-                                          horizontal: 10,
-                                        ),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                        ),
-                                        content: SizedBox(
-                                          height: sHeight * .5,
-                                          child: SingleChildScrollView(
+                                            child: Icon(
+                                              Icons.music_note_rounded,
+                                              size: 35,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 15,
+                                          ),
+                                          SizedBox(
+                                            width: sWidth * .65,
                                             child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
-                                                ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(5),
-                                                  child: Image(
-                                                    height: 100,
-                                                    fit: BoxFit.cover,
-                                                    image: NetworkImage(
-                                                      profileImage +
-                                                          snapshot.data!.artist!
-                                                              .profile_picture!,
+                                                SingleChildScrollView(
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  child: Text(
+                                                    snapshot
+                                                        .data!
+                                                        .playlists![index]
+                                                        .title!,
+                                                    overflow: TextOverflow.fade,
+                                                    softWrap: false,
+                                                    style: TextStyle(
+                                                      fontSize: 15,
+                                                      color: AppColors.text,
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                                     ),
                                                   ),
                                                 ),
                                                 SizedBox(
                                                   height: 5,
                                                 ),
-                                                Text(
-                                                  snapshot
-                                                      .data!.artist!.biography!,
-                                                  textAlign: TextAlign.justify,
-                                                  style: TextStyle(
-                                                    color: AppColors.text,
+                                                SingleChildScrollView(
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  child: Text(
+                                                    "Playlist",
+                                                    overflow: TextOverflow.fade,
+                                                    softWrap: false,
+                                                    style: TextStyle(
+                                                      color: AppColors.text,
+                                                    ),
                                                   ),
-                                                ),
-                                                SizedBox(
-                                                  height: 5,
                                                 ),
                                               ],
                                             ),
                                           ),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                  child: Container(
-                                    alignment: Alignment.bottomCenter,
-                                    width: sWidth * .95,
-                                    height: 100,
-                                    padding: EdgeInsets.all(5),
-                                    child: Text(
-                                      snapshot.data!.artist!.biography!,
-                                      textAlign: TextAlign.justify,
-                                      overflow: TextOverflow.fade,
-                                      softWrap: true,
-                                      style: TextStyle(
-                                        color: Colors.white,
+                                        ],
                                       ),
                                     ),
-                                  ),
-                                ),
-                              ],
+                                  );
+                                },
+                              ),
                             )
                           : SizedBox(),
                       SizedBox(
