@@ -12,6 +12,7 @@ import '../../resource/player.dart';
 import '../../widget/navigator.dart';
 import '../../widget/song_bar.dart';
 import '../library/add_playlist_song.dart';
+import '../report_song.dart';
 
 class ViewGenre extends StatefulWidget {
   final String? genre;
@@ -365,6 +366,42 @@ class _ViewGenreState extends State<ViewGenre> {
                                                     },
                                                     child:
                                                         Text("Add to playlist"),
+                                                  ),
+                                                ),
+                                                SimpleDialogOption(
+                                                  padding: EdgeInsets.symmetric(
+                                                    horizontal: 75,
+                                                  ),
+                                                  child: ElevatedButton(
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      primary: Colors.red,
+                                                      elevation: 10,
+                                                      shadowColor: Colors.black,
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(15),
+                                                      ),
+                                                    ),
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (builder) =>
+                                                              ReportSong(
+                                                            songId: snapshot
+                                                                .data![index]
+                                                                .id,
+                                                            pageIndex: widget
+                                                                .pageIndex,
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                    child: Text("Report"),
                                                   ),
                                                 ),
                                               ],

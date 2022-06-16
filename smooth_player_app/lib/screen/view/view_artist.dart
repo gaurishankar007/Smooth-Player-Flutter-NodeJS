@@ -3,6 +3,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:smooth_player_app/api/http/follow_http.dart';
+import 'package:smooth_player_app/screen/report_song.dart';
 
 import '../../api/http/artist_http.dart';
 import '../../api/res/song_res.dart';
@@ -603,6 +604,53 @@ class _ViewArtistState extends State<ViewArtist> {
                                                                 },
                                                                 child: Text(
                                                                     "Add to playlist"),
+                                                              ),
+                                                            ),
+                                                            SimpleDialogOption(
+                                                              padding: EdgeInsets
+                                                                  .symmetric(
+                                                                horizontal: 75,
+                                                              ),
+                                                              child:
+                                                                  ElevatedButton(
+                                                                style: ElevatedButton
+                                                                    .styleFrom(
+                                                                  primary:
+                                                                      Colors
+                                                                          .red,
+                                                                  elevation: 10,
+                                                                  shadowColor:
+                                                                      Colors
+                                                                          .black,
+                                                                  shape:
+                                                                      RoundedRectangleBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            15),
+                                                                  ),
+                                                                ),
+                                                                onPressed: () {
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                  Navigator
+                                                                      .push(
+                                                                    context,
+                                                                    MaterialPageRoute(
+                                                                      builder:
+                                                                          (builder) =>
+                                                                              ReportSong(
+                                                                        songId: snapshot
+                                                                            .data!
+                                                                            .popularSong![index]
+                                                                            .id,
+                                                                        pageIndex:
+                                                                            widget.pageIndex,
+                                                                      ),
+                                                                    ),
+                                                                  );
+                                                                },
+                                                                child: Text(
+                                                                    "Report"),
                                                               ),
                                                             ),
                                                           ],

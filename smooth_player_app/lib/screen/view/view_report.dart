@@ -73,7 +73,7 @@ class _ViewReportState extends State<ViewReport> {
           ),
         ),
         title: Text(
-          "Reports",
+          "Report on Your Songs",
           style: TextStyle(
             color: AppColors.text,
             fontWeight: FontWeight.bold,

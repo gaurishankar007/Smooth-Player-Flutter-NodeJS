@@ -29,7 +29,6 @@ class _VerifyTokenState extends State<VerifyToken> {
   @override
   Widget build(BuildContext context) {
     final sWidth = MediaQuery.of(context).size.width;
-    final sHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       appBar: AppBar(

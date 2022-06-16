@@ -13,7 +13,6 @@ import '../../resource/player.dart';
 import '../../widget/navigator.dart';
 import '../../widget/song_bar.dart';
 import '../library/add_playlist_song.dart';
-import '../library/playlist_song.dart';
 import 'view_album.dart';
 import 'view_artist.dart';
 import 'view_user_playlist.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smooth_player_app/screen/admin/artist_verification.dart';
 import 'package:smooth_player_app/screen/admin/featured_playlist.dart';
-import 'package:smooth_player_app/screen/admin/report.dart';
+import 'package:smooth_player_app/screen/admin/reports.dart';
 
 class AdminPageNavigator extends StatelessWidget {
   final int? pageIndex;
