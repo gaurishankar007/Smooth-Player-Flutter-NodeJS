@@ -31,18 +31,6 @@ class ReportHttp {
     return jsonDecode(response.body) as Map;
   }
 
-  Future<Map> reportSolved(String reportId) async {
-    final response = await put(
-      Uri.parse(routeUrl + "report/solved"),
-      body: {"reportId": reportId},
-      headers: {
-        HttpHeaders.authorizationHeader: "Bearer $token",
-      },
-    );
-
-    return jsonDecode(response.body) as Map;
-  }
-
   Future<Map> deleteReport(String reportId) async {
     final response = await delete(
       Uri.parse(routeUrl + "report/delete"),
@@ -131,10 +119,10 @@ class ReportHttp {
     return reports.map((e) => Report.fromJson(e)).toList();
   }
 
-  Future<List<Report>> searchReports(String artistName, bool solved) async {
+  Future<List<Report>> searchReports(String artistName) async {
     final response = await post(
-      Uri.parse(routeUrl + "report/viewAll"),
-      body: {"artistName": artistName, "solved": solved},
+      Uri.parse(routeUrl + "report/search"),
+      body: {"artistName": artistName},
       headers: {
         HttpHeaders.authorizationHeader: "Bearer $token",
       },

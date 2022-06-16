@@ -214,6 +214,8 @@ class _VerifyArtistState extends State<VerifyArtist> {
               songData: Player.playingSong,
             )
           : null,
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.miniCenterFloat,
       bottomNavigationBar: AdminPageNavigator(pageIndex: 1),
     );
   }

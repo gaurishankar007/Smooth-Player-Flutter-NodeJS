@@ -25,14 +25,6 @@ router.post("/report/song", auth.verifyUser, (req, res) => {
   });
 });
 
-router.put("/report/solved", auth.verifyAdmin, (req, res) => {
-  report
-    .findOneAndUpdate({ _id: req.body.reportId }, { solved: true })
-    .then(() => {
-      res.status(201).send({ resM: "Report has been solved." });
-    });
-});
-
 router.delete("/report/delete", auth.verifyAdmin, (req, res) => {
   report.deleteOne({ _id: req.body.reportId }).then(() => {
     res.send({ resM: "Report has been deleted." });
@@ -84,7 +76,7 @@ router.put("/report/warnArtist", auth.verifyAdmin, (req, res) => {
   }
 
   report.findOneAndUpdate({ _id: reportId }, { message: message }).then(() => {
-    res.status(201).send({ resM: "Report has been solved." });
+    res.send({ resM: "Report message sent." });
   });
 });
 
@@ -92,7 +84,7 @@ router.get("/report/viewMy", auth.verifyUser, async (req, res) => {
   const albums = await album.find({ artist: req.userInfo._id });
   const songs = await song.find({ album: { $in: albums } });
   const reports1 = await report
-    .find({ song: { $in: songs }, solved: false })
+    .find({ song: { $in: songs }, })
     .populate(
       "user",
       "profile_name profile_picture biography follower verified"
@@ -116,7 +108,7 @@ router.get("/report/viewMy", auth.verifyUser, async (req, res) => {
 router.get("/report/check", auth.verifyUser, async (req, res) => {
   const albums = await album.find({ artist: req.userInfo._id });
   const songs = await song.find({ album: { $in: albums } });
-  const reports = await report.find({ song: { $in: songs }, solved: false });
+  const reports = await report.find({ song: { $in: songs }, });
 
   var reportExists = false;
   if (reports.length > 0) {
@@ -128,8 +120,9 @@ router.get("/report/check", auth.verifyUser, async (req, res) => {
 
 router.post("/report/viewAll", auth.verifyAdmin, async (req, res) => {
   const reportNum = req.body.reportNum;
+
   const reports1 = await report
-    .find({ solved: false })
+    .find()
     .populate(
       "user",
       "profile_name profile_picture biography follower verified"
@@ -137,12 +130,10 @@ router.post("/report/viewAll", auth.verifyAdmin, async (req, res) => {
     .populate("song")
     .sort({ createdAt: -1 })
     .limit(reportNum);
-
   const reports2 = await report.populate(reports1, {
     path: "song.album",
     select: "title artist album_image like",
   });
-
   const reports = await report.populate(reports2, {
     path: "song.album.artist",
     select: "profile_name profile_picture biography follower verified",
@@ -151,9 +142,8 @@ router.post("/report/viewAll", auth.verifyAdmin, async (req, res) => {
   res.send(reports);
 });
 
-router.post("/report/search", auth.verifyUser, async (req, res) => {
+router.post("/report/search", auth.verifyAdmin, async (req, res) => {
   const artistName = req.body.artistName;
-  const solved = req.body.solved;
   if (artistName.trim() === "") {
     res.send([]);
   }
@@ -166,7 +156,7 @@ router.post("/report/search", auth.verifyUser, async (req, res) => {
   const songs = await song.find({ album: { $in: albums } });
 
   const reports1 = await report
-    .find({ song: { $in: songs }, solved: solved })
+    .find({ song: { $in: songs }})
     .populate(
       "user",
       "profile_name profile_picture biography follower verified"

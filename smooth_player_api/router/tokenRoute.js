@@ -26,7 +26,7 @@ router.post("/generate/token", async (req, res) => {
   if (userData === null) {
     return res
       .status(400)
-      .send({ resM: "User with that username does not exist." });
+      .send({ resM: "User with that email does not exist." });
   }
 
   const tokenData = await token.find({ user: userData._id });
