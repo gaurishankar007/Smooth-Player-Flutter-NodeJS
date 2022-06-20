@@ -66,7 +66,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                   height: 10,
                 ),
                 TextFormField(
-                  key: Key("email"),
+                  key: ValueKey("email"),
                   onSaved: (value) {
                     email = value!;
                   },
@@ -95,7 +95,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                       EdgeInsets.only(left: 0, right: 0, bottom: 10),
                   minLeadingWidth: 0,
                   title: TextFormField(
-                    key: Key("password"),
+                    key: ValueKey("password"),
                     onChanged: (value) {
                       password = value;
                     },
@@ -138,7 +138,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                       EdgeInsets.only(left: 0, right: 0, bottom: 10),
                   minLeadingWidth: 0,
                   title: TextFormField(
-                    key: Key("ConfirmPassword"),
+                    key: ValueKey("confirmPassword"),
                     onChanged: (value) {
                       confirmPassword = value;
                     },
