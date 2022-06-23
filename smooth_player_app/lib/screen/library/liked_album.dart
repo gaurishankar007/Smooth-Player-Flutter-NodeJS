@@ -145,7 +145,6 @@ class _LikedAlbumState extends State<LikedAlbum> {
                                     title: snapshot.data![index].title!,
                                     albumImage:
                                         snapshot.data![index].album_image,
-                                    like: snapshot.data![index].like,
                                     pageIndex: 3,
                                   ),
                                 ),

@@ -191,18 +191,32 @@ class _ViewArtistState extends State<ViewArtist> {
                                             widget.artistId!,
                                             snapshot
                                                 .data!.artist!.profile_name!);
-                                    setState(() {
-                                      checkFollow = !checkFollow;
-                                    });
-                                    Fluttertoast.showToast(
-                                      msg: resData["resM"],
-                                      toastLength: Toast.LENGTH_SHORT,
-                                      gravity: ToastGravity.TOP,
-                                      timeInSecForIosWeb: 3,
-                                      backgroundColor: Colors.white,
-                                      textColor: Colors.black,
-                                      fontSize: 16.0,
-                                    );
+                                    if (resData["statusCode"] == 200) {
+                                      setState(() {
+                                        checkFollow = !checkFollow;
+                                        artistData = ArtistHttp()
+                                            .viewArtist(widget.artistId!);
+                                      });
+                                      Fluttertoast.showToast(
+                                        msg: resData["body"]["resM"],
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.TOP,
+                                        timeInSecForIosWeb: 3,
+                                        backgroundColor: Colors.white,
+                                        textColor: Colors.black,
+                                        fontSize: 16.0,
+                                      );
+                                    } else {
+                                      Fluttertoast.showToast(
+                                        msg: resData["body"]["resM"],
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.TOP,
+                                        timeInSecForIosWeb: 3,
+                                        backgroundColor: Colors.red,
+                                        textColor: Colors.black,
+                                        fontSize: 16.0,
+                                      );
+                                    }
                                   },
                                   child: Text(
                                     checkFollow ? "Following" : "Follow",
@@ -721,8 +735,6 @@ class _ViewArtistState extends State<ViewArtist> {
                                                 .data!.newAlbum![index].title!,
                                             albumImage: snapshot.data!
                                                 .newAlbum![index].album_image,
-                                            like: snapshot
-                                                .data!.newAlbum![index].like,
                                             pageIndex: widget.pageIndex,
                                           ),
                                         ),
@@ -844,8 +856,6 @@ class _ViewArtistState extends State<ViewArtist> {
                                                 .data!.oldAlbum![index].title!,
                                             albumImage: snapshot.data!
                                                 .oldAlbum![index].album_image,
-                                            like: snapshot
-                                                .data!.oldAlbum![index].like,
                                             pageIndex: widget.pageIndex,
                                           ),
                                         ),

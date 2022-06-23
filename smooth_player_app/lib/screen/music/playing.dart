@@ -183,20 +183,34 @@ class _PlayingSongState extends State<PlayingSong> {
                         onPressed: () async {
                           if (Player.playingSong != null) {
                             final resData = await LikeHttp().likeSong(
-                                Player.playingSong!.id!,
-                                Player.playingSong!.title!);
-                            Fluttertoast.showToast(
-                              msg: resData["resM"],
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.TOP,
-                              timeInSecForIosWeb: 2,
-                              backgroundColor: Colors.white,
-                              textColor: Colors.black,
-                              fontSize: 16.0,
+                              Player.playingSong!.id!,
+                              Player.playingSong!.title!,
                             );
-                            setState(() {
-                              songLike = !songLike;
-                            });
+
+                            if (resData["statusCode"] == 200) {
+                              setState(() {
+                                songLike = !songLike;
+                              });
+                              Fluttertoast.showToast(
+                                msg: resData["body"]["resM"],
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.TOP,
+                                timeInSecForIosWeb: 3,
+                                backgroundColor: Colors.white,
+                                textColor: Colors.black,
+                                fontSize: 16.0,
+                              );
+                            } else {
+                              Fluttertoast.showToast(
+                                msg: resData["body"]["resM"],
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.TOP,
+                                timeInSecForIosWeb: 3,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.black,
+                                fontSize: 16.0,
+                              );
+                            }
                           }
                         },
                         style: TextButton.styleFrom(

@@ -26,9 +26,7 @@ router.post("/like/song", auth.verifyUser, (req, res) => {
             song
               .updateOne({ _id: songId }, { like: songData.like + 1 })
               .then(() => {
-                res
-                  .status(201)
-                  .send({ resM: "You liked " + req.body.songTitle });
+                res.send({ resM: "You liked " + req.body.songTitle });
               });
           });
         });
@@ -102,9 +100,7 @@ router.post("/like/album", auth.verifyUser, (req, res) => {
             album
               .updateOne({ _id: albumId }, { like: albumData.like + 1 })
               .then(() => {
-                res
-                  .status(201)
-                  .send({ resM: "You liked " + req.body.albumTitle });
+                res.send({ resM: "You liked " + req.body.albumTitle });
               });
           });
         });
@@ -138,6 +134,13 @@ router.post("/like/checkAlbum", auth.verifyUser, (req, res) => {
         res.send(true);
       }
     });
+});
+
+router.post("/check/albumLikeNum", auth.verifyUser, (req, res) => {
+  const albumId = req.body.albumId;
+  album.findOne({ _id: albumId }).then((albumData) => {
+    res.send(albumData.like.toString());
+  });
 });
 
 router.get("/view/likedAlbums", auth.verifyUser, async (req, res) => {
@@ -178,7 +181,7 @@ router.post("/like/featuredPlaylist", auth.verifyUser, (req, res) => {
                   { like: featuredPlaylistData.like + 1 }
                 )
                 .then(() => {
-                  res.status(201).send({
+                  res.send({
                     resM: "You liked " + req.body.featuredPlaylistTitle,
                   });
                 });
@@ -223,6 +226,15 @@ router.post("/like/checkFeaturedPlaylist", auth.verifyUser, (req, res) => {
       } else {
         res.send(true);
       }
+    });
+});
+
+router.post("/check/featuredPlaylistLikeNum", auth.verifyUser, (req, res) => {
+  const featuredPlaylistId = req.body.featuredPlaylistId;
+  featuredPlaylist
+    .findOne({ _id: featuredPlaylistId })
+    .then((featuredPlaylistData) => {
+      res.send(featuredPlaylistData.like.toString());
     });
 });
 

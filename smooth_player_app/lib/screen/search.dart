@@ -642,8 +642,6 @@ class _SearchState extends State<Search> {
                                                         .data!
                                                         .albums![index]
                                                         .album_image,
-                                                    like: snapshot.data!
-                                                        .albums![index].like,
                                                     pageIndex: 0,
                                                   ),
                                                 ),
@@ -785,11 +783,6 @@ class _SearchState extends State<Search> {
                                                         .featuredPlaylists![
                                                             index]
                                                         .featured_playlist_image,
-                                                    like: snapshot
-                                                        .data!
-                                                        .featuredPlaylists![
-                                                            index]
-                                                        .like,
                                                     pageIndex: 0,
                                                   ),
                                                 ),

@@ -162,8 +162,6 @@ class _HomeState extends State<Home> {
                                                     .data!
                                                     .recentAlbums![index]
                                                     .album_image,
-                                                like: snapshot.data!
-                                                    .recentAlbums![index].like,
                                                 pageIndex: 0,
                                               ),
                                             ),
@@ -543,8 +541,6 @@ class _HomeState extends State<Home> {
                                                   .data!
                                                   .jumpBackIn![index]
                                                   .album_image,
-                                              like: snapshot.data!
-                                                  .jumpBackIn![index].like,
                                               pageIndex: 0,
                                             ),
                                           ),
@@ -666,8 +662,6 @@ class _HomeState extends State<Home> {
                                                   .data!
                                                   .newReleases![index]
                                                   .album_image,
-                                              like: snapshot.data!
-                                                  .newReleases![index].like,
                                               pageIndex: 0,
                                             ),
                                           ),
@@ -792,10 +786,6 @@ class _HomeState extends State<Home> {
                                             .data!
                                             .popularFeaturedPlaylists![index]
                                             .featured_playlist_image,
-                                        like: snapshot
-                                            .data!
-                                            .popularFeaturedPlaylists![index]
-                                            .like,
                                         pageIndex: 0,
                                       ),
                                     ),
@@ -890,8 +880,6 @@ class _HomeState extends State<Home> {
                                             .data!.popularAlbums![index].title!,
                                         albumImage: snapshot.data!
                                             .popularAlbums![index].album_image,
-                                        like: snapshot
-                                            .data!.popularAlbums![index].like,
                                         pageIndex: 0,
                                       ),
                                     ),
@@ -1141,7 +1129,6 @@ class _HomeState extends State<Home> {
                                     title: snapshot.data![index].title!,
                                     featuredPlaylistImage: snapshot
                                         .data![index].featured_playlist_image,
-                                    like: snapshot.data![index].like,
                                     pageIndex: 0,
                                   ),
                                 ),

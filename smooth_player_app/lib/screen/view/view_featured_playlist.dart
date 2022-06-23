@@ -20,14 +20,12 @@ class ViewFeaturedPlaylist extends StatefulWidget {
   final String? featuredPlaylistId;
   final String? title;
   final String? featuredPlaylistImage;
-  final int? like;
   final int? pageIndex;
   const ViewFeaturedPlaylist({
     Key? key,
     @required this.featuredPlaylistId,
     @required this.title,
     @required this.featuredPlaylistImage,
-    @required this.like,
     @required this.pageIndex,
   }) : super(key: key);
 
@@ -43,6 +41,7 @@ class _ViewFeaturedPlaylistState extends State<ViewFeaturedPlaylist> {
 
   List<Song> songs = [];
   bool featuredPlaylistLike = false;
+  int featuredPlaylistLikeNum = 0;
 
   late StreamSubscription stateSub;
 
@@ -55,8 +54,11 @@ class _ViewFeaturedPlaylistState extends State<ViewFeaturedPlaylist> {
 
     bool featuredPlaylistLike1 =
         await LikeHttp().checkFeaturedPlaylistLike(widget.featuredPlaylistId!);
+    int featuredPlaylistLikeNum1 =
+        await LikeHttp().getFeaturedPlaylistLike(widget.featuredPlaylistId!);
     setState(() {
       featuredPlaylistLike = featuredPlaylistLike1;
+      featuredPlaylistLikeNum = featuredPlaylistLikeNum1;
     });
   }
 
@@ -169,7 +171,7 @@ class _ViewFeaturedPlaylistState extends State<ViewFeaturedPlaylist> {
                         SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Text(
-                            widget.like!.toString() + " likes",
+                            featuredPlaylistLikeNum.toString() + " likes",
                             style: TextStyle(
                               color: AppColors.text,
                             ),
@@ -191,9 +193,18 @@ class _ViewFeaturedPlaylistState extends State<ViewFeaturedPlaylist> {
                         textColor: Colors.black,
                         fontSize: 16.0,
                       );
-                      setState(() {
-                        featuredPlaylistLike = !featuredPlaylistLike;
-                      });
+
+                      if (featuredPlaylistLike) {
+                        setState(() {
+                          featuredPlaylistLike = !featuredPlaylistLike;
+                          featuredPlaylistLikeNum = featuredPlaylistLikeNum - 1;
+                        });
+                      } else {
+                        setState(() {
+                          featuredPlaylistLike = !featuredPlaylistLike;
+                          featuredPlaylistLikeNum = featuredPlaylistLikeNum + 1;
+                        });
+                      }
                     },
                     icon: Icon(
                       Icons.favorite,

@@ -806,8 +806,6 @@ class _ViewUserState extends State<ViewUser> {
                                                 .data!
                                                 .likedAlbums![index]
                                                 .album_image,
-                                            like: snapshot
-                                                .data!.likedAlbums![index].like,
                                             pageIndex: widget.pageIndex,
                                           ),
                                         ),
@@ -936,10 +934,6 @@ class _ViewUserState extends State<ViewUser> {
                                                 .data!
                                                 .likedFeaturedPlaylists![index]
                                                 .featured_playlist_image,
-                                            like: snapshot
-                                                .data!
-                                                .likedFeaturedPlaylists![index]
-                                                .like,
                                             pageIndex: widget.pageIndex,
                                           ),
                                         ),

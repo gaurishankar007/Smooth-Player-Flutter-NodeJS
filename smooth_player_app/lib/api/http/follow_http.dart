@@ -9,15 +9,17 @@ class FollowHttp {
   final token = LogStatus.token;
 
   Future<Map> followArtist(String artistId, String artistName) async {
-    final response =
-        await post(Uri.parse(routeUrl + "follow/artist"), body: {
-      "artistId": artistId ,
+    final response = await post(Uri.parse(routeUrl + "follow/artist"), body: {
+      "artistId": artistId,
       "artistName": artistName
     }, headers: {
       HttpHeaders.authorizationHeader: "Bearer $token",
     });
 
-    return jsonDecode(response.body) as Map;
+    return {
+      "statusCode": response.statusCode,
+      "body": jsonDecode(response.body)
+    };
   }
 
   Future<bool> checkFollow(String artistId) async {
@@ -31,6 +33,4 @@ class FollowHttp {
     bool resData = jsonDecode(response.body);
     return resData;
   }
-
-  
 }

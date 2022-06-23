@@ -289,310 +289,291 @@ class _SettingState extends State<Setting> {
             SizedBox(
               height: 25,
             ),
-            GestureDetector(
-              onTap: () {},
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Profile Publication",
-                        style: TextStyle(
-                          color: AppColors.text,
-                          fontWeight: FontWeight.bold,
-                        ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Profile Publication",
+                      style: TextStyle(
+                        color: AppColors.text,
+                        fontWeight: FontWeight.bold,
                       ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        "Publish Profile Information",
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    width: 25,
-                    child: Switch(
-                      activeColor: AppColors.primary,
-                      value: profilePublication,
-                      onChanged: (value) async {
-                        final resData = await UserHttp().publicProfile();
-                        Fluttertoast.showToast(
-                          msg: resData["resM"],
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.TOP,
-                          timeInSecForIosWeb: 2,
-                          backgroundColor: Colors.white,
-                          textColor: Colors.black,
-                          fontSize: 16.0,
-                        );
-                        setState(() {
-                          profilePublication = value;
-                        });
-                      },
                     ),
-                  )
-                ],
-              ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      "Publish Profile Information",
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  width: 25,
+                  child: Switch(
+                    activeColor: AppColors.primary,
+                    value: profilePublication,
+                    onChanged: (value) async {
+                      final resData = await UserHttp().publicProfile();
+                      Fluttertoast.showToast(
+                        msg: resData["resM"],
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.TOP,
+                        timeInSecForIosWeb: 2,
+                        backgroundColor: Colors.white,
+                        textColor: Colors.black,
+                        fontSize: 16.0,
+                      );
+                      setState(() {
+                        profilePublication = value;
+                      });
+                    },
+                  ),
+                )
+              ],
             ),
             SizedBox(
               height: 25,
             ),
-            GestureDetector(
-              onTap: () {},
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Followed Artist Publication",
-                        style: TextStyle(
-                          color: AppColors.text,
-                          fontWeight: FontWeight.bold,
-                        ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Followed Artist Publication",
+                      style: TextStyle(
+                        color: AppColors.text,
+                        fontWeight: FontWeight.bold,
                       ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        "Publish artists that you have followed",
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    width: 25,
-                    child: Switch(
-                      activeColor: AppColors.primary,
-                      value: followedArtistPublication,
-                      onChanged: (value) async {
-                        final resData = await UserHttp().publicFollowedArtist();
-                        Fluttertoast.showToast(
-                          msg: resData["resM"],
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.TOP,
-                          timeInSecForIosWeb: 2,
-                          backgroundColor: Colors.white,
-                          textColor: Colors.black,
-                          fontSize: 16.0,
-                        );
-                        setState(() {
-                          followedArtistPublication = value;
-                        });
-                      },
                     ),
-                  )
-                ],
-              ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      "Publish artists that you have followed",
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  width: 25,
+                  child: Switch(
+                    activeColor: AppColors.primary,
+                    value: followedArtistPublication,
+                    onChanged: (value) async {
+                      final resData = await UserHttp().publicFollowedArtist();
+                      Fluttertoast.showToast(
+                        msg: resData["resM"],
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.TOP,
+                        timeInSecForIosWeb: 2,
+                        backgroundColor: Colors.white,
+                        textColor: Colors.black,
+                        fontSize: 16.0,
+                      );
+                      setState(() {
+                        followedArtistPublication = value;
+                      });
+                    },
+                  ),
+                )
+              ],
             ),
             SizedBox(
               height: 25,
             ),
-            GestureDetector(
-              onTap: () {},
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Liked Song Publication",
-                        style: TextStyle(
-                          color: AppColors.text,
-                          fontWeight: FontWeight.bold,
-                        ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Liked Song Publication",
+                      style: TextStyle(
+                        color: AppColors.text,
+                        fontWeight: FontWeight.bold,
                       ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        "Publish songs that you have liked",
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    width: 25,
-                    child: Switch(
-                      activeColor: AppColors.primary,
-                      value: likedSongPublication,
-                      onChanged: (value) async {
-                        final resData = await UserHttp().publicLikedSong();
-                        Fluttertoast.showToast(
-                          msg: resData["resM"],
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.TOP,
-                          timeInSecForIosWeb: 2,
-                          backgroundColor: Colors.white,
-                          textColor: Colors.black,
-                          fontSize: 16.0,
-                        );
-                        setState(() {
-                          likedSongPublication = value;
-                        });
-                      },
                     ),
-                  )
-                ],
-              ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      "Publish songs that you have liked",
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  width: 25,
+                  child: Switch(
+                    activeColor: AppColors.primary,
+                    value: likedSongPublication,
+                    onChanged: (value) async {
+                      final resData = await UserHttp().publicLikedSong();
+                      Fluttertoast.showToast(
+                        msg: resData["resM"],
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.TOP,
+                        timeInSecForIosWeb: 2,
+                        backgroundColor: Colors.white,
+                        textColor: Colors.black,
+                        fontSize: 16.0,
+                      );
+                      setState(() {
+                        likedSongPublication = value;
+                      });
+                    },
+                  ),
+                )
+              ],
             ),
             SizedBox(
               height: 25,
             ),
-            GestureDetector(
-              onTap: () {},
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Liked Album Publication",
-                        style: TextStyle(
-                          color: AppColors.text,
-                          fontWeight: FontWeight.bold,
-                        ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Liked Album Publication",
+                      style: TextStyle(
+                        color: AppColors.text,
+                        fontWeight: FontWeight.bold,
                       ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        "Publish albums that you have liked",
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    width: 25,
-                    child: Switch(
-                      activeColor: AppColors.primary,
-                      value: likedAlbumPublication,
-                      onChanged: (value) async {
-                        final resData = await UserHttp().publicLikedAlbum();
-                        Fluttertoast.showToast(
-                          msg: resData["resM"],
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.TOP,
-                          timeInSecForIosWeb: 2,
-                          backgroundColor: Colors.white,
-                          textColor: Colors.black,
-                          fontSize: 16.0,
-                        );
-                        setState(() {
-                          likedAlbumPublication = value;
-                        });
-                      },
                     ),
-                  )
-                ],
-              ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      "Publish albums that you have liked",
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  width: 25,
+                  child: Switch(
+                    activeColor: AppColors.primary,
+                    value: likedAlbumPublication,
+                    onChanged: (value) async {
+                      final resData = await UserHttp().publicLikedAlbum();
+                      Fluttertoast.showToast(
+                        msg: resData["resM"],
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.TOP,
+                        timeInSecForIosWeb: 2,
+                        backgroundColor: Colors.white,
+                        textColor: Colors.black,
+                        fontSize: 16.0,
+                      );
+                      setState(() {
+                        likedAlbumPublication = value;
+                      });
+                    },
+                  ),
+                )
+              ],
             ),
             SizedBox(
               height: 25,
             ),
-            GestureDetector(
-              onTap: () {},
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Featured Playlist Publication",
-                        style: TextStyle(
-                          color: AppColors.text,
-                          fontWeight: FontWeight.bold,
-                        ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Featured Playlist Publication",
+                      style: TextStyle(
+                        color: AppColors.text,
+                        fontWeight: FontWeight.bold,
                       ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        "Publish featured playlists that you have liked",
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    width: 25,
-                    child: Switch(
-                      activeColor: AppColors.primary,
-                      value: likedFeaturedPlaylistPublication,
-                      onChanged: (value) async {
-                        final resData =
-                            await UserHttp().publicLikedFeaturedPlaylist();
-                        Fluttertoast.showToast(
-                          msg: resData["resM"],
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.TOP,
-                          timeInSecForIosWeb: 2,
-                          backgroundColor: Colors.white,
-                          textColor: Colors.black,
-                          fontSize: 16.0,
-                        );
-                        setState(() {
-                          likedFeaturedPlaylistPublication = value;
-                        });
-                      },
                     ),
-                  )
-                ],
-              ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      "Publish featured playlists that you have liked",
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  width: 25,
+                  child: Switch(
+                    activeColor: AppColors.primary,
+                    value: likedFeaturedPlaylistPublication,
+                    onChanged: (value) async {
+                      final resData =
+                          await UserHttp().publicLikedFeaturedPlaylist();
+                      Fluttertoast.showToast(
+                        msg: resData["resM"],
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.TOP,
+                        timeInSecForIosWeb: 2,
+                        backgroundColor: Colors.white,
+                        textColor: Colors.black,
+                        fontSize: 16.0,
+                      );
+                      setState(() {
+                        likedFeaturedPlaylistPublication = value;
+                      });
+                    },
+                  ),
+                )
+              ],
             ),
             SizedBox(
               height: 25,
             ),
-            GestureDetector(
-              onTap: () {},
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Created Playlist Publication",
-                        style: TextStyle(
-                          color: AppColors.text,
-                          fontWeight: FontWeight.bold,
-                        ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Created Playlist Publication",
+                      style: TextStyle(
+                        color: AppColors.text,
+                        fontWeight: FontWeight.bold,
                       ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        "Publish playlists that you have created",
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    width: 25,
-                    child: Switch(
-                      activeColor: AppColors.primary,
-                      value: createdPlaylistPublication,
-                      onChanged: (value) async {
-                        final resData =
-                            await UserHttp().publicCreatedPlaylist();
-                        Fluttertoast.showToast(
-                          msg: resData["resM"],
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.TOP,
-                          timeInSecForIosWeb: 2,
-                          backgroundColor: Colors.white,
-                          textColor: Colors.black,
-                          fontSize: 16.0,
-                        );
-                        setState(() {
-                          createdPlaylistPublication = value;
-                        });
-                      },
                     ),
-                  )
-                ],
-              ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      "Publish playlists that you have created",
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  width: 25,
+                  child: Switch(
+                    activeColor: AppColors.primary,
+                    value: createdPlaylistPublication,
+                    onChanged: (value) async {
+                      final resData = await UserHttp().publicCreatedPlaylist();
+                      Fluttertoast.showToast(
+                        msg: resData["resM"],
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.TOP,
+                        timeInSecForIosWeb: 2,
+                        backgroundColor: Colors.white,
+                        textColor: Colors.black,
+                        fontSize: 16.0,
+                      );
+                      setState(() {
+                        createdPlaylistPublication = value;
+                      });
+                    },
+                  ),
+                )
+              ],
             ),
             SizedBox(
               height: 25,

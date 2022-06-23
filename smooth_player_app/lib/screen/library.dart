@@ -321,7 +321,6 @@ class _LibraryState extends State<Library> {
                                     title: snapshot.data!.albums![index].title!,
                                     albumImage: snapshot
                                         .data!.albums![index].album_image!,
-                                    like: snapshot.data!.albums![index].like!,
                                     pageIndex: 2,
                                   ),
                                 ),

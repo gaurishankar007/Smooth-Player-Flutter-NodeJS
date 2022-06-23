@@ -3,10 +3,16 @@ const router = new express.Router();
 const mongoose = require("mongoose");
 const auth = require("../authentication/auth");
 const follow = require("../model/followModel");
+const user = require("../model/userModel");
 
 router.post("/follow/artist", auth.verifyUser, (req, res) => {
   const artistId = req.body.artistId;
   const artistName = req.body.artistName;
+
+  if (artistId === req.userInfo._id.toString()) {
+    return res.status(400).send({ resM: "You can not follow yourself." });
+  }
+
   follow
     .findOne({
       user: req.userInfo._id,
@@ -20,16 +26,34 @@ router.post("/follow/artist", auth.verifyUser, (req, res) => {
         });
 
         newFollow.save().then(() => {
-          res.status(201).send({ resM: "You followed " + artistName });
+          user.findOne({ _id: artistId }).then((userData) => {
+            user
+              .updateOne(
+                { _id: userData._id },
+                { follower: userData.follower + 1 }
+              )
+              .then(() => {
+                res.send({ resM: "You followed " + artistName });
+              });
+          });
         });
       } else {
         follow
           .findOneAndDelete({
             user: req.userInfo._id,
-            artist: req.body.artistId,
+            artist: artistId,
           })
           .then(() => {
-            res.send({ resM: "You unfollowed " + artistName });
+            user.findOne({ _id: artistId }).then((userData) => {
+              user
+                .updateOne(
+                  { _id: userData._id },
+                  { follower: userData.follower - 1 }
+                )
+                .then(() => {
+                  res.send({ resM: "You unfollowed " + artistName });
+                });
+            });
           });
       }
     });

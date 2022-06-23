@@ -19,14 +19,12 @@ class ViewAlbum extends StatefulWidget {
   final String? albumId;
   final String? title;
   final String? albumImage;
-  final int? like;
   final int? pageIndex;
   const ViewAlbum({
     Key? key,
     @required this.albumId,
     @required this.title,
     @required this.albumImage,
-    @required this.like,
     @required this.pageIndex,
   }) : super(key: key);
 
@@ -41,6 +39,7 @@ class _ViewAlbumState extends State<ViewAlbum> {
 
   List<Song> songs = [];
   bool albumLike = false;
+  int albumLikeNum = 0;
 
   late StreamSubscription stateSub;
 
@@ -48,8 +47,10 @@ class _ViewAlbumState extends State<ViewAlbum> {
     List<Song> resData = await SongHttp().getSongs(widget.albumId!);
     songs = resData;
     bool albumLike1 = await LikeHttp().checkAlbumLike(widget.albumId!);
+    int albumLikeNum1 = await LikeHttp().getAlbumLike(widget.albumId!);
     setState(() {
       albumLike = albumLike1;
+      albumLikeNum = albumLikeNum1;
     });
   }
 
@@ -162,7 +163,7 @@ class _ViewAlbumState extends State<ViewAlbum> {
                         SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Text(
-                            widget.like!.toString() + " likes",
+                            albumLikeNum.toString() + " likes",
                             style: TextStyle(
                               color: AppColors.text,
                             ),
@@ -184,9 +185,17 @@ class _ViewAlbumState extends State<ViewAlbum> {
                         textColor: Colors.black,
                         fontSize: 16.0,
                       );
-                      setState(() {
-                        albumLike = !albumLike;
-                      });
+                      if (albumLike) {
+                        setState(() {
+                          albumLike = !albumLike;
+                          albumLikeNum = albumLikeNum - 1;
+                        });
+                      } else {
+                        setState(() {
+                          albumLike = !albumLike;
+                          albumLikeNum = albumLikeNum + 1;
+                        });
+                      }
                     },
                     icon: Icon(
                       Icons.favorite,

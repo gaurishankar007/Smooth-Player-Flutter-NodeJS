@@ -146,7 +146,6 @@ class _LikedFeaturedPlaylistState extends State<LikedFeaturedPlaylist> {
                                     title: snapshot.data![index].title!,
                                     featuredPlaylistImage: snapshot
                                         .data![index].featured_playlist_image,
-                                    like: snapshot.data![index].like,
                                     pageIndex: 0,
                                   ),
                                 ),

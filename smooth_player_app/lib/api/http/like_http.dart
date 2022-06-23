@@ -19,7 +19,10 @@ class LikeHttp {
       HttpHeaders.authorizationHeader: "Bearer $token",
     });
 
-    return jsonDecode(response.body) as Map;
+    return {
+      "statusCode": response.statusCode,
+      "body": jsonDecode(response.body)
+    };
   }
 
   Future<bool> checkSongLike(String songId) async {
@@ -80,6 +83,18 @@ class LikeHttp {
     return resData;
   }
 
+  Future<int> getAlbumLike(String albumId) async {
+    final response = await post(
+      Uri.parse(routeUrl + "check/albumLikeNum"),
+      body: {"albumId": albumId},
+      headers: {
+        HttpHeaders.authorizationHeader: "Bearer $token",
+      },
+    );
+    int resData = jsonDecode(response.body);
+    return resData;
+  }
+
   Future<List<Album>> viewLikedAlbums() async {
     final response = await get(
       Uri.parse(routeUrl + "view/likedAlbums"),
@@ -125,6 +140,18 @@ class LikeHttp {
       },
     );
     bool resData = jsonDecode(response.body);
+    return resData;
+  }
+
+  Future<int> getFeaturedPlaylistLike(String featuredPlaylistId) async {
+    final response = await post(
+      Uri.parse(routeUrl + "check/featuredPlaylistLikeNum"),
+      body: {"featuredPlaylistId": featuredPlaylistId},
+      headers: {
+        HttpHeaders.authorizationHeader: "Bearer $token",
+      },
+    );
+    int resData = jsonDecode(response.body);
     return resData;
   }
 
