@@ -208,6 +208,7 @@ class _PasswordSettingState extends State<PasswordSetting> {
                             msg:
                                 "Confirm password and new password must be same",
                           );
+                          return;
                         }
 
                         final resData = await UserHttp()

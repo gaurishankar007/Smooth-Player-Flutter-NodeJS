@@ -189,6 +189,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                           textColor: Colors.white,
                           msg: "Password and confirm password must be same",
                         );
+                        return;
                       }
 
                       final resData =
