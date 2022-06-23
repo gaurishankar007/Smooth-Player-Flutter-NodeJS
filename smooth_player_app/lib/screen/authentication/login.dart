@@ -1,4 +1,3 @@
-// ignore_for_file: non_constant_identifier_names
 
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
@@ -50,41 +49,14 @@ class _LoginState extends State<Login> {
             key: _formKey,
             child: Column(
               children: [
-                Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Container(
-                      height: 120,
-                      width: 120,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: const [
-                            Color(0XFF36D1DC),
-                            Color(0XFF5B86E5),
-                          ],
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                        ),
-                        borderRadius: BorderRadius.circular(25),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Colors.black26,
-                            spreadRadius: 1,
-                            blurRadius: 5,
-                            offset: Offset(5, 5),
-                          )
-                        ],
-                      ),
-                    ),
-                    Text(
-                      "S",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        fontSize: 120,
-                      ),
-                    ),
-                  ],
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image(
+                    height: 160,
+                    width: 175,
+                    fit: BoxFit.cover,
+                    image: AssetImage("image/logo.png"),
+                  ),
                 ),
                 SizedBox(
                   height: 20,
@@ -234,16 +206,22 @@ class _LoginState extends State<Login> {
                 SizedBox(
                   height: 2,
                 ),
-                TextButton(onPressed: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (builder)=> ForgetPassword()));
-                }, child:                 Text(
-                  "Forgot Password",
-                  style: TextStyle(
-                    decoration: TextDecoration.underline,
-                    fontSize: 15,
-                    color: AppColors.primary,
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (builder) => ForgetPassword()));
+                  },
+                  child: Text(
+                    "Forgot Password",
+                    style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      fontSize: 15,
+                      color: AppColors.primary,
+                    ),
                   ),
-                ),),
+                ),
                 SizedBox(
                   height: 2,
                 ),

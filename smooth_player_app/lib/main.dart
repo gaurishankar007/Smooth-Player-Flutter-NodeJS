@@ -36,8 +36,6 @@ class SmoothPlayer extends StatefulWidget {
 }
 
 class _SmoothPlayerState extends State<SmoothPlayer> {
-  Widget initialPage = Login();
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

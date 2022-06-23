@@ -100,8 +100,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                       password = value;
                     },
                     validator: MultiValidator([
-                      RequiredValidator(
-                          errorText: "Current password is required!"),
+                      RequiredValidator(errorText: "New password is required!"),
                     ]),
                     obscureText: p,
                     style: TextStyle(
@@ -110,7 +109,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: AppColors.form,
-                      hintText: "Enter your current password.....",
+                      hintText: "Enter a new password.....",
                       enabledBorder: formBorder,
                       focusedBorder: formBorder,
                       errorBorder: formBorder,
