@@ -2,7 +2,7 @@
     package="com.example.smooth_player_app">
     <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="smooth_player_app"
+        android:label="Smooth Player"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true">
