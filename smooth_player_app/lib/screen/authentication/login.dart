@@ -18,7 +18,7 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
-  String username_email = "", password = "";
+  String usernameEmail = "", password = "";
   bool hidePass = true;
   OutlineInputBorder formBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(5),
@@ -74,7 +74,7 @@ class _LoginState extends State<Login> {
                     TextFormField(
                       key: Key("username_email"),
                       onSaved: (value) {
-                        username_email = value!;
+                        usernameEmail = value!;
                       },
                       validator: MultiValidator([
                         RequiredValidator(
@@ -146,7 +146,7 @@ class _LoginState extends State<Login> {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
                       final resData =
-                          await LoginHttp().login(username_email, password);
+                          await LoginHttp().login(usernameEmail, password);
                       if (resData["statusCode"] == 202) {
                         if (resData["body"]["userData"]["admin"]) {
                           LogStatus().setToken(resData["body"]["token"],

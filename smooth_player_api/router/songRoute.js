@@ -13,7 +13,7 @@ router.post(
   "/upload/albumSong",
   auth.verifyUser,
   musicFile.array("song_file", 2),
-  function (req, res) {
+  async function (req, res) {
     if (req.files.length == 0) {
       res.status(400).send({ resM: "Unsupported file format." });
       return;
@@ -38,6 +38,11 @@ router.post(
       ) {
         music_file = req.files[i].filename;
       }
+    }
+
+    if (cover_image === "") {
+      const albumData = await album.findOne({ _id: req.body.albumId });
+      cover_image = albumData.album_image;
     }
 
     const newSong = new song({
@@ -174,14 +179,19 @@ router.put(
       });
     }
     song.findOne({ _id: req.body.songId }).then((songData) => {
-      fs.unlinkSync(
-        `../smooth_player_api/upload/image/albumSong/${songData.cover_image}`
-      );
-      song
-        .updateOne({ _id: songData._id }, { cover_image: req.file.filename })
-        .then(() => {
-          res.send({ resM: "Song Edited." });
-        });
+      album.findOne({ _id: songData.album }).then((albumData) => {
+        if (songData.cover_image !== albumData.album_image) {
+          fs.unlinkSync(
+            `../smooth_player_api/upload/image/albumSong/${songData.cover_image}`
+          );
+        }
+
+        song
+          .updateOne({ _id: songData._id }, { cover_image: req.file.filename })
+          .then(() => {
+            res.send({ resM: "Song Edited." });
+          });
+      });
     });
   }
 );

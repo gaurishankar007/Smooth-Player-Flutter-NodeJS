@@ -187,6 +187,7 @@ class _UploadAlbumSongState extends State<UploadAlbumSong> {
                   onSaved: ((value) {
                     title = value!;
                   }),
+                  textCapitalization: TextCapitalization.words,
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: AppColors.form,
@@ -299,16 +300,7 @@ class _UploadAlbumSongState extends State<UploadAlbumSong> {
                     ),
                   ),
                   onPressed: () async {
-                    if (_image == null) {
-                      Fluttertoast.showToast(
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.BOTTOM,
-                        timeInSecForIosWeb: 3,
-                        backgroundColor: Colors.red,
-                        textColor: Colors.white,
-                        msg: "Please select an image",
-                      );
-                    } else if (genre == "Select song genre") {
+                    if (genre == "Select song genre") {
                       Fluttertoast.showToast(
                         toastLength: Toast.LENGTH_SHORT,
                         gravity: ToastGravity.BOTTOM,

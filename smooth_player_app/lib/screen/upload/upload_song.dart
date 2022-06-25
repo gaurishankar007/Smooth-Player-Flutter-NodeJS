@@ -175,6 +175,7 @@ class _UploadSongState extends State<UploadSong> {
                   onSaved: ((value) {
                     title = value!;
                   }),
+                  textCapitalization: TextCapitalization.words,
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: AppColors.form,
