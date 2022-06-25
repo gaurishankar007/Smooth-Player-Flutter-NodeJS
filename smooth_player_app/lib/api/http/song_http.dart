@@ -86,12 +86,14 @@ class SongHttp {
         filename: songData.music_file!.path.split('/').last,
       ));
       // Adding images
-      multipartList.add(http.MultipartFile(
-        'song_file',
-        songData.cover_image!.readAsBytes().asStream(),
-        songData.cover_image!.lengthSync(),
-        filename: songData.cover_image!.path.split('/').last,
-      ));
+      if (songData.cover_image != null) {
+        multipartList.add(http.MultipartFile(
+          'song_file',
+          songData.cover_image!.readAsBytes().asStream(),
+          songData.cover_image!.lengthSync(),
+          filename: songData.cover_image!.path.split('/').last,
+        ));
+      }
 
       request.files.addAll(multipartList);
       final response = await request.send();

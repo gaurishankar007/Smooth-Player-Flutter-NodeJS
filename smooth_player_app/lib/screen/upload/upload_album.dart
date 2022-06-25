@@ -157,6 +157,7 @@ class _UploadAlbumState extends State<UploadAlbum> {
                         onSaved: ((value) {
                           albumTitle = value!;
                         }),
+                        textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: AppColors.form,

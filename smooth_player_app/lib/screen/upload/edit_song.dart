@@ -167,6 +167,7 @@ class _EditSongState extends State<EditSong> {
                   onSaved: ((value) {
                     title = value!;
                   }),
+                  textCapitalization: TextCapitalization.words,
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: AppColors.form,

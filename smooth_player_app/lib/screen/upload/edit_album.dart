@@ -154,6 +154,7 @@ class _EditAlbumState extends State<EditAlbum> {
                   onSaved: ((value) {
                     title = value!;
                   }),
+                  textCapitalization: TextCapitalization.words,
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: AppColors.form,
