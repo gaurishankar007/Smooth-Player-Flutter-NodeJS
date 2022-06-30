@@ -47,8 +47,6 @@ class _LibraryState extends State<Library> {
     });
   }
 
-
-
   @override
   void dispose() {
     super.dispose();
@@ -544,7 +542,7 @@ class _LibraryState extends State<Library> {
                                                                       index]
                                                                   .id!
                                                           ? AppColors.primary
-                                                          : AppColors.text 
+                                                          : AppColors.text
                                                       : AppColors.text,
                                                   fontWeight: FontWeight.bold,
                                                 ),
