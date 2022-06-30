@@ -7,6 +7,7 @@ const song = require("../model/songModel");
 const album = require("../model/albumModel");
 const featuredPlaylist = require("../model/featurePlaylistModel");
 
+// like song feature
 router.post("/like/song", auth.verifyUser, (req, res) => {
   const songId = req.body.songId;
   like
@@ -46,6 +47,7 @@ router.post("/like/song", auth.verifyUser, (req, res) => {
     });
 });
 
+// check like song in boolean
 router.post("/like/checkSong", auth.verifyUser, (req, res) => {
   const songId = req.body.songId;
   like
