@@ -6,6 +6,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:smooth_player_app/api/http/song_http.dart';
 import 'package:smooth_player_app/api/urls.dart';
 
+
+
 import '../../api/res/song_res.dart';
 import '../../resource/colors.dart';
 import '../../resource/player.dart';
@@ -50,6 +52,9 @@ class _ViewGenreState extends State<ViewGenre> {
     songsLength = resData.length;
     return resData;
   }
+
+
+  
 
   @override
   void initState() {
