@@ -10,6 +10,7 @@ router.delete("/delete/featuredPlaylistSong", auth.verifyAdmin, (req, res) => {
   });
 });
 
+// upload features song by admin for all users
 router.post("/upload/featuredSong", auth.verifyAdmin, async (req, res) => {
   const featuredPlaylistId = req.body.featuredPlaylistId;
   const songId = req.body.songId;
@@ -42,6 +43,7 @@ router.post("/upload/featuredSong", auth.verifyAdmin, async (req, res) => {
   }
 });
 
+// bire featured song for all users
 router.post("/view/featuredSong", auth.verifyAdmin, async (req, res) => {
   const featuredPlaylistId = req.body.featuredPlaylistId;
   const viewSongs1 = await featuredSong
@@ -63,6 +65,7 @@ router.post("/view/featuredSong", auth.verifyAdmin, async (req, res) => {
   res.send(viewSongs);
 });
 
+//
 router.post("/view/featuredSongs", auth.verifyUser, async (req, res) => {
   const featuredPlaylistId = req.body.featuredPlaylistId;
   const viewSongs1 = await featuredSong
