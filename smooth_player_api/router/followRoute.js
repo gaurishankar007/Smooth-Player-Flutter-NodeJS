@@ -75,6 +75,7 @@ router.post("/follow/checkArtist", auth.verifyUser, (req, res) => {
     });
 });
 
+// view followed artist by use
 router.get("/view/followedArtists", auth.verifyUser, async (req, res) => {
   const followedArtists = await follow
     .find({ user: req.userInfo._id })
@@ -86,3 +87,6 @@ router.get("/view/followedArtists", auth.verifyUser, async (req, res) => {
 });
 
 module.exports = router;
+
+
+
