@@ -20,8 +20,8 @@ describe("report schema test", () => {
     const newReport = {
       user: "628b2ef4c986e83c7429dea4",
       song: "628b2ef4c986e83c7429dea1",
-      message: "Your song 'Dead Worries' has been reported for 'violent content, CopyRight'",
-      reportFor: ["Violent content", "CopyRight"]
+      message: "Your song 'Mausam' has been reported for 'Vulgar content, CopyRight'",
+      reportFor: ["Vulgar content", "CopyRight"]
     };
 
     const playlistData = await report.create(newReport);
@@ -32,12 +32,11 @@ describe("report schema test", () => {
       mongoose.Types.ObjectId("628b2ef4c986e83c7429dea1")
     );
     expect(playlistData.message).toEqual(
-      "Your song 'Dead Worries' has been reported for 'violent content, CopyRight'"
+      "Your song 'Mausam' has been reported for 'Vulgar content, CopyRight'"
     );
     expect(playlistData.reportFor).toEqual(
-      ["Violent content", "CopyRight"]
+      ["Vulgar content", "CopyRight"]
     );
-    expect(playlistData.solved).toEqual(false);
   });
 
   //delete

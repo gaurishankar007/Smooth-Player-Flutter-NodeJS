@@ -15,11 +15,9 @@ class ReportHttp {
     Map<String, String> reportData = {
       "songId": songId,
     };
-
     for (int i = 0; i < reportFor.length; i++) {
       reportData["reportFor[" + i.toString() + "]"] = reportFor[i];
     }
-
     final response = await post(
       Uri.parse(routeUrl + "report/song"),
       body: reportData,
@@ -27,10 +25,8 @@ class ReportHttp {
         HttpHeaders.authorizationHeader: "Bearer $token",
       },
     );
-
     return jsonDecode(response.body) as Map;
   }
-
   Future<Map> deleteReport(String reportId) async {
     final response = await delete(
       Uri.parse(routeUrl + "report/delete"),
@@ -39,10 +35,8 @@ class ReportHttp {
         HttpHeaders.authorizationHeader: "Bearer $token",
       },
     );
-
     return jsonDecode(response.body) as Map;
   }
-
   Future<Map> deleteReportedSong(String songId) async {
     final response = await delete(
       Uri.parse(routeUrl + "report/deleteSong"),
