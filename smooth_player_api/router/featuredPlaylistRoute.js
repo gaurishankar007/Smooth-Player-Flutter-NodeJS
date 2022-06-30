@@ -6,6 +6,7 @@ const featuredSong = require("../model/featureSongModel");
 const fs = require("fs");
 const featuredPlaylistUpload = require("../setting/featuredPlaylistSetting");
 
+// upload featured playlist by admin for all users
 router.post(
   "/upload/featuredPlaylist",
   auth.verifyAdmin,

@@ -8,6 +8,7 @@ const featuredPlaylist = require("../model/featurePlaylistModel");
 const follow = require("../model/followModel");
 
 router.get("/load/home", auth.verifyUser, async (req, res) => {
+  // list of data to be sent to the frontend
   const albumIds = [],
     albumIdsCount = [],
     sortedAlbumIdsAndCount = [],
@@ -25,7 +26,7 @@ router.get("/load/home", auth.verifyUser, async (req, res) => {
     sortedPrevAlbumIdsAndCount = [],
     sortedPrevAlbumIds = [];
 
-  // Getting users recently mostly played popularAlbums
+  // Getting users recently mostly played popularAlbums 
   const recentlyPlayedSongs1 = await recentlyPlayed
     .find({ user: req.userInfo._id })
     .populate("song")
