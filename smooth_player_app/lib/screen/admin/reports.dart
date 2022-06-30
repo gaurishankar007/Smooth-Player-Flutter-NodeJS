@@ -548,7 +548,7 @@ class _ReportedSongsState extends State<ReportedSongs> {
                                             text: TextSpan(
                                               text: "Warning: ",
                                               style: TextStyle(
-                                                color: Colors.red,
+                                                color: Colors.yellow,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                               children: [
@@ -585,7 +585,7 @@ class _ReportedSongsState extends State<ReportedSongs> {
                                                         fillColor:
                                                             AppColors.form,
                                                         hintText:
-                                                            "Enter new warning message",
+                                                            "Enter new warning message if you want to warn otherwise dont beacuse it will be waste of time",
                                                         enabledBorder:
                                                             formBorder,
                                                         focusedBorder:
