@@ -6,6 +6,7 @@ const user = require("../model/userModel");
 const album = require("../model/albumModel");
 const song = require("../model/songModel");
 const featuredPlaylist = require("../model/featurePlaylistModel");
+const recentlyPlayed = require("../model/RecentlyPlayedModel");
 const mongoose = require("mongoose");
 const fs = require("fs");
 
@@ -26,15 +27,13 @@ router.post(
     var cover_image = "";
 
     for (i = 0; i < req.files.length; i++) {
-      if (
-        req.files[i].filename.split(".").pop() === "png" ||
-        req.files[i].filename.split(".").pop() === "jpeg" ||
-        req.files[i].filename.split(".").pop() === "jpg"
-      ) {
+      const fileType = req.files[i].filename.split(".").pop();
+      if (fileType === "png" || fileType === "jpeg" || fileType === "jpg") {
         cover_image = req.files[i].filename;
       } else if (
-        req.files[i].filename.split(".").pop() === "mp3" ||
-        req.files[i].filename.split(".").pop() === "mp4"
+        fileType === "mp3" ||
+        fileType === "mp4" ||
+        fileType == "m4a"
       ) {
         music_file = req.files[i].filename;
       }
@@ -78,15 +77,13 @@ router.post(
     var cover_image = "";
 
     for (i = 0; i < req.files.length; i++) {
-      if (
-        req.files[i].filename.split(".").pop() === "png" ||
-        req.files[i].filename.split(".").pop() === "jpeg" ||
-        req.files[i].filename.split(".").pop() === "jpg"
-      ) {
+      const fileType = req.files[i].filename.split(".").pop();
+      if (fileType === "png" || fileType === "jpeg" || fileType === "jpg") {
         cover_image = req.files[i].filename;
       } else if (
-        req.files[i].filename.split(".").pop() === "mp3" ||
-        req.files[i].filename.split(".").pop() === "mp4"
+        fileType === "mp3" ||
+        fileType === "mp4" ||
+        fileType == "m4a"
       ) {
         music_file = req.files[i].filename;
       }
@@ -149,8 +146,10 @@ router.delete("/delete/song", auth.verifyUser, (req, res) => {
         );
       }
       fs.unlinkSync(`../smooth_player_api/upload/music/${songData.music_file}`);
-      song.findByIdAndDelete(songData._id).then(() => {
-        res.send({ resM: "song deleted." });
+      recentlyPlayed.deleteMany({ song: songData._id }).then(() => {
+        song.findByIdAndDelete(songData._id).then(() => {
+          res.send({ resM: "song deleted." });
+        });
       });
     });
   });
