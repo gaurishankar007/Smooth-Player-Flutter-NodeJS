@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
@@ -45,7 +44,7 @@ class SignUpHttp {
         filename: userDetails.profile_picture!.path.split('/').last,
       ));
       request.files.addAll(multipartList);
-      
+
       final response = await request.send();
       var responseString = await response.stream.bytesToString();
       final responseData = jsonDecode(responseString) as Map;
@@ -53,12 +52,11 @@ class SignUpHttp {
         "statusCode": response.statusCode,
         "body": responseData,
       };
-    } catch (err) {
-      log('$err');
+    } catch (error) {
+      return {
+        "body": {"resM": "error occurred"},
+        "statusCode": 400,
+      };
     }
-    return {
-      "body": {"resM": "error occurred"},
-      "statusCode": 400,
-    };
   }
 }

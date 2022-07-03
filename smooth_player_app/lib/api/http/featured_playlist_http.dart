@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
@@ -16,23 +15,27 @@ class FeaturedPlaylistHttp {
 
   Future<List<FeaturedPlaylist>> getFeaturedPlaylist(
       int featuredPlaylistNum) async {
-    final response = await post(
-      Uri.parse(routeUrl + "view/featuredPlaylist"),
-      body: {"featuredPlaylistNum": featuredPlaylistNum.toString()},
-      headers: {
-        HttpHeaders.authorizationHeader: "Bearer $token",
-      },
-    );
+    try {
+      final response = await post(
+        Uri.parse(routeUrl + "view/featuredPlaylist"),
+        body: {"featuredPlaylistNum": featuredPlaylistNum.toString()},
+        headers: {
+          HttpHeaders.authorizationHeader: "Bearer $token",
+        },
+      );
 
-    List resFeaturedPlaylist = jsonDecode(response.body);
+      List resFeaturedPlaylist = jsonDecode(response.body);
 
-    if (resFeaturedPlaylist.isEmpty) {
-      return List.empty();
+      if (resFeaturedPlaylist.isEmpty) {
+        return List.empty();
+      }
+
+      return resFeaturedPlaylist
+          .map((e) => FeaturedPlaylist.fromJson(e))
+          .toList();
+    } catch (error) {
+      return Future.error(error);
     }
-
-    return resFeaturedPlaylist
-        .map((e) => FeaturedPlaylist.fromJson(e))
-        .toList();
   }
 
   Future<Map> createFeaturedPlaylist(FeaturedPlaylistModel playlistData) async {
@@ -65,38 +68,47 @@ class FeaturedPlaylistHttp {
         "statusCode": response.statusCode,
         "body": responseData,
       };
-    } catch (err) {
-      log('$err');
+    } catch (error) {
+      return {
+        "body": {"resM": "error occurred"},
+        "statusCode": 400,
+      };
     }
-    return {
-      "body": {"resM": "error occurred"},
-      "statusCode": 400,
-    };
   }
 
   Future<Map> deleteFeaturedPlaylist(String featuredPlaylistId) async {
-    final bearerToken = {
-      HttpHeaders.authorizationHeader: 'Bearer $token',
-    };
+    try {
+      final bearerToken = {
+        HttpHeaders.authorizationHeader: 'Bearer $token',
+      };
 
-    final response = await delete(
-        Uri.parse(routeUrl + "delete/featuredPlaylist"),
-        body: {"featuredPlaylistId": featuredPlaylistId},
-        headers: bearerToken);
+      final response = await delete(
+          Uri.parse(routeUrl + "delete/featuredPlaylist"),
+          body: {"featuredPlaylistId": featuredPlaylistId},
+          headers: bearerToken);
 
-    final responseData = jsonDecode(response.body);
-    return responseData;
+      final responseData = jsonDecode(response.body);
+      return responseData;
+    } catch (error) {
+      return Future.error(error);
+    }
   }
 
   Future<List<FeaturedPlaylist>> searchPlaylist(String title) async {
-    final response = await post(
-      Uri.parse(routeUrl + "search/featuredPlaylist"),
-      body: {"title": title},
-      headers: {
-        HttpHeaders.authorizationHeader: "Bearer $token",
-      },
-    );
-    List resSearchPlaylist = jsonDecode(response.body);
-    return resSearchPlaylist.map((e) => FeaturedPlaylist.fromJson(e)).toList();
+    try {
+      final response = await post(
+        Uri.parse(routeUrl + "search/featuredPlaylist"),
+        body: {"title": title},
+        headers: {
+          HttpHeaders.authorizationHeader: "Bearer $token",
+        },
+      );
+      List resSearchPlaylist = jsonDecode(response.body);
+      return resSearchPlaylist
+          .map((e) => FeaturedPlaylist.fromJson(e))
+          .toList();
+    } catch (error) {
+      return Future.error(error);
+    }
   }
 }

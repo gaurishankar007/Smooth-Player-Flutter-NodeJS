@@ -12,13 +12,17 @@ class LibraryHttp {
   final token = LogStatus.token;
 
   Future<LibraryData> viewLibrary() async {
-    final response = await get(
-      Uri.parse(routeUrl + "view/library"),
-      headers: {
-        HttpHeaders.authorizationHeader: "Bearer $token",
-      },
-    );
-    
-    return LibraryData.fromJson(jsonDecode(response.body));
+    try {
+      final response = await get(
+        Uri.parse(routeUrl + "view/library"),
+        headers: {
+          HttpHeaders.authorizationHeader: "Bearer $token",
+        },
+      );
+
+      return LibraryData.fromJson(jsonDecode(response.body));
+    } catch (error) {
+      return Future.error(error);
+    }
   }
 }

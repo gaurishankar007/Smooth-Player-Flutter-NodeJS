@@ -78,143 +78,157 @@ class _AlbumViewState extends State<AlbumView> {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Column(children: [
-            SizedBox(
-              height: 10,
-            ),
-            Stack(
-              alignment: Alignment.topCenter,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(left: 5),
-                  child: Row(
+          child: FutureBuilder<List<Song>>(
+            future: albumSongs,
+            builder: (context, snapshot) {
+              List<Widget> children = [];
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                children = <Widget>[
+                  Container(
+                    width: sWidth,
+                    height: sHeight,
+                    alignment: Alignment.center,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 3,
+                      color: AppColors.primary,
+                    ),
+                  )
+                ];
+              } else if (snapshot.connectionState == ConnectionState.done) {}
+              if (snapshot.hasData) {
+                children = <Widget>[
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Stack(
+                    alignment: Alignment.topCenter,
                     children: [
-                      IconButton(
-                        constraints: BoxConstraints(),
-                        padding: EdgeInsets.zero,
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: Icon(
-                          Icons.arrow_back,
-                          color: Colors.black,
-                          size: 25,
+                      Padding(
+                        padding: EdgeInsets.only(left: 5),
+                        child: Row(
+                          children: [
+                            IconButton(
+                              constraints: BoxConstraints(),
+                              padding: EdgeInsets.zero,
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              icon: Icon(
+                                Icons.arrow_back,
+                                color: Colors.black,
+                                size: 25,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.black26,
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                      )
-                    ],
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(5),
-                    child: Image(
-                      width: sWidth * .8,
-                      height: sHeight * .3,
-                      fit: BoxFit.cover,
-                      image: NetworkImage(
-                        coverImage + widget.albumImage!,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                top: 5,
-                left: sWidth * 0.03,
-                right: sWidth * 0.03,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    width: sWidth * .7,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Text(
-                            widget.title!,
-                            style: TextStyle(
-                              color: AppColors.text,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
+                      Container(
+                        decoration: BoxDecoration(
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.black26,
+                              spreadRadius: 2,
+                              blurRadius: 5,
+                            )
+                          ],
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(5),
+                          child: Image(
+                            width: sWidth * .8,
+                            height: sHeight * .3,
+                            fit: BoxFit.cover,
+                            image: NetworkImage(
+                              coverImage + widget.albumImage!,
                             ),
                           ),
                         ),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: 5,
+                      left: sWidth * 0.03,
+                      right: sWidth * 0.03,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
                         SizedBox(
-                          height: 5,
+                          width: sWidth * .7,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Text(
+                                  widget.title!,
+                                  style: TextStyle(
+                                    color: AppColors.text,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Text(
+                                  widget.like!.toString() + " likes",
+                                  style: TextStyle(
+                                    color: AppColors.text,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Text(
-                            widget.like!.toString() + " likes",
-                            style: TextStyle(
-                              color: AppColors.text,
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => UploadAlbumSong(
+                                  albumId: widget.albumId!,
+                                  title: widget.title,
+                                  albumImage: widget.albumImage,
+                                  like: widget.like,
+                                  pageIndex: widget.pageIndex,
+                                ),
+                              ),
+                            );
+                          },
+                          child: Icon(
+                            Icons.upload_rounded,
+                            color: Colors.white,
+                            size: 30,
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            padding: EdgeInsets.all(5),
+                            minimumSize: Size.zero,
+                            primary: AppColors.primary,
+                            elevation: 10,
+                            shadowColor: Colors.black,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
                             ),
                           ),
                         ),
                       ],
                     ),
                   ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => UploadAlbumSong(
-                            albumId: widget.albumId!,
-                            title: widget.title,
-                            albumImage: widget.albumImage,
-                            like: widget.like,
-                            pageIndex: widget.pageIndex,
-                          ),
-                        ),
-                      );
-                    },
-                    child: Icon(
-                      Icons.upload_rounded,
-                      color: Colors.white,
-                      size: 30,
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: 20,
+                      left: sWidth * 0.03,
+                      right: sWidth * 0.03,
+                      bottom: 80,
                     ),
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.all(5),
-                      minimumSize: Size.zero,
-                      primary: AppColors.primary,
-                      elevation: 10,
-                      shadowColor: Colors.black,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                top: 20,
-                left: sWidth * 0.03,
-                right: sWidth * 0.03,
-                bottom: 80,
-              ),
-              child: FutureBuilder<List<Song>>(
-                future: albumSongs,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return ListView.builder(
+                    child: ListView.builder(
                       physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: snapshot.data!.length,
@@ -570,27 +584,57 @@ class _AlbumViewState extends State<AlbumView> {
                           ),
                         );
                       },
-                    );
-                  } else if (snapshot.hasError) {
-                    return Center(
+                    ),
+                  ),
+                ];
+              } else if (snapshot.hasError) {
+                if ("${snapshot.error}".split("Exception: ")[0] == "Socket") {
+                  children = <Widget>[
+                    Container(
+                      width: sWidth,
+                      height: sHeight,
+                      alignment: Alignment.center,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Icon(
+                            Icons.warning_rounded,
+                            size: 25,
+                            color: Colors.red,
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text(
+                            "Connection Problem",
+                            style: TextStyle(
+                                fontSize: 15, fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    )
+                  ];
+                } else {
+                  children = <Widget>[
+                    Container(
+                      width: sWidth,
+                      height: sHeight,
+                      alignment: Alignment.center,
                       child: Text(
                         "${snapshot.error}",
                         style: TextStyle(
                           fontSize: 15,
                         ),
                       ),
-                    );
-                  }
-                  return Center(
-                    child: CircularProgressIndicator(
-                      strokeWidth: 5,
-                      color: AppColors.primary,
-                    ),
-                  );
-                },
-              ),
-            ),
-          ]),
+                    )
+                  ];
+                }
+              }
+              return Column(
+                children: children,
+              );
+            },
+          ),
         ),
       ),
       floatingActionButton: song != null

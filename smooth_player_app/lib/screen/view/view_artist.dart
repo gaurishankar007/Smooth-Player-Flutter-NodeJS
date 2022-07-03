@@ -796,8 +796,8 @@ class _ViewArtistState extends State<ViewArtist> {
                                                         .newAlbum![index].id
                                                 ? Icon(
                                                     Icons.bar_chart_rounded,
-                                                    color: AppColors.primary,
-                                                    size: 80,
+                                                    color: Colors.white,
+                                                    size: 30,
                                                   )
                                                 : SizedBox()
                                             : SizedBox(),

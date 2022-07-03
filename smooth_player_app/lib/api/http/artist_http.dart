@@ -13,57 +13,77 @@ class ArtistHttp {
   final token = LogStatus.token;
 
   Future<ArtistData> viewArtist(String artistId) async {
-    final response =
-        await post(Uri.parse(routeUrl + "view/artistProfile"), body: {
-      "artistId": artistId
-    }, headers: {
-      HttpHeaders.authorizationHeader: "Bearer $token",
-    });
+    try {
+      final response =
+          await post(Uri.parse(routeUrl + "view/artistProfile"), body: {
+        "artistId": artistId
+      }, headers: {
+        HttpHeaders.authorizationHeader: "Bearer $token",
+      });
 
-    return ArtistData.fromJson(jsonDecode(response.body));
+      return ArtistData.fromJson(jsonDecode(response.body));
+    } catch (error) {
+      return Future.error(error);
+    }
   }
 
   Future<List<Artist>> searchArtist(String profileName) async {
-    final response = await post(
-      Uri.parse(routeUrl + "search/artist"),
-      body: {"profile_name": profileName},
-      headers: {
-        HttpHeaders.authorizationHeader: "Bearer $token",
-      },
-    );
-    List resSearch = jsonDecode(response.body);
-    return resSearch.map((e) => Artist.fromJson(e)).toList();
+    try {
+      final response = await post(
+        Uri.parse(routeUrl + "search/artist"),
+        body: {"profile_name": profileName},
+        headers: {
+          HttpHeaders.authorizationHeader: "Bearer $token",
+        },
+      );
+      List resSearch = jsonDecode(response.body);
+      return resSearch.map((e) => Artist.fromJson(e)).toList();
+    } catch (error) {
+      return Future.error(error);
+    }
   }
 
   Future<List<Artist>> searchPopularArtist() async {
-    final response = await get(
-      Uri.parse(routeUrl + "view/popularArtist"),
-      headers: {
-        HttpHeaders.authorizationHeader: "Bearer $token",
-      },
-    );
-    List resSearch = jsonDecode(response.body);
-    return resSearch.map((e) => Artist.fromJson(e)).toList();
+    try {
+      final response = await get(
+        Uri.parse(routeUrl + "view/popularArtist"),
+        headers: {
+          HttpHeaders.authorizationHeader: "Bearer $token",
+        },
+      );
+      List resSearch = jsonDecode(response.body);
+      return resSearch.map((e) => Artist.fromJson(e)).toList();
+    } catch (error) {
+      return Future.error(error);
+    }
   }
 
   Future<ArtistData> adminViewArtist(String artistId) async {
-    final response =
-        await post(Uri.parse(routeUrl + "admin/artistProfile"), body: {
-      "artistId": artistId
-    }, headers: {
-      HttpHeaders.authorizationHeader: "Bearer $token",
-    });
+    try {
+      final response =
+          await post(Uri.parse(routeUrl + "admin/artistProfile"), body: {
+        "artistId": artistId
+      }, headers: {
+        HttpHeaders.authorizationHeader: "Bearer $token",
+      });
 
-    return ArtistData.fromJson(jsonDecode(response.body));
+      return ArtistData.fromJson(jsonDecode(response.body));
+    } catch (error) {
+      return Future.error(error);
+    }
   }
 
   Future<Map> verifyArtist(String artistId) async {
-    final response = await put(Uri.parse(routeUrl + "verify/artist"), body: {
-      "artistId": artistId
-    }, headers: {
-      HttpHeaders.authorizationHeader: "Bearer $token",
-    });
+    try {
+      final response = await put(Uri.parse(routeUrl + "verify/artist"), body: {
+        "artistId": artistId
+      }, headers: {
+        HttpHeaders.authorizationHeader: "Bearer $token",
+      });
 
-    return jsonDecode(response.body) as Map;
+      return jsonDecode(response.body) as Map;
+    } catch (error) {
+      return Future.error(error);
+    }
   }
 }
