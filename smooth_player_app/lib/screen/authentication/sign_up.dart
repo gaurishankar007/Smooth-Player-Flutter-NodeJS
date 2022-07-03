@@ -63,8 +63,6 @@ class _SignUpState extends State<SignUp> {
     final _screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        title: Text("SmoothPlayer"),
-        centerTitle: true,
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);

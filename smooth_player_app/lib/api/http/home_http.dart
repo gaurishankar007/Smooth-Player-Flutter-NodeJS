@@ -13,24 +13,32 @@ class HomeHttp {
   final token = LogStatus.token;
 
   Future<HomeData> viewHome() async {
-    final response = await get(Uri.parse(routeUrl + "load/home"), headers: {
-      HttpHeaders.authorizationHeader: "Bearer $token",
-    });
+    try {
+      final response = await get(Uri.parse(routeUrl + "load/home"), headers: {
+        HttpHeaders.authorizationHeader: "Bearer $token",
+      });
 
-    return HomeData.fromJson(jsonDecode(response.body));
+      return HomeData.fromJson(jsonDecode(response.body));
+    } catch (error) {
+      return Future.error(error);
+    }
   }
 
   Future<List<FeaturedPlaylist>> getFeaturedPlaylists(
       int featuredPlaylistNum) async {
-    final response =
-        await post(Uri.parse(routeUrl + "get/featuredPlaylists"), body: {
-      "featuredPlaylistNum": featuredPlaylistNum.toString()
-    }, headers: {
-      HttpHeaders.authorizationHeader: "Bearer $token",
-    });
+    try {
+      final response =
+          await post(Uri.parse(routeUrl + "get/featuredPlaylists"), body: {
+        "featuredPlaylistNum": featuredPlaylistNum.toString()
+      }, headers: {
+        HttpHeaders.authorizationHeader: "Bearer $token",
+      });
 
-    List resData = jsonDecode(response.body);
+      List resData = jsonDecode(response.body);
 
-    return resData.map((e) => FeaturedPlaylist.fromJson(e)).toList();
+      return resData.map((e) => FeaturedPlaylist.fromJson(e)).toList();
+    } catch (error) {
+      return Future.error(error);
+    }
   }
 }

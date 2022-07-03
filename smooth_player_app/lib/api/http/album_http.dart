@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
@@ -13,7 +12,7 @@ class AlbumHttp {
   final token = LogStatus.token;
 
   Future<Map> createAlbum(AlbumUploadModal albumData) async {
-   try {
+    try {
       // Making multipart request
       var request =
           http.MultipartRequest('POST', Uri.parse(routeUrl + "upload/album"));
@@ -42,69 +41,81 @@ class AlbumHttp {
         "statusCode": response.statusCode,
         "body": responseData,
       };
-    } catch (err) {
-      log('$err');
+    } catch (error) {
+      return {
+        "body": {"resM": "error occurred"},
+        "statusCode": 400,
+      };
     }
-    return {
-      "body": {"resM": "error occurred"},
-      "statusCode": 400,
-    };
   }
 
   Future<List<Album>> getAlbums() async {
-    final response = await get(
-      Uri.parse(routeUrl + "view/album"),
-      headers: {
-        HttpHeaders.authorizationHeader: "Bearer $token",
-      },
-    );
+    try {
+      final response = await get(
+        Uri.parse(routeUrl + "view/album"),
+        headers: {
+          HttpHeaders.authorizationHeader: "Bearer $token",
+        },
+      );
 
-    List resAlbum = jsonDecode(response.body);
+      List resAlbum = jsonDecode(response.body);
 
-    if (resAlbum.isEmpty) {
-      return List.empty();
+      if (resAlbum.isEmpty) {
+        return List.empty();
+      }
+
+      return resAlbum.map((e) => Album.fromJson(e)).toList();
+    } catch (error) {
+      return Future.error(error);
     }
-
-    return resAlbum.map((e) => Album.fromJson(e)).toList();
   }
 
   Future<Map> deleteAlbum(String albumId) async {
-    final bearerToken = {
-      HttpHeaders.authorizationHeader: 'Bearer $token',
-    };
-    final response = await delete(Uri.parse(routeUrl + "delete/album"),
-        body: {"albumId": albumId}, headers: bearerToken);
+    try {
+      final bearerToken = {
+        HttpHeaders.authorizationHeader: 'Bearer $token',
+      };
+      final response = await delete(Uri.parse(routeUrl + "delete/album"),
+          body: {"albumId": albumId}, headers: bearerToken);
 
-    final responseData = jsonDecode(response.body);
+      final responseData = jsonDecode(response.body);
 
-    return responseData;
+      return responseData;
+    } catch (error) {
+      return Future.error(error);
+    }
   }
 
   Future<Map> editAlbumTitle(String title, String albumId) async {
-    final response = await put(
-      Uri.parse(routeUrl + "edit/album/title"),
-      body: {"title": title, "albumId": albumId},
-      headers: {
-        HttpHeaders.authorizationHeader: "Bearer $token",
-      },
-    );
+    try {
+      final response = await put(
+        Uri.parse(routeUrl + "edit/album/title"),
+        body: {"title": title, "albumId": albumId},
+        headers: {
+          HttpHeaders.authorizationHeader: "Bearer $token",
+        },
+      );
 
-    final responseData = jsonDecode(response.body);
-    return {
-      "statusCode": response.statusCode,
-      "body": responseData,
-    };
+      final responseData = jsonDecode(response.body);
+      return {
+        "statusCode": response.statusCode,
+        "body": responseData,
+      };
+    } catch (error) {
+      return Future.error(error);
+    }
   }
+
   Future<Map> editAlbumImage(File image, String albumId) async {
-   try {
+    try {
       // Making multipart request
-      var request =
-          http.MultipartRequest('PUT', Uri.parse(routeUrl + "edit/album/image"));
+      var request = http.MultipartRequest(
+          'PUT', Uri.parse(routeUrl + "edit/album/image"));
       // Adding headers
       request.headers.addAll({
         'Authorization': 'Bearer $token',
       });
-     
+
       // Adding images
       List<MultipartFile> multipartList = [];
       // Adding forms data
@@ -126,12 +137,11 @@ class AlbumHttp {
         "statusCode": response.statusCode,
         "body": responseData,
       };
-    } catch (err) {
-      log('$err');
+    } catch (error) {
+      return {
+        "body": {"resM": "error occurred"},
+        "statusCode": 400,
+      };
     }
-    return {
-      "body": {"resM": "error occurred"},
-      "statusCode": 400,
-    };
   }
 }

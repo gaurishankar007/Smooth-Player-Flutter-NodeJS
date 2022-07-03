@@ -10,16 +10,20 @@ class LoginHttp {
   final routeUrl = ApiUrls.routeUrl;
 
   Future<Map> login(String username_email, String password) async {
-    Map<String, String> userData = {
-      "username_email": username_email,
-      "password": password,
-    };
+    try {
+      Map<String, String> userData = {
+        "username_email": username_email,
+        "password": password,
+      };
 
-    final response = await post(Uri.parse(routeUrl+"user/login"),
-        body: userData);
-    return {
-      "statusCode": response.statusCode,
-      "body": jsonDecode(response.body) as Map,
-    };
+      final response =
+          await post(Uri.parse(routeUrl + "user/login"), body: userData);
+      return {
+        "statusCode": response.statusCode,
+        "body": jsonDecode(response.body) as Map,
+      };
+    } catch (error) {
+      return Future.error(error);
+    }
   }
 }

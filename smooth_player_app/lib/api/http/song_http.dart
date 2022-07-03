@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 import 'package:http/http.dart';
 import 'package:smooth_player_app/api/log_status.dart';
@@ -52,13 +51,12 @@ class SongHttp {
         "statusCode": response.statusCode,
         "body": responseData,
       };
-    } catch (err) {
-      log('$err');
+    } catch (error) {
+      return {
+        "body": {"resM": "error occurred"},
+        "statusCode": 400,
+      };
     }
-    return {
-      "body": {"resM": "error occurred"},
-      "statusCode": 400,
-    };
   }
 
   Future<Map> uploadAlbumSong(SongUploadModal songData, String albumId) async {
@@ -103,77 +101,92 @@ class SongHttp {
         "statusCode": response.statusCode,
         "body": responseData,
       };
-    } catch (err) {
-      log('$err');
+    } catch (error) {
+      return {
+        "body": {"resM": "error occurred"},
+        "statusCode": 400,
+      };
     }
-    return {
-      "body": {"resM": "error occurred"},
-      "statusCode": 400,
-    };
   }
 
   Future<List<Song>> getSongs(String albumId) async {
-    final response = await post(
-      Uri.parse(routeUrl + "view/song"),
-      body: {"albumId": albumId},
-      headers: {
-        HttpHeaders.authorizationHeader: "Bearer $token",
-      },
-    );
+    try {
+      final response = await post(
+        Uri.parse(routeUrl + "view/song"),
+        body: {"albumId": albumId},
+        headers: {
+          HttpHeaders.authorizationHeader: "Bearer $token",
+        },
+      );
 
-    List resSongs = jsonDecode(response.body);
+      List resSongs = jsonDecode(response.body);
 
-    if (resSongs.isEmpty) {
-      return List.empty();
+      if (resSongs.isEmpty) {
+        return List.empty();
+      }
+
+      return resSongs.map((e) => Song.fromJson(e)).toList();
+    } catch (error) {
+      return Future.error(error);
     }
-
-    return resSongs.map((e) => Song.fromJson(e)).toList();
   }
 
   Future<List<Song>> getSongsAdmin(String albumId) async {
-    final response = await post(
-      Uri.parse(routeUrl + "adminView/song"),
-      body: {"albumId": albumId},
-      headers: {
-        HttpHeaders.authorizationHeader: "Bearer $token",
-      },
-    );
+    try {
+      final response = await post(
+        Uri.parse(routeUrl + "adminView/song"),
+        body: {"albumId": albumId},
+        headers: {
+          HttpHeaders.authorizationHeader: "Bearer $token",
+        },
+      );
 
-    List resSongs = jsonDecode(response.body);
+      List resSongs = jsonDecode(response.body);
 
-    if (resSongs.isEmpty) {
-      return List.empty();
+      if (resSongs.isEmpty) {
+        return List.empty();
+      }
+
+      return resSongs.map((e) => Song.fromJson(e)).toList();
+    } catch (error) {
+      return Future.error(error);
     }
-
-    return resSongs.map((e) => Song.fromJson(e)).toList();
   }
 
   Future<Map> deleteSong(String songId) async {
-    final bearerToken = {
-      HttpHeaders.authorizationHeader: 'Bearer $token',
-    };
-    final response = await delete(Uri.parse(routeUrl + "delete/song"),
-        body: {"songId": songId}, headers: bearerToken);
+    try {
+      final bearerToken = {
+        HttpHeaders.authorizationHeader: 'Bearer $token',
+      };
+      final response = await delete(Uri.parse(routeUrl + "delete/song"),
+          body: {"songId": songId}, headers: bearerToken);
 
-    final responseData = jsonDecode(response.body);
+      final responseData = jsonDecode(response.body);
 
-    return responseData;
+      return responseData;
+    } catch (error) {
+      return Future.error(error);
+    }
   }
 
   Future<Map> editSongTitle(String title, String songId) async {
-    final response = await put(
-      Uri.parse(routeUrl + "edit/song/title"),
-      body: {"title": title, "songId": songId},
-      headers: {
-        HttpHeaders.authorizationHeader: "Bearer $token",
-      },
-    );
+    try {
+      final response = await put(
+        Uri.parse(routeUrl + "edit/song/title"),
+        body: {"title": title, "songId": songId},
+        headers: {
+          HttpHeaders.authorizationHeader: "Bearer $token",
+        },
+      );
 
-    final responseData = jsonDecode(response.body);
-    return {
-      "statusCode": response.statusCode,
-      "body": responseData,
-    };
+      final responseData = jsonDecode(response.body);
+      return {
+        "statusCode": response.statusCode,
+        "body": responseData,
+      };
+    } catch (error) {
+      return Future.error(error);
+    }
   }
 
   Future<Map> editSongImage(File image, String songId) async {
@@ -209,67 +222,86 @@ class SongHttp {
         "statusCode": response.statusCode,
         "body": responseData,
       };
-    } catch (err) {
-      log('$err');
+    } catch (error) {
+      return {
+        "body": {"resM": "error occurred"},
+        "statusCode": 400,
+      };
     }
-    return {
-      "body": {"resM": "error occurred"},
-      "statusCode": 400,
-    };
   }
 
   Future<List<Song>> searchSongByTitle(String title) async {
-    final response = await post(
-      Uri.parse(routeUrl + "search/songByTitle"),
-      body: {"title": title},
-      headers: {
-        HttpHeaders.authorizationHeader: "Bearer $token",
-      },
-    );
-    List resSearch = jsonDecode(response.body);
-    return resSearch.map((e) => Song.fromJson(e)).toList();
+    try {
+      final response = await post(
+        Uri.parse(routeUrl + "search/songByTitle"),
+        body: {"title": title},
+        headers: {
+          HttpHeaders.authorizationHeader: "Bearer $token",
+        },
+      );
+      List resSearch = jsonDecode(response.body);
+      return resSearch.map((e) => Song.fromJson(e)).toList();
+    } catch (error) {
+      return Future.error(error);
+    }
   }
 
   Future<List> searchGenre() async {
-    final response = await get(
-      Uri.parse(routeUrl + "search/genre"),
-      headers: {
-        HttpHeaders.authorizationHeader: "Bearer $token",
-      },
-    );
+    try {
+      final response = await get(
+        Uri.parse(routeUrl + "search/genre"),
+        headers: {
+          HttpHeaders.authorizationHeader: "Bearer $token",
+        },
+      );
 
-    List songGenres = jsonDecode(response.body);
-    return songGenres;
+      List songGenres = jsonDecode(response.body);
+      return songGenres;
+    } catch (error) {
+      return Future.error(error);
+    }
   }
 
   Future<SearchData> searchSong(String title) async {
-    final response = await post(
-      Uri.parse(routeUrl + "search/song"),
-      body: {"title": title},
-      headers: {
-        HttpHeaders.authorizationHeader: "Bearer $token",
-      },
-    );
+    try {
+      final response = await post(
+        Uri.parse(routeUrl + "search/song"),
+        body: {"title": title},
+        headers: {
+          HttpHeaders.authorizationHeader: "Bearer $token",
+        },
+      );
 
-    if (jsonDecode(response.body).isEmpty) {
-      return SearchData(
-          songs: [], albums: [], featuredPlaylists: [], artists: [], users: []);
+      if (jsonDecode(response.body).isEmpty) {
+        return SearchData(
+            songs: [],
+            albums: [],
+            featuredPlaylists: [],
+            artists: [],
+            users: []);
+      }
+
+      return SearchData.fromJson(jsonDecode(response.body));
+    } catch (error) {
+      return Future.error(error);
     }
-
-    return SearchData.fromJson(jsonDecode(response.body));
   }
 
   Future<List<Song>> viewGenreSongs(String genre, int songNum) async {
-    final response = await post(
-      Uri.parse(routeUrl + "genre/songs"),
-      body: {"genre": genre, "songNum": songNum.toString()},
-      headers: {
-        HttpHeaders.authorizationHeader: "Bearer $token",
-      },
-    );
+    try {
+      final response = await post(
+        Uri.parse(routeUrl + "genre/songs"),
+        body: {"genre": genre, "songNum": songNum.toString()},
+        headers: {
+          HttpHeaders.authorizationHeader: "Bearer $token",
+        },
+      );
 
-    List resData = jsonDecode(response.body);
+      List resData = jsonDecode(response.body);
 
-    return resData.map((e) => Song.fromJson(e)).toList();
+      return resData.map((e) => Song.fromJson(e)).toList();
+    } catch (error) {
+      return Future.error(error);
+    }
   }
 }

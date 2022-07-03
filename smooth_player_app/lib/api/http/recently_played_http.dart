@@ -12,33 +12,41 @@ class RecentlyPlayedHttp {
   final token = LogStatus.token;
 
   Future<Map> addRecentSong(String songId) async {
-    final response = await post(
-      Uri.parse(routeUrl + "add/recentSong"),
-      body: {"songId": songId},
-      headers: {
-        HttpHeaders.authorizationHeader: "Bearer $token",
-      },
-    );
+    try {
+      final response = await post(
+        Uri.parse(routeUrl + "add/recentSong"),
+        body: {"songId": songId},
+        headers: {
+          HttpHeaders.authorizationHeader: "Bearer $token",
+        },
+      );
 
-    final responseData = jsonDecode(response.body);
-    return responseData;
+      final responseData = jsonDecode(response.body);
+      return responseData;
+    } catch (error) {
+      return Future.error(error);
+    }
   }
 
   Future<List<RecentlyPlayed>> getRecentSong() async {
-    final response = await get(
-      Uri.parse(routeUrl + "view/recentSong"),
-      headers: {
-        HttpHeaders.authorizationHeader: "Bearer $token",
-      },
-    );
+    try {
+      final response = await get(
+        Uri.parse(routeUrl + "view/recentSong"),
+        headers: {
+          HttpHeaders.authorizationHeader: "Bearer $token",
+        },
+      );
 
-    final responseData = jsonDecode(response.body);
+      final responseData = jsonDecode(response.body);
 
-    List<RecentlyPlayed> recentlyPlayedSongs = [];
-    for (int i = 0; i < responseData.length; i++) {
-      recentlyPlayedSongs.add(RecentlyPlayed.fromJson(responseData[i]));
+      List<RecentlyPlayed> recentlyPlayedSongs = [];
+      for (int i = 0; i < responseData.length; i++) {
+        recentlyPlayedSongs.add(RecentlyPlayed.fromJson(responseData[i]));
+      }
+
+      return recentlyPlayedSongs;
+    } catch (error) {
+      return Future.error(error);
     }
-
-    return recentlyPlayedSongs;
   }
 }
