@@ -59,3 +59,6 @@ An online music player for mobile platforms
 ![My Image](screenshots/23.png)
 ![My Image](screenshots/24.png)
 ![My Image](screenshots/25.png)
+![My Image](screenshots/26.png)
+![My Image](screenshots/27.png)
+![My Image](screenshots/28.png)
