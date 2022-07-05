@@ -32,3 +32,30 @@ An online music player for mobile platforms
 
 # Flutter Library
 "audioplayers" is used to play the songs. Custom functions are made to next, previous, repeat, shuffle songs and for adding/removing songs from the queue. 
+
+# Screenshots
+![My Image](screenshots/1.png)
+![My Image](screenshots/2.png)
+![My Image](screenshots/3.png)
+![My Image](screenshots/4.png)
+![My Image](screenshots/5.png)
+![My Image](screenshots/6.png)
+![My Image](screenshots/7.png)
+![My Image](screenshots/8.png)
+![My Image](screenshots/9.png)
+![My Image](screenshots/10.png)
+![My Image](screenshots/11.png)
+![My Image](screenshots/12.png)
+![My Image](screenshots/13.png)
+![My Image](screenshots/14.png)
+![My Image](screenshots/15.png)
+![My Image](screenshots/16.png)
+![My Image](screenshots/17.png)
+![My Image](screenshots/18.png)
+![My Image](screenshots/19.png)
+![My Image](screenshots/20.png)
+![My Image](screenshots/21.png)
+![My Image](screenshots/22.png)
+![My Image](screenshots/23.png)
+![My Image](screenshots/24.png)
+![My Image](screenshots/25.png)
