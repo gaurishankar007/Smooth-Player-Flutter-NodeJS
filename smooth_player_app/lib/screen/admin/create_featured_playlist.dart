@@ -150,6 +150,7 @@ class _CreateFeaturedPlaylistState extends State<CreateFeaturedPlaylist> {
                     onSaved: ((value) {
                       playlistTitle = value!;
                     }),
+                    textCapitalization: TextCapitalization.words,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: AppColors.form,

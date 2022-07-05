@@ -103,6 +103,7 @@ class _CreateFeaturedSongState extends State<CreateFeaturedSong> {
                         });
                       }
                     }),
+                    textCapitalization: TextCapitalization.words,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: AppColors.form,
@@ -159,7 +160,7 @@ class _CreateFeaturedSongState extends State<CreateFeaturedSong> {
                               return Padding(
                                 padding: const EdgeInsets.only(bottom: 15),
                                 child: GestureDetector(
-                                  onDoubleTap: () async {
+                                  onTap: () async {
                                     Song newSong = Song(
                                       id: snapshot.data![index].id!,
                                       title: snapshot.data![index].title!,
@@ -519,7 +520,7 @@ class _CreateFeaturedSongState extends State<CreateFeaturedSong> {
                                 return Padding(
                                   padding: const EdgeInsets.only(bottom: 15),
                                   child: GestureDetector(
-                                    onDoubleTap: () async {
+                                    onTap: () async {
                                       List<Song> searchedSongs = [
                                         selectedSongs[index]
                                       ];

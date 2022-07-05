@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:smooth_player_app/resource/colors.dart';
@@ -76,6 +75,7 @@ class _LoginState extends State<Login> {
                       onSaved: (value) {
                         usernameEmail = value!;
                       },
+                      keyboardType: TextInputType.emailAddress,
                       validator: MultiValidator([
                         RequiredValidator(
                             errorText: "Username or Email is required!"),

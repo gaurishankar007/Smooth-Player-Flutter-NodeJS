@@ -1176,45 +1176,50 @@ class _HomeState extends State<Home> {
           }),
         ),
         more
-            ? OutlinedButton(
-                onPressed: () async {
-                  final resData = await HomeHttp()
-                      .getFeaturedPlaylists(featuredPlaylistNum + 10);
-                  if (resData.length == featuredPlaylistsLength) {
-                    setState(() {
-                      more = false;
-                    });
-                    return;
-                  } else {
-                    featuredPlaylistNum = featuredPlaylistNum + 10;
-                    featuredPlaylistsLength = resData.length;
-                    setState(() {
-                      featuredPlaylists =
-                          HomeHttp().getFeaturedPlaylists(featuredPlaylistNum);
-                    });
-                  }
-                },
-                child: Text(
-                  "More",
-                  style: TextStyle(
-                    fontSize: 15,
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  OutlinedButton(
+                    onPressed: () async {
+                      final resData = await HomeHttp()
+                          .getFeaturedPlaylists(featuredPlaylistNum + 10);
+                      if (resData.length == featuredPlaylistsLength) {
+                        setState(() {
+                          more = false;
+                        });
+                        return;
+                      } else {
+                        featuredPlaylistNum = featuredPlaylistNum + 10;
+                        featuredPlaylistsLength = resData.length;
+                        setState(() {
+                          featuredPlaylists = HomeHttp()
+                              .getFeaturedPlaylists(featuredPlaylistNum);
+                        });
+                      }
+                    },
+                    child: Text(
+                      "More",
+                      style: TextStyle(
+                        fontSize: 15,
+                      ),
+                    ),
+                    style: OutlinedButton.styleFrom(
+                      minimumSize: Size.zero,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
+                      primary: AppColors.primary,
+                      side: BorderSide(
+                        width: 2,
+                        color: AppColors.primary,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                    ),
                   ),
-                ),
-                style: OutlinedButton.styleFrom(
-                  minimumSize: Size.zero,
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 4,
-                  ),
-                  primary: AppColors.primary,
-                  side: BorderSide(
-                    width: 2,
-                    color: AppColors.primary,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                ),
+                ],
               )
             : SizedBox(),
       ],

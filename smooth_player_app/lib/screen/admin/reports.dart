@@ -142,7 +142,7 @@ class _ReportedSongsState extends State<ReportedSongs> {
                           child: Column(
                             children: [
                               GestureDetector(
-                                onDoubleTap: () {
+                                onTap: () {
                                   Song newSong = Song(
                                     id: snapshot.data![index].song!.id!,
                                     title: snapshot.data![index].song!.title!,

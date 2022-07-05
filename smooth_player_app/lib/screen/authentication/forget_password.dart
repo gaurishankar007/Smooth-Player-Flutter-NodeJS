@@ -70,7 +70,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                   onSaved: (value) {
                     email = value!;
                   },
-                  textCapitalization: TextCapitalization.words,
+                  keyboardType: TextInputType.emailAddress,
                   validator: (value) {
                     MultiValidator([
                       RequiredValidator(errorText: "Email is required!"),

@@ -183,7 +183,7 @@ class _ViewAdminAlbumState extends State<ViewAdminAlbum> {
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 15),
                           child: GestureDetector(
-                            onDoubleTap: () async {
+                            onTap: () async {
                               Song newSong = Song(
                                 id: snapshot.data![index].id!,
                                 title: snapshot.data![index].title!,

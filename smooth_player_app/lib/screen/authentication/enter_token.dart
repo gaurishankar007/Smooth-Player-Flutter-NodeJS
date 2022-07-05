@@ -69,7 +69,6 @@ class _VerifyTokenState extends State<VerifyToken> {
                   onSaved: (value) {
                     token = value!;
                   },
-                  textCapitalization: TextCapitalization.words,
                   keyboardType: TextInputType.number,
                   validator: (value) {
                     MultiValidator([

@@ -195,7 +195,7 @@ class _ReportSongState extends State<ReportSong> {
                   gravity: ToastGravity.BOTTOM,
                   timeInSecForIosWeb: 3,
                   backgroundColor: Colors.white,
-                  textColor: Colors.white,
+                  textColor: AppColors.text,
                   fontSize: 16.0,
                 );
               },

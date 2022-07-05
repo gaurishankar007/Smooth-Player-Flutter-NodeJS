@@ -273,7 +273,7 @@ class _ViewUserState extends State<ViewUser> {
                                   return Padding(
                                     padding: const EdgeInsets.only(bottom: 15),
                                     child: GestureDetector(
-                                      onDoubleTap: () async {
+                                      onTap: () async {
                                         Song newSong = Song(
                                           id: snapshot
                                               .data!.likedSongs![index].id!,
