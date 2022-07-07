@@ -9,7 +9,7 @@ void main() {
     await tester.pumpWidget(MaterialApp(home: FeaturedPlaylistView()));
 
     // Checking outputs
-    expect(find.byIcon(Icons.settings), findsOneWidget);
+    expect(find.byIcon(Icons.logout), findsOneWidget);
     expect(find.byIcon(Icons.add), findsOneWidget);
     expect(find.byType(SingleChildScrollView), findsOneWidget);
   });

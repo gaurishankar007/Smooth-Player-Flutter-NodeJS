@@ -30,10 +30,10 @@ describe('featured playlist schema test', ()=> {
 
     // update
     it('featured playlist update testing', ()=> {
-        return featuredPlaylist.updateOne({_id: Object("6281b82f09cfa23d88f3811a")}, 
+        return featuredPlaylist.updateOne({_id: Object("62a6b84a63f77ea8bb65eb6b")}, 
         {$set: {title: "New test"}})
         .then(()=> {
-           return featuredPlaylist.findOne({_id: Object("6281b82f09cfa23d88f3811a")})
+           return featuredPlaylist.findOne({_id: Object("62a6b84a63f77ea8bb65eb6b")})
             .then((playlistData)=> {                
                 expect(playlistData.title).toEqual("New test")
             })

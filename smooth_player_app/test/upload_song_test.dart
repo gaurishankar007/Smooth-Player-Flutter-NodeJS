@@ -15,7 +15,7 @@ void main() {
 
     // Checking outputs
     expect(eleBtn, findsNWidgets(2));
-    expect(find.text("Country"), findsOneWidget);
+    expect(find.text("Country"), findsNWidgets(2));
     expect(find.text("Upload a Song"), findsOneWidget);
     expect(find.byIcon(Icons.arrow_back), findsOneWidget);
     expect(find.byType(SizedBox), findsWidgets);

@@ -34,10 +34,10 @@ describe('song schema test', ()=> {
 
     // update
     it('song update testing', ()=> {
-        return song.updateOne({_id: Object("627b64cf2882e8eed1e7576c")}, 
+        return song.updateOne({_id: Object("62c6cf5c2112c264b34b613e")}, 
         {$set: {title: "New test"}})
         .then(()=> {
-           return song.findOne({_id: Object("627b64cf2882e8eed1e7576c")})
+           return song.findOne({_id: Object("62c6cf5c2112c264b34b613e")})
             .then((songData)=> {                
                 expect(songData.title).toEqual("New test")
             })

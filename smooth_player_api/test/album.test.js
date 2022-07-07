@@ -20,12 +20,12 @@ describe('album schema test', ()=> {
     it('album insert testing', async ()=> {
         const newAlbum = {
             "title": "test",
-            "artist": "627b61735bef0dc353f3d39a",
+            "artist": "62c6d1108acf866ad1d60d32",
             "album_image": "album.jpg", 
         } 
         const albumData = await album.create(newAlbum)
         expect(albumData.title).toEqual("test")
-        expect(album.artist).toEqual(mongoose.Types.ObjectId("627b61735bef0dc353f3d39a"))
+        expect(albumData.artist).toEqual(mongoose.Types.ObjectId("62c6d1108acf866ad1d60d32"))
         expect(albumData.album_image).toEqual("album.jpg")
     })
 
