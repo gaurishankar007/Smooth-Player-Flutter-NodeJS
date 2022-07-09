@@ -1,0 +1,7 @@
+__v,_id,createdAt,message,reportFor,song,updatedAt,user
+0,62b7cebe23c86cf0cb3eceb8,2022-06-26T03:13:02.980Z,,"[""Hateful or abusive"",""Bullying or harassment""]",62b4250090f86a98f300b361,2022-06-26T03:13:02.980Z,62b433283c0660c8adc60206
+0,62b7cf1423c86cf0cb3ecf34,2022-06-26T03:14:28.946Z,haha delete the song,"[""I just don't like it""]",62b42ae390f86a98f300b37d,2022-06-26T03:21:11.231Z,62b433283c0660c8adc60206
+0,62c12d1ef3c8d2611a42caa5,2022-07-03T05:46:06.727Z,,"[""Hateful or abusive""]",62b4250090f86a98f300b361,2022-07-03T05:46:06.727Z,62c12b87f3c8d2611a42a137
+0,62c39b37ab9a934795faa3d7,2022-07-05T02:00:23.577Z,,"[""Violent or dangerous""]",62b714e8ceeabb7eccc4256a,2022-07-05T02:00:23.577Z,62c12b87f3c8d2611a42a137
+0,62c39b40ab9a934795faa3da,2022-07-05T02:00:32.791Z,,"[""Violent or dangerous""]",62b714e8ceeabb7eccc4256a,2022-07-05T02:00:32.791Z,62c12b87f3c8d2611a42a137
+0,62c3a2d1ab9a934795facc19,2022-07-05T02:32:49.246Z,delete it.,"[""Violent or dangerous"",""Hateful or abusive""]",62c39ddaab9a934795fab415,2022-07-05T15:31:25.388Z,62c3a223ab9a934795fac5ae
