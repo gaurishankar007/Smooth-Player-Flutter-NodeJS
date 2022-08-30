@@ -654,7 +654,7 @@ class _ViewUserState extends State<ViewUser> {
                               ),
                             )
                           : SizedBox(),
-                      snapshot.data!.likedAlbums!.isNotEmpty
+                      snapshot.data!.followedArtists!.isNotEmpty
                           ? GridView.count(
                               physics: NeverScrollableScrollPhysics(),
                               shrinkWrap: true,

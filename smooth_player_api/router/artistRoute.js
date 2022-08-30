@@ -56,7 +56,6 @@ router.post("/search/artist", auth.verifyAdmin, async (req, res) => {
   const artistName = {
     profile_name: { $regex: req.body.profile_name, $options: "i" },
     admin: false,
-    verified: true,
   };
   const artists = await user.find(artistName).limit(20);
   res.send(artists);

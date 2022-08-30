@@ -546,6 +546,14 @@ router.post("/user/publishedData", auth.verifyUser, async (req, res) => {
       birth_date: userDetail.birth_date,
       biography: userDetail.biography,
     };
+  } else {
+    userData["profile"] = {
+      profile_name: userDetail.profile_name,
+      profile_picture: userDetail.profile_picture,
+      gender: "",
+      birth_date: "",
+      biography: "",
+    };
   }
 
   if (userDetail.followed_artist_publication) {
@@ -562,6 +570,8 @@ router.post("/user/publishedData", auth.verifyUser, async (req, res) => {
       followedArtists.push(followedArtists1[i].artist);
     }
     userData["followedArtists"] = followedArtists;
+  } else {
+    userData["followedArtists"] = [];
   }
 
   if (userDetail.liked_song_publication) {
@@ -590,6 +600,8 @@ router.post("/user/publishedData", auth.verifyUser, async (req, res) => {
     }
 
     userData["likedSongs"] = likedSongs;
+  } else {
+    userData["likedSongs"] = [];
   }
 
   if (userDetail.liked_album_publication) {
@@ -613,6 +625,8 @@ router.post("/user/publishedData", auth.verifyUser, async (req, res) => {
     }
 
     userData["likedAlbums"] = likedAlbums;
+  } else {
+    userData["likedAlbums"] = [];
   }
 
   if (userDetail.liked_featured_playlist_publication) {
@@ -631,6 +645,8 @@ router.post("/user/publishedData", auth.verifyUser, async (req, res) => {
     }
 
     userData["likedFeaturedPlaylists"] = likedFeaturedPlaylists;
+  } else {
+    userData["likedFeaturedPlaylists"] = [];
   }
 
   if (userDetail.created_playlist_publication) {
@@ -639,6 +655,8 @@ router.post("/user/publishedData", auth.verifyUser, async (req, res) => {
         user: userId,
       })
       .sort({ createdAt: -1 });
+  } else {
+    userData["playlists"] = [];
   }
 
   res.send(userData);
