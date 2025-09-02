@@ -34,31 +34,31 @@ An online music player for mobile platforms
 "audioplayers" is used to play the songs. Custom functions are made to next, previous, repeat, shuffle songs and for adding/removing songs from the queue. 
 
 # Screenshots
-![My Image](screenshots/1.png)
-![My Image](screenshots/2.png)
-![My Image](screenshots/3.png)
-![My Image](screenshots/4.png)
-![My Image](screenshots/5.png)
-![My Image](screenshots/6.png)
-![My Image](screenshots/7.png)
-![My Image](screenshots/8.png)
-![My Image](screenshots/9.png)
-![My Image](screenshots/10.png)
-![My Image](screenshots/11.png)
-![My Image](screenshots/12.png)
-![My Image](screenshots/13.png)
-![My Image](screenshots/14.png)
-![My Image](screenshots/15.png)
-![My Image](screenshots/16.png)
-![My Image](screenshots/17.png)
-![My Image](screenshots/18.png)
-![My Image](screenshots/19.png)
-![My Image](screenshots/20.png)
-![My Image](screenshots/21.png)
-![My Image](screenshots/22.png)
-![My Image](screenshots/23.png)
-![My Image](screenshots/24.png)
-![My Image](screenshots/25.png)
-![My Image](screenshots/26.png)
-![My Image](screenshots/27.png)
-![My Image](screenshots/28.png)
+<img src="./screenshots/1.png" width="300" alt="screenshot">
+<img src="./screenshots/2.png" width="300" alt="screenshot">
+<img src="./screenshots/3.png" width="300" alt="screenshot">
+<img src="./screenshots/4.png" width="300" alt="screenshot">
+<img src="./screenshots/5.png" width="300" alt="screenshot">
+<img src="./screenshots/6.png" width="300" alt="screenshot">
+<img src="./screenshots/7.png" width="300" alt="screenshot">
+<img src="./screenshots/8.png" width="300" alt="screenshot">
+<img src="./screenshots/9.png" width="300" alt="screenshot">
+<img src="./screenshots/10.png" width="300" alt="screenshot">
+<img src="./screenshots/11.png" width="300" alt="screenshot">
+<img src="./screenshots/12.png" width="300" alt="screenshot">
+<img src="./screenshots/13.png" width="300" alt="screenshot">
+<img src="./screenshots/14.png" width="300" alt="screenshot">
+<img src="./screenshots/15.png" width="300" alt="screenshot">
+<img src="./screenshots/16.png" width="300" alt="screenshot">
+<img src="./screenshots/17.png" width="300" alt="screenshot">
+<img src="./screenshots/18.png" width="300" alt="screenshot">
+<img src="./screenshots/19.png" width="300" alt="screenshot">
+<img src="./screenshots/20.png" width="300" alt="screenshot">
+<img src="./screenshots/21.png" width="300" alt="screenshot">
+<img src="./screenshots/22.png" width="300" alt="screenshot">
+<img src="./screenshots/23.png" width="300" alt="screenshot">
+<img src="./screenshots/24.png" width="300" alt="screenshot">
+<img src="./screenshots/25.png" width="300" alt="screenshot">
+<img src="./screenshots/26.png" width="300" alt="screenshot">
+<img src="./screenshots/27.png" width="300" alt="screenshot">
+<img src="./screenshots/28.png" width="300" alt="screenshot">
